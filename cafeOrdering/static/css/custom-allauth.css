@@ -1,4 +1,5 @@
-h1, p {
+h1,
+p {
     text-align: center;
 }
 
@@ -13,14 +14,14 @@ form label {
 
 form input[type="checkbox"] {
     display: block;
-  }
+}
 
-  form input[type="checkbox"] + label {
+form input[type="checkbox"]+label {
     display: inline-block;
-  }
+}
 
 .main-container-centered {
-    min-height: calc(100vh - 50px); 
+    min-height: calc(100vh - 50px);
     display: flex;
     align-items: center;
     flex-direction: column;
