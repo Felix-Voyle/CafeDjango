@@ -100,3 +100,15 @@
     text-shadow: 0 0 2px #000;
     margin-right: 20px;
 }
+
+.toggleCard {
+    display: none;
+    width: 140px;
+    height: 70px;
+    background-color: #686c6a;
+    border-radius: 5px;
+    position: absolute;
+    right: 19px;
+    top: 37px;
+    box-shadow: 2px 3px 3px #2e2e2e;
+}
