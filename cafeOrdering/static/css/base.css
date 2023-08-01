@@ -1,0 +1,102 @@
+.navbar {
+    background-color: rgb(87 127 106);
+    width: 100%;
+    height: 50px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.burger-container {
+    position: relative;
+}
+
+.burger-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    height: 50px;
+    width: 50px;
+    z-index: 3;
+}
+
+.burger-btn:focus {
+    outline: none;
+}
+
+.line {
+    fill: none;
+    stroke: #ADADAD;
+    stroke-width: 6;
+    transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+        stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.line1 {
+    stroke-dasharray: 60 207;
+    stroke-width: 6;
+}
+
+.line2 {
+    stroke-dasharray: 60 60;
+    stroke-width: 6;
+}
+
+.line3 {
+    stroke-dasharray: 60 207;
+    stroke-width: 6;
+}
+
+.opened .line1 {
+    stroke-dasharray: 90 207;
+    stroke-dashoffset: -134;
+    stroke-width: 6;
+}
+
+.opened .line2 {
+    stroke-dasharray: 1 60;
+    stroke-dashoffset: -30;
+    stroke-width: 6;
+}
+
+.opened .line3 {
+    stroke-dasharray: 90 207;
+    stroke-dashoffset: -134;
+    stroke-width: 6;
+}
+
+.opened .line {
+    stroke: white;
+    transition: .5s all linear;
+}
+
+.dropdwn-mnu {
+    display: none;
+    position: absolute;
+    top: 50px; 
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 50px); 
+    justify-content: center;
+    align-items: center; 
+    background-color: #2a2d2f;
+}
+
+.dropdwn-mnu ul li {
+    list-style-type: none;
+}
+
+.dropdwn-mnu ul a {
+    padding: 5px 0; 
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+.userIcon {
+    color: white;
+    text-shadow: 0 0 2px #000;
+    margin-right: 20px;
+}
