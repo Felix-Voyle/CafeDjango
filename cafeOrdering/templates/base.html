@@ -56,28 +56,31 @@
             </div>
 
             <div id="toggleCard" class="toggleCard">
-                {% if user.is_authenticated %}
-                    {% if user.is_superuser %}
-                        <a href="accounts/logout/">
-                            <li class="text-center">Logout</li>
-                        </a>
-                        <a href="/order/">
-                            <li class="text-center">Manage Orders</li>
-                        </a>
+                <ul>
+                    {% if user.is_authenticated %}
+                        {% if user.is_superuser %}
+                            <a href="accounts/logout/">
+                                <li class="text-center">Logout</li>
+                            </a>
+                            <a href="/order/">
+                                <li class="text-center">Manage Orders</li>
+                            </a>
+                        {% else %}
+                            <a href="accounts/logout/">
+                                <li class="text-center">Logout</li>
+                            </a>
+                            <a href="/accounts/profile">
+                                <li class="text-center">Account</li>
+                            </a>
+                        {% endif %}
                     {% else %}
-                        <a href="accounts/logout/">
-                            <li class="text-center">Logout</li>
-                        </a>
-                        <a href="/accounts/profile">
-                            <li class="text-center">Account</li>
+                        <a href="accounts/login/">
+                            <li class="text-center">Sign In</li>
                         </a>
                     {% endif %}
-                {% else %}
-                    <a href="accounts/login/">
-                        <li class="text-center">Sign In</li>
-                    </a>
-                {% endif %}
+                </ul>
             </div>
+            
 
             <div id="navLinks" class="dropdwn-mnu">
                 <ul>
