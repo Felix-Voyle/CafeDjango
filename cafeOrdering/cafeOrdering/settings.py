@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'homepage',
     'users',
     'products',
+    'enquire',
 ]
 
 MIDDLEWARE = [
