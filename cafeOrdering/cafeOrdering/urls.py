@@ -24,4 +24,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
     path('accounts/profile/', view_profile, name='view_profile'),
+    path('enquire/', include('enquire.urls')),
 ]
