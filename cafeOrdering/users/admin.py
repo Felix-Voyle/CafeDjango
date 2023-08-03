@@ -1,4 +1,10 @@
 from django.contrib import admin
-from .models import UserProfile
+from django.contrib.auth.models import Group
+from django.contrib.sites.models import Site
 
-admin.site.register(UserProfile)
+
+# Unregister the Group model from the admin site
+admin.site.unregister(Group)
+
+# Unregister the Site model from the admin site
+admin.site.unregister(Site)

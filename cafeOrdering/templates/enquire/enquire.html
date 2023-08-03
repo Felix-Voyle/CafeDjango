@@ -1,7 +1,29 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/enquire.css' %}">
+{% endblock %}
 
 {% block content %}
-<div>
-    <h3>Enquire</h3>
+<div class="container">
+    <div class="row">
+        <!-- First div -->
+        <div class="col-lg-6 col-sm-12 bg-primary mb-5">
+            <section>
+                <p>Some content here about what services we offer and type of products / events can be catered for.</p>
+            </section>
+        </div>
+
+        <!-- Second div -->
+        <div class="col-lg-6 col-sm-12 bg-secondary mb-5">
+            <h3>Enquiry Form</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}
