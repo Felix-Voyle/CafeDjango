@@ -1,3 +1,7 @@
+html {
+    background-color: rgb(207, 232, 248);
+}
+
 .navbar {
     background-color: rgb(87 127 106);
     width: 100%;
@@ -106,7 +110,7 @@
     display: none;
     width: 140px;
     height: fit-content;
-    background-color: #d8cfc6;
+    background-color: #cecdd7;
     border-radius: 5px;
     border: 2px solid #686c6a;
     position: absolute;
