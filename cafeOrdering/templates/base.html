@@ -58,17 +58,14 @@
             <div id="toggleCard" class="toggleCard">
                 <ul>
                     {% if user.is_authenticated %}
+                    <a href="accounts/logout/">
+                        <li class="text-center">Logout</li>
                         {% if user.is_superuser %}
-                            <a href="accounts/logout/">
-                                <li class="text-center">Logout</li>
                             </a>
                             <a href="/order/">
-                                <li class="text-center">Manage Orders</li>
+                                <li class="text-center">Manage</li>
                             </a>
                         {% else %}
-                            <a href="accounts/logout/">
-                                <li class="text-center">Logout</li>
-                            </a>
                             <a href="/accounts/profile">
                                 <li class="text-center">Account</li>
                             </a>
@@ -87,9 +84,11 @@
                     <a href="/">
                         <li class="text-center">Home</li>
                     </a>
-                    <a href="/">
+                    {% if not user.is_authenticated %}
+                    <a href="/enquire">
                         <li class="text-center">Enquire</li>
                     </a>
+                    {% endif %}
                     {% if user.is_authenticated and not user.is_superuser %}
                     <a href="/order/">
                         <li class="text-center">Order</li>
@@ -97,7 +96,7 @@
                     {% endif %}
                     {% if user.is_authenticated and user.is_superuser %}
                     <a href="/order/">
-                        <li class="text-center">Manage Orders</li>
+                        <li class="text-center">Manage</li>
                     </a>
                     {% endif %}
                 </ul>

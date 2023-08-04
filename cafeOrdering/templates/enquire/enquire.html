@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/enquire.css' %}">
@@ -16,12 +17,12 @@
         </div>
 
         <!-- Second div -->
-        <div class="col-lg-6 col-sm-12 bg-secondary mb-5">
-            <h3>Enquiry Form</h3>
-            <form method="post">
+        <div class="col-lg-6 col-sm-12 text-center form-card mb-5">
+            <h3 class="mb-2 mt-2" >Enquiry Form</h3>
+            <form class="enquire-form" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit">Submit</button>
+                <button class="mb-2" type="submit">Submit</button>
             </form>
         </div>
     </div>

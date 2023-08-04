@@ -5,3 +5,18 @@
     flex-direction: column;
     justify-content: center;
 }
+
+.enquire-form p label {
+    display: none;
+}
+
+.enquire-form p {
+    margin-bottom: 5px;
+}
+
+.form-card {
+    background-color: #bfbfbf;
+    border: 2px solid #2a2d2f;
+    border-radius: 8px;
+    box-shadow: 3px 3px 1px #2a2d2f;
+}
