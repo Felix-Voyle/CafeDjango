@@ -34,18 +34,34 @@
         </div>
 
         <div id="details" class="form-card details">
-            <table id="orderTable">
-                <thead>
-                    <tr class="text-center">
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Table body will be dynamically generated using JavaScript -->
-                </tbody>
-            </table>
+            <div class="row">
+                <!-- First div -->
+                <div class="col-lg-6 col-sm-12 mb-5">
+                    <table id="orderTable">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table body will be dynamically generated using JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+        
+                <!-- Second div -->
+                <div class="col-lg-6 col-sm-12 text-center form-card mb-5">
+                    <h3 class="mb-2 mt-2" >Address</h3>
+                    <input type="text" placeholder="Address Line 1">
+                    <input type="text" placeholder="Address Line 2">
+                    <input type="text" placeholder="Address Line 3">
+                    <input type="text" placeholder="Post Code">
+                    <input type="text" placeholder="Delivery notes...">
+                </div>
+            </div>
+
             <button type="submit" onclick="formSubmit()">Submit</button>
         </div>
     </form>
