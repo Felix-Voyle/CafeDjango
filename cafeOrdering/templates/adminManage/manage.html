@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<!-- <link rel="stylesheet" href="{% static 'css/enquire.css' %}"> -->
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <!-- First div -->
+        <div class="col-lg-6 col-sm-12 bg-primary mb-5">
+            <section>
+                <p>Orders management section</p>
+            </section>
+        </div>
+
+        <!-- Second div -->
+        <div class="col-lg-6 col-sm-12 text-center form-card mb-5">
+            <section>
+                {% for enquiry in enquiries %}
+                <p>{{ enquiry.name }}, {{ enquiry.message }}</p>
+                {% endfor %}
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

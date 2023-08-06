@@ -1,5 +1,5 @@
 html {
-    background-color: rgb(207, 232, 248);
+    background-color: rgb(237 248 255);
 }
 
 .navbar {
@@ -86,6 +86,7 @@ html {
     justify-content: center;
     align-items: center; 
     background-color: #2a2d2f;
+    z-index: 99;
 }
 
 .dropdwn-mnu ul li {

@@ -25,4 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/profile/', view_profile, name='view_profile'),
     path('enquire/', include('enquire.urls')),
+    path('manage/', include('adminManage.urls')),
 ]
