@@ -1,0 +1,15 @@
+.container {
+    width: 100%;
+    height: calc(100vh - 50px);
+    background-color: aqua;
+    display: flex;
+    justify-content: center;
+}
+
+.order {
+    display: block;
+}
+
+.details {
+    display: none;
+}

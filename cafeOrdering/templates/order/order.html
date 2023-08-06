@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/order.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form>
+        {% csrf_token %}
+    <div id="order" class="form-card order">
+        {% for product in products %}
+        <div class="product-line">
+            <label for="{{ product.id }}">{{ product.name }}</label>
+            <input type="number" name="{{ product.id }}" min="0">
+        </div>     
+        {% endfor %}
+      </div>
+      
+      <div id="details" class="form-card details">
+        <!-- Form fields for step 2 go here -->
+        <button type="submit" onclick="formSubmit()">Submit</button>
+      </div>
+    </form>
+    <button type="button" id="prevBtn" onclick="prevStep()" style="display: none;">Previous</button>
+    <button type="'button" onclick="nextStep()">Next</button>
+</div>
+
+{% block javascript %}
+    <script src="{% static 'js/orderForm.js' %}"></script>
+{% endblock %}
+
+{% endblock %}
