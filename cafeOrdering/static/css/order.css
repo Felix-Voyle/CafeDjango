@@ -1,9 +1,26 @@
-.container {
-    width: 100%;
+.order-container {
+    width: 90%;
     height: calc(100vh - 50px);
     background-color: aqua;
     display: flex;
     justify-content: center;
+    margin: auto;
+}
+
+.order-container form {
+    width: 100%;
+    margin-top: 25px;
+}
+
+.form-titles {
+    position: absolute;
+    width: 90%;
+    display: flex;
+}
+
+.form-titles span {
+    text-emphasis: bold;
+    text-decoration: underline;
 }
 
 .order {
@@ -12,4 +29,39 @@
 
 .details {
     display: none;
+}
+
+.qty-input {
+    width: 50px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: none;
+  }
+
+.next-btn {
+    display: block;
+
+}
+
+.prev-btn {
+    display: none;
+}
+
+.next-btn,
+.prev-btn {
+    height: 50px;
+    align-self: end;
+    position: absolute;
+}
+
+table {
+    width: 50%;
 }

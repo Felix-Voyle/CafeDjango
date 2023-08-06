@@ -7,29 +7,54 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="order-container">
+    <div id="formTitles" class="row form-titles">
+        <span class="d-none d-sm-block text-center d col-sm-4"><strong>Product</strong></span>
+        <span class="d-none d-sm-block text-center d col-sm-4"><strong>Price</strong></span>
+        <span class="d-none d-sm-block text-center d col-sm-4"><strong>Quantity</strong></span>
+    </div>
     <form>
         {% csrf_token %}
-    <div id="order" class="form-card order">
-        {% for product in products %}
-        <div class="product-line">
-            <label for="{{ product.id }}">{{ product.name }}</label>
-            <input type="number" name="{{ product.id }}" min="0">
-        </div>     
-        {% endfor %}
-      </div>
-      
-      <div id="details" class="form-card details">
-        <!-- Form fields for step 2 go here -->
-        <button type="submit" onclick="formSubmit()">Submit</button>
-      </div>
+        <div id="order" class="form-card order">
+            {% for product in products %}
+            <div class="row align-items-center my-2">
+                <div class="col-sm-4 text-center">
+                    <label for="{{ product.name }}">{{ product.name }}</label>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <span>£ {{ product.price }}</span>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <button type="button" class="dec-btn" onclick="decQuantity(event)">-</button>
+                    <input type="number" class="text-center qty-input" name="{{ product.name }}" min="0" value="0">
+                    <button type="button" class="inc-btn" onclick="incQuantity(event)" id="incBtn">+</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="details" class="form-card details">
+            <table id="orderTable">
+                <thead>
+                    <tr class="text-center">
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table body will be dynamically generated using JavaScript -->
+                </tbody>
+            </table>
+            <button type="submit" onclick="formSubmit()">Submit</button>
+        </div>
     </form>
-    <button type="button" id="prevBtn" onclick="prevStep()" style="display: none;">Previous</button>
-    <button type="'button" onclick="nextStep()">Next</button>
+    <button id="prevBtn" type="button" onclick="prevStep()" class="prev-btn">Previous</button>
+    <button id="nextBtn" type="button" onclick="nextStep()" class="next-btn">Next</button>
 </div>
 
 {% block javascript %}
-    <script src="{% static 'js/orderForm.js' %}"></script>
+<script src="{% static 'js/orderForm.js' %}"></script>
 {% endblock %}
 
 {% endblock %}
