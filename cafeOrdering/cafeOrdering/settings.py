@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'users',
     'products',
     'enquire',
+    'adminManage',
 ]
 
 MIDDLEWARE = [
