@@ -19,14 +19,14 @@
             {% for product in products %}
             <div class="row product-card align-items-center my-2">
                 <div class="col-sm-4 col-6 text-center">
-                    <label for="{{ product.name }}">{{ product.name }}</label>
+                    <label for="{{ product.id }}">{{ product.name }}</label>
                 </div>
                 <div class="col-sm-4 col-6 text-center">
                     £<span>{{ product.price }}</span>
                 </div>
                 <div class="col-6 col-sm-4 offset-6 offset-sm-0 text-center">
                     <button type="button" class="dec-btn" onclick="decQuantity(event)">-</button>
-                    <input type="number" class="text-center qty-input" name="{{ product.name }}" min="0" value="0">
+                    <input type="number" class="text-center qty-input" name="{{ product.id }}" min="0" value="0">
                     <button type="button" class="inc-btn" onclick="incQuantity(event)" id="incBtn">+</button>
                 </div>
             </div>
@@ -55,11 +55,11 @@
                 <!-- Second div -->
                 <div class="col-lg-6 col-sm-12 text-center form-card mb-5">
                     <h3 class="mb-2 mt-2" >Address</h3>
-                    <input type="text" placeholder="Address Line 1">
-                    <input type="text" placeholder="Address Line 2">
-                    <input type="text" placeholder="Address Line 3">
-                    <input type="text" placeholder="Post Code">
-                    <input type="text" placeholder="Delivery notes...">
+                    <input type="text" name="address_line1" placeholder="Address Line 1">
+                    <input type="text" name="address_line2" placeholder="Address Line 2">
+                    <input type="text" name="address_line3" placeholder="Address Line 3">
+                    <input type="text" name="postcode" placeholder="Post Code">
+                    <input type="text" name="delivery_instructions" placeholder="Delivery notes...">
                 </div>
             </div>
 
