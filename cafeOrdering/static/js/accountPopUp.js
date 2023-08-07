@@ -1,13 +1,13 @@
 function accountPopUp() {
     var toggleCard = document.getElementById("toggleCard");
-    if (toggleCard.style.display === "none") {
-        toggleCard.style.display = "block";
-        
-        document.addEventListener("click", clickOutsideToggleCard);
-    } else {
+    var isDisplayed = toggleCard.style.display === "block";
+
+    if (isDisplayed) {
         toggleCard.style.display = "none";
-        
         document.removeEventListener("click", clickOutsideToggleCard);
+    } else {
+        toggleCard.style.display = "block";
+        document.addEventListener("click", clickOutsideToggleCard);
     }
 }
 
