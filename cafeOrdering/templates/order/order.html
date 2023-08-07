@@ -17,14 +17,14 @@
         {% csrf_token %}
         <div id="order" class="form-card order">
             {% for product in products %}
-            <div class="row align-items-center my-2">
-                <div class="col-sm-4 text-center">
+            <div class="row product-card align-items-center my-2">
+                <div class="col-sm-4 col-6 text-center">
                     <label for="{{ product.name }}">{{ product.name }}</label>
                 </div>
-                <div class="col-sm-4 text-center">
-                    <span>£ {{ product.price }}</span>
+                <div class="col-sm-4 col-6 text-center">
+                    £<span>{{ product.price }}</span>
                 </div>
-                <div class="col-sm-4 text-center">
+                <div class="col-6 col-sm-4 offset-6 offset-sm-0 text-center">
                     <button type="button" class="dec-btn" onclick="decQuantity(event)">-</button>
                     <input type="number" class="text-center qty-input" name="{{ product.name }}" min="0" value="0">
                     <button type="button" class="inc-btn" onclick="incQuantity(event)" id="incBtn">+</button>
@@ -49,6 +49,7 @@
                             <!-- Table body will be dynamically generated using JavaScript -->
                         </tbody>
                     </table>
+                    <div>total:  £ <span id="total"></span></div>
                 </div>
         
                 <!-- Second div -->

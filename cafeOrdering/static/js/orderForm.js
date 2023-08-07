@@ -7,14 +7,20 @@ function nextStep() {
 
   const inputs = document.querySelectorAll("input.qty-input");
   const tableBody = document.querySelector("#orderTable tbody");
+  const showTotal = document.getElementById('total');
+  
   tableBody.innerHTML = '';
+
+  let total = 0
 
   inputs.forEach((input) => {
     const price = input.parentElement.previousElementSibling.querySelector('span').textContent;
+    console.log(price)
     const product = input.name;
     const quantity = parseInt(input.value, 10);
 
     if (quantity > 0) {
+      total += parseFloat(price) * quantity
       const row = document.createElement("tr");
 
       const productNameCell = document.createElement("td");
@@ -34,6 +40,7 @@ function nextStep() {
       tableBody.appendChild(row);
     }
   });
+  showTotal.innerHTML = total.toFixed(2)
 }
 
 function prevStep() {

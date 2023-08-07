@@ -1,5 +1,5 @@
 .order-container {
-    width: 90%;
+    width: 98%;
     height: calc(100vh - 50px);
     background-color: aqua;
     display: flex;
@@ -64,4 +64,13 @@ input[type=number] {
 
 table {
     width: 50%;
+}
+
+.product-card {
+    background-color: #cac4c4;
+    width: 98%;
+    margin: auto;
+    padding: 5px;
+    border-radius: 3px;
+    box-shadow: 1px 2px 2px black;
 }

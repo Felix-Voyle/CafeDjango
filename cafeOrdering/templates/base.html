@@ -90,12 +90,12 @@
                     </a>
                     {% endif %}
                     {% if user.is_authenticated and not user.is_superuser %}
-                    <a href="/order/">
+                    <a href="/order">
                         <li class="text-center">Order</li>
                     </a>
                     {% endif %}
                     {% if user.is_authenticated and user.is_superuser %}
-                    <a href="/order/">
+                    <a href="/order">
                         <li class="text-center">Manage</li>
                     </a>
                     {% endif %}
