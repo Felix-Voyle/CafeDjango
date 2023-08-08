@@ -74,3 +74,13 @@ table {
     border-radius: 3px;
     box-shadow: 1px 2px 2px black;
 }
+
+.address-inputs {
+    display: grid;
+    width: 90%;
+    margin: auto;
+}
+
+.address-inputs input {
+    margin-bottom: 5px;
+}
