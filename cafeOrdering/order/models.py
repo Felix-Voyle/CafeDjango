@@ -1,8 +1,8 @@
+import uuid
 from django.db import models
+from django.db.models import Sum
 from django.contrib.auth.models import User
-from users.models import UserProfile
 from products.models import Product
-
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -13,20 +13,25 @@ class Order(models.Model):
     postcode = models.CharField(max_length=10)
     delivery_instructions = models.TextField(blank=True, null=True)
     order_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    order_number = models.CharField(max_length=10, unique=True)  
+    order_number = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)  
+
+    def _generate_order_number(self):
+        return uuid.uuid4().hex.upper()
+    
+    def update_total(self):
+        """
+        Update total each time a line item is added.
+        """
+        self.order_total = self.order_items.all().aggregate(Sum('product__price'))['product__price__sum'] or 0
+        print(self.order_total)
 
     def save(self, *args, **kwargs):
-        
         if not self.order_number:
             self.order_number = self._generate_order_number()
 
-        self.order_total = sum(item.get_total() for item in self.order_items.all())
         super(Order, self).save(*args, **kwargs)
-
-    def _generate_order_number(self):
-        import time
-        timestamp = int(time.time() * 1000)
-        return f"{self.user.pk}-{timestamp}"
+        print(f"Updating total for Order {self.order_number}: New Total={self.order_total}")
+        self.update_total()  
 
     def __str__(self):
         return f"Order #{self.order_number} for {self.user.username}"
@@ -40,4 +45,5 @@ class OrderItem(models.Model):
         return self.product.price * self.quantity
 
     def __str__(self):
-        return f"{self.quantity} {self.product.name} in the order"
+        return f"{self.order} - {self.product.name} x {self.quantity}"
+
