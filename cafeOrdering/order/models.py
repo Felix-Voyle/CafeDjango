@@ -18,20 +18,24 @@ class Order(models.Model):
     def _generate_order_number(self):
         return uuid.uuid4().hex.upper()
     
-    def update_total(self):
-        """
-        Update total each time a line item is added.
-        """
-        self.order_total = self.order_items.all().aggregate(Sum('product__price'))['product__price__sum'] or 0
-        print(self.order_total)
-
     def save(self, *args, **kwargs):
         if not self.order_number:
             self.order_number = self._generate_order_number()
 
         super(Order, self).save(*args, **kwargs)
-        print(f"Updating total for Order {self.order_number}: New Total={self.order_total}")
-        self.update_total()  
+    
+    def update_total(self):
+        """
+        Update total each time a line item is added.
+        """
+        order_items = self.order_items.all()
+        total = sum(item.get_total() for item in order_items)
+        self.order_total = total
+        self.save()
+        
+    def finalize_order(self):
+        self.update_total()
+ 
 
     def __str__(self):
         return f"Order #{self.order_number} for {self.user.username}"
