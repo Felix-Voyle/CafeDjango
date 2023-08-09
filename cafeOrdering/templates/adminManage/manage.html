@@ -12,7 +12,10 @@
         <!-- First div -->
         <div class="col-lg-6 col-sm-12 bg-primary mb-5">
             <section>
-                <p>Orders management section</p>
+                {% for order in orders %}
+                    {{ order.order_number }}
+                    £ {{ order.order_total }}
+                {% endfor %}
             </section>
         </div>
 

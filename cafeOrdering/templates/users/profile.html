@@ -3,6 +3,7 @@
 {% block content %}
     <h2>Orders</h2>
     <div class="accordion" id="ordersAccordion">
+        {% if orders %}
         {% for order in orders %}
             <div class="card">
                 <div class="card-header" id="order{{ order.id }}">
@@ -34,6 +35,9 @@
                 </div>
             </div>
         {% endfor %}
+        {% else %}
+            <p>There are no orders to display..</p>
+        {% endif %}
     </div>
 {% endblock %}
 

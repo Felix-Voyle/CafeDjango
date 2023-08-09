@@ -25,6 +25,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('admin', admin.site.urls),
     path('enquire', include('enquire.urls')),
-    path('manage', include('adminManage.urls')),
+    path('manage/', include('adminManage.urls')),
     path('order', include('order.urls')),
 ]
