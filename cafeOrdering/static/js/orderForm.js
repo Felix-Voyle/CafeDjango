@@ -10,12 +10,10 @@ function nextStep() {
   const showTotal = document.getElementById('total');
   
   tableBody.innerHTML = '';
-
   let total = 0
 
   inputs.forEach((input) => {
     const price = input.parentElement.previousElementSibling.querySelector('span').textContent;
-    console.log(price)
     const product = input.name;
     const quantity = parseInt(input.value, 10);
 
@@ -72,3 +70,19 @@ function decQuantity(e) {
   value -= 1;
   input.value = value;
 }
+
+$(document).ready(function() {
+  $("#futureDate").datepicker({
+    dateFormat: "dd/mm/yy",
+    beforeShowDay: function(date) {
+      var now = new Date();
+      var day = date.getDay();
+      var timeDifference = date - now;
+
+      if (day === 0 || day === 6 || timeDifference < 0 || timeDifference <= 1000 * 60 * 60 * 48) {
+        return [false, ""];
+      }
+      return [true, ""];
+    }
+  });
+});
