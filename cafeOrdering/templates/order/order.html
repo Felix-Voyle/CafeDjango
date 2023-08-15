@@ -5,6 +5,7 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/order.css' %}">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 {% endblock %}
 
 {% block content %}
@@ -62,7 +63,8 @@
                     <input type="text" name="address_line3" placeholder="Address Line 3">
                     <input type="text" required name="postcode" placeholder="Post Code">
                     <input type="text" name="delivery_instructions" placeholder="Delivery notes...">
-                    <input type="text" placeholder="Select delivery date.." id="futureDate">
+                    <input type="text" required placeholder="Select delivery date.." id="futureDate">
+                    <input type="text" required placeholder="Select delivery time.." id="timepicker">
                 </div>
             </div>
 
@@ -77,6 +79,7 @@
 <script src="{% static 'js/orderForm.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 {% endblock %}
 
 {% endblock %}

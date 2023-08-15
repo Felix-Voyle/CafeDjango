@@ -85,4 +85,13 @@ $(document).ready(function() {
       return [true, ""];
     }
   });
+  $('#timepicker').timepicker({
+    timeFormat: 'h:mm p', 
+    interval: 15,
+    minTime: '7:30am',
+    maxTime: '5:30pm',         
+    dynamic: false,       
+    dropdown: true       
+});
+
 });
