@@ -83,4 +83,16 @@ table {
 
 .address-inputs input {
     margin-bottom: 5px;
+    width: 90%;
+    margin: auto;
+}
+
+.date-time {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+    gap: 10px;
+    margin-top: 10px;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
 }
