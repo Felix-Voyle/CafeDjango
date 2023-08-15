@@ -5,6 +5,14 @@ from django.contrib.auth.models import User
 from products.models import Product
 
 class Order(models.Model):
+
+    ORDER_STATUS = (
+        ('ordered', 'Ordered'),
+        ('sent', 'Sent'),
+        ('invoiced', 'Invoiced'),
+        ('complete', 'Complete'),
+    )
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product, through='OrderItem')
     address_line1 = models.CharField(max_length=100)
@@ -12,8 +20,13 @@ class Order(models.Model):
     address_line3 = models.CharField(max_length=100, blank=True, null=True)
     postcode = models.CharField(max_length=10)
     delivery_instructions = models.TextField(blank=True, null=True)
+    delivery_date = models.DateField()
+    delivery_time = models.TimeField()
     order_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    order_number = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)  
+    order_number = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    status = models.CharField(max_length=20, choices=ORDER_STATUS, default='ordered')
+
+
 
     def _generate_order_number(self):
         return uuid.uuid4().hex.upper()

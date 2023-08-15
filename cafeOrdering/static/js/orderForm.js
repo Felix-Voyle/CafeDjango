@@ -83,15 +83,20 @@ $(document).ready(function() {
         return [false, ""];
       }
       return [true, ""];
+    },
+    onSelect: function(dateText, inst) {
+      var selectedDate = $.datepicker.formatDate("yy-mm-dd", $(this).datepicker("getDate"));
+      $("#futureDateFormatted").val(selectedDate);
+      console.log($("#futureDateFormatted").val())
     }
   });
   $('#timepicker').timepicker({
-    timeFormat: 'h:mm p', 
+    timeFormat: 'HH:mm', 
     interval: 15,
     minTime: '7:30am',
     maxTime: '5:30pm',         
     dynamic: false,       
-    dropdown: true       
+    dropdown: true,       
 });
 
 });

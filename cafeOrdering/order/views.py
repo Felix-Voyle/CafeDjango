@@ -19,6 +19,9 @@ def order(request):
         address_line3 = request.POST.get('address_line3', '')
         postcode = request.POST['postcode']
         delivery_instructions = request.POST.get('delivery_instructions', '')
+        delivery_date = request.POST.get('delivery_date', '')
+        delivery_time = request.POST.get('delivery_time', '')
+
 
         order = Order.objects.create(
             user=user,
@@ -27,6 +30,8 @@ def order(request):
             address_line3=address_line3,
             postcode=postcode,
             delivery_instructions=delivery_instructions,
+            delivery_date=delivery_date,
+            delivery_time=delivery_time
         )
 
         order.save()
