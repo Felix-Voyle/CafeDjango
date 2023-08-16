@@ -41,12 +41,38 @@ function nextStep() {
   showTotal.innerHTML = total.toFixed(2)
 }
 
+
+
 function prevStep() {
   document.getElementById("details").style.display = "none";
   document.getElementById("order").style.display = "block";
   document.getElementById("prevBtn").style.display = "none";
   document.getElementById("nextBtn").style.display = "block";
   document.getElementById("formTitles").style.display = "flex";
+}
+
+function minSpend(minSpendValue) {
+  const inputs = document.querySelectorAll("input.qty-input");
+  const nextBtn = document.getElementById("nextBtn");
+  let total = 0;
+
+  inputs.forEach((input) => {
+    const price = parseFloat(input.parentElement.previousElementSibling.querySelector('span').textContent);
+    const quantity = parseInt(input.value, 10);
+    if (quantity > 0) {
+      total += price * quantity;
+    }
+  });
+
+  total = parseFloat(total.toFixed(2));
+
+  if (total >= minSpendValue) {
+    nextBtn.removeAttribute("disabled");
+  } else {
+    nextBtn.setAttribute("disabled", "disabled");
+  }
+
+  console.log(total, minSpendValue);
 }
 
 function incQuantity(e) {
@@ -58,6 +84,7 @@ function incQuantity(e) {
   }
   value += 1;
   input.value = value;
+  minSpend(20)
 }
 
 function decQuantity(e) {
@@ -69,6 +96,7 @@ function decQuantity(e) {
   }
   value -= 1;
   input.value = value;
+  minSpend(20)
 }
 
 $(document).ready(function() {
