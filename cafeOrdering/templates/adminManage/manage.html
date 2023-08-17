@@ -13,8 +13,14 @@
         <div class="col-lg-6 col-sm-12 bg-primary mb-5">
             <section>
                 {% for order in orders %}
+                <form method="post">
+                    {% csrf_token %}
                     {{ order.order_number }}
                     £ {{ order.order_total }}
+                    <div class="row">
+                        
+                    </div>
+                </form>
                 {% endfor %}
             </section>
         </div>
