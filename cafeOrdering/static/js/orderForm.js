@@ -14,7 +14,7 @@ function nextStep() {
 
   inputs.forEach((input) => {
     const price = input.parentElement.previousElementSibling.querySelector('span').textContent;
-    const product = input.name;
+    const product = input.parentElement.parentElement.querySelector('label').textContent;
     const quantity = parseInt(input.value, 10);
 
     if (quantity > 0) {
@@ -23,6 +23,7 @@ function nextStep() {
 
       const productNameCell = document.createElement("td");
       productNameCell.textContent = product;
+      productNameCell.classList.add("text-center");
       row.appendChild(productNameCell);
 
       const priceCell = document.createElement("td");

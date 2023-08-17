@@ -22,12 +22,15 @@
             <div class="row product-card align-items-center my-2">
                 <div class="col-sm-4 col-6 text-center">
                     <label for="{{ product.name }}">{{ product.name }}</label>
-                    <input type="hidden" name="data-product-id" value="{{ product.id }}">
+                    <input type="hidden" name="{{ product.name }}" value="{{ product.id }}">
                 </div>
                 <div class="col-sm-4 col-6 text-center">
                     £<span>{{ product.price }}</span>
+                    <div class="custom-hr">
+                        <hr>
+                    </div>
                 </div>
-                <div class="col-6 col-sm-4 offset-6 offset-sm-0 text-center">
+                <div class="col-6 p-0 col-sm-4 offset-6 offset-sm-0 text-center">
                     <button type="button" class="dec-btn" onclick="decQuantity(event)">-</button>
                     <input type="number" class="text-center qty-input" name="quantity" min="0" value="0">
                     <button type="button" class="inc-btn" onclick="incQuantity(event)" id="incBtn">+</button>
@@ -37,10 +40,11 @@
         </div>
 
         <div id="details" class="form-card details">
-            <div class="row">
+            <div class="row no-gutters">
                 <!-- First div -->
-                <div class="col-lg-6 col-sm-12 mb-5">
-                    <table id="orderTable">
+                <div class="col-lg-6 col-sm-12 text-center mb-5">
+                    <h3 class="mb-2 mt-2">Order Summary</h3>
+                    <table id="orderTable" class="order-table">
                         <thead>
                             <tr class="text-center">
                                 <th>Product</th>
@@ -52,7 +56,7 @@
                             <!-- Table body will be dynamically generated using JavaScript -->
                         </tbody>
                     </table>
-                    <div>total:  £ <span id="total"></span></div>
+                    <div class="mt-5">total:  £ <span id="total"></span></div>
                 </div>
         
                 <!-- Second div -->

@@ -14,7 +14,7 @@
 
 .form-titles {
     position: absolute;
-    width: 90%;
+    width: 95%;
     display: flex;
 }
 
@@ -32,19 +32,19 @@
 }
 
 .qty-input {
-    width: 50px;
+    width: 35px;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 input[type=number] {
     -moz-appearance: textfield;
     appearance: none;
-  }
+}
 
 .next-btn {
     display: block;
@@ -60,11 +60,38 @@ input[type=number] {
     height: 50px;
     align-self: end;
     position: absolute;
+    margin-bottom: 5px;
 }
 
 table {
     width: 50%;
 }
+
+.order-table {
+    border-collapse: collapse;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.order-table th,
+.order-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.order-table th {
+    background-color: #f2f2f2;
+}
+
+.order-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.order-table tbody tr:hover {
+    background-color: #ddd;
+}
+
 
 .product-card {
     background-color: #cac4c4;
@@ -89,10 +116,17 @@ table {
 
 .date-time {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+    grid-template-columns: 1fr 1fr;
+    /* Two equal-width columns */
     gap: 10px;
     margin-top: 10px;
     width: 95%;
     margin-left: auto;
     margin-right: auto;
+}
+
+@media screen and (min-width: 576px) {
+    .custom-hr hr {
+        display: none;
+    }
 }
