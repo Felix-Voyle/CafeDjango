@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+{% endblock %}
+
 {% block page_header %}
-    <div>
         <h3>Home Page</h3>
-    </div>
 {% endblock %}
 
 {% block content %}
-
+<div class="home-container">
+    <div class="picture-container">some picture here </div>
+    <div class="find-us">Find Us</div>
+</div>
 {% endblock %}
