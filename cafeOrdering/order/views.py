@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from .models import Order, OrderItem
@@ -48,6 +49,7 @@ def order(request):
             OrderItem.objects.create(order=order, product=product, quantity=quantity)
 
         order.update_total()
+        messages.success(request, 'Order placed successfully!')
         return redirect('/')
 
     else:

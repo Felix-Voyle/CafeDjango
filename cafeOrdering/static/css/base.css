@@ -26,6 +26,10 @@ html {
     z-index: 3;
 }
 
+.burger-btn svg {
+    margin: auto;
+}
+
 .burger-btn:focus {
     outline: none;
 }
@@ -100,41 +104,48 @@ html {
     font-size: 18px;
 }
 
-.userIcon {
+.user-container {
+    text-align: center;
+    width: 110px;
+    margin-right: 0;
+    position: relative;
+    top: 6px;
+}
+
+
+.user-icon {
     color: white;
     text-shadow: 0 0 2px #000;
     margin-right: 20px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
-.toggleCard {
-    display: none;
-    width: 140px;
-    height: fit-content;
-    background-color: #cecdd7;
-    border-radius: 5px;
-    border: 2px solid #686c6a;
-    position: absolute;
-    right: 19px;
-    top: 37px;
-    box-shadow: 2px 3px 3px #2e2e2e;
-    padding-top: 5px;
+.userIcon {
+    display: flex;
+    margin-right: 0;
 }
 
-.toggleCard ul a li {
-    list-style-type: none;
-    margin-bottom: 5px;
-    color: #2a2d2f;
+.user-options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-evenly;
 }
 
-.toggleCard ul li:hover {
+.user-options li {
+    display: flex;
+    align-items: end;
+}
+
+.user-options li:hover {
     text-decoration: underline;
 }
 
-.toggleCard ul {
-    padding: 0;
-}
-
-.toggleCard ul a {
+.user-options a {
     text-decoration: none;
+    font-size: 12px
 }
