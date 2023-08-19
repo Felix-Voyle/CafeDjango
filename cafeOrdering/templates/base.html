@@ -18,6 +18,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/messages.css' %}">
     {% block css %}
     {% endblock %}
 
@@ -51,33 +52,44 @@
                 </button>
             </div>
 
-            <div>
-                <i id="toggleButton" onClick="accountPopUp()" class="fas fa-user fa-lg userIcon"></i>
-            </div>
-
-            <div id="toggleCard" class="toggleCard">
-                <ul>
+            <div class="user-container">
+                <i id="userIcon" class="fas fa-user fa-lg user-icon"></i>
+                <ul class="user-options">
                     {% if user.is_authenticated %}
-                    <a href="accounts/logout/">
-                        <li class="text-center">Logout</li>
+                        <li class="text-center">
+                            <a href="accounts/logout/">Logout</a>
+                        </li>
                         {% if user.is_superuser %}
-                            </a>
-                            <a href="/order/">
-                                <li class="text-center">Manage</li>
-                            </a>
+                            <li class="text-center">
+                                <a href="/order/">Manage</a>
+                            </li>
                         {% else %}
-                            <a href="/accounts/profile">
-                                <li class="text-center">Account</li>
-                            </a>
+                            <li class="text-center">
+                                <a href="/accounts/profile">Account</a>
+                            </li>
                         {% endif %}
                     {% else %}
-                        <a href="accounts/login/">
-                            <li class="text-center">Sign In</li>
-                        </a>
+                        <li class="text-center">
+                            <a href="accounts/login/">Sign In</a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>
             
+                    
+
+                    {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                        <div class="message-card {{ message.tags }}">
+                            <div class="message-line"></div>
+                            <div class="message-content">{{ message }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+
 
             <div id="navLinks" class="dropdwn-mnu">
                 <ul>
@@ -132,7 +144,6 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
         </script>
         <script src="{% static 'js/burgerIcon.js' %}"></script>
-        <script src="{% static 'js/accountPopUp.js' %}"></script>
         {% block javascript %}
         <!-- JS scripts here -->
         {% endblock %}
