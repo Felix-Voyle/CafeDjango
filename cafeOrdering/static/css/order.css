@@ -55,12 +55,30 @@ input[type=number] {
     display: none;
 }
 
-.next-btn,
-.prev-btn {
+.next-btn {
     height: 50px;
     align-self: end;
     position: absolute;
     margin-bottom: 5px;
+}
+
+.prev-btn {
+    height: 50px;
+    position: absolute;
+    left: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.prev-btn i {
+    font-size: x-large;
+}
+
+.submit-btn {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 table {
