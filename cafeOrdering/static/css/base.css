@@ -107,9 +107,9 @@ html {
 .user-container {
     text-align: center;
     width: 110px;
-    margin-right: 0;
-    position: relative;
+    position: absolute;
     top: 6px;
+    right: -5px;
 }
 
 
