@@ -72,8 +72,6 @@ function minSpend(minSpendValue) {
   } else {
     nextBtn.setAttribute("disabled", "disabled");
   }
-
-  console.log(total, minSpendValue);
 }
 
 function incQuantity(e) {
@@ -116,7 +114,6 @@ $(document).ready(function() {
     onSelect: function(dateText, inst) {
       var selectedDate = $.datepicker.formatDate("yy-mm-dd", $(this).datepicker("getDate"));
       $("#futureDateFormatted").val(selectedDate);
-      console.log($("#futureDateFormatted").val())
     }
   });
   $('#timepicker').timepicker({
