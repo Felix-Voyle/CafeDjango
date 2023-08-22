@@ -22,7 +22,8 @@
             <div class="row product-card align-items-center my-2">
                 <div class="col-sm-4 col-6 text-center">
                     <label for="{{ product.name }}">{{ product.name }}</label>
-                    <input type="hidden" name="{{ product.name }}" value="{{ product.id }}">
+                    <input type="hidden" name="data-product-id" value="{{ product.id }}">
+                    <input type="hidden" name="{{ product.name }}">
                 </div>
                 <div class="col-sm-4 col-6 text-center">
                     £<span>{{ product.price }}</span>

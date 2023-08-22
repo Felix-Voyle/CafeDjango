@@ -54,28 +54,28 @@
 
             <div class="user-container">
                 <i id="userIcon" class="fas fa-user fa-lg user-icon"></i>
-                <ul class="user-options">
-                    {% if user.is_authenticated %}
-                        <li class="text-center">
-                            <a href="accounts/logout">Logout</a>
-                        </li>
-                        {% if user.is_superuser %}
-                            <li class="text-center">
-                                <a href="/order/">Manage</a>
-                            </li>
-                        {% else %}
-                            <li class="text-center">
-                                <a href="/accounts/profile">Account</a>
-                            </li>
-                        {% endif %}
-                    {% else %}
-                        <li class="text-center">
-                            <a href="accounts/login/">Sign In</a>
-                        </li>
-                    {% endif %}
-                </ul>
             </div>
             
+            <ul class="user-options">
+                {% if user.is_authenticated %}
+                    <li class="text-center">
+                        <a href="accounts/logout">Logout</a>
+                    </li>
+                    {% if user.is_superuser %}
+                        <li class="text-center">
+                            <a href="/order/">Manage</a>
+                        </li>
+                    {% else %}
+                        <li class="text-center">
+                            <a href="/accounts/profile">Account</a>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li class="text-center">
+                        <a href="accounts/login/">Sign In</a>
+                    </li>
+                {% endif %}
+            </ul>
                     
 
                     {% if messages %}
