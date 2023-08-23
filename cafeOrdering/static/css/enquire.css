@@ -4,6 +4,8 @@
     align-items: center;
     flex-direction: column;
     justify-content: center;
+    background-image: url('/media/photos/Print.jpg');
+    background-size: cover;
 }
 
 .enquire-form p label {
@@ -19,4 +21,37 @@
     border: 2px solid #2a2d2f;
     border-radius: 8px;
     box-shadow: 3px 3px 1px #2a2d2f;
+}
+
+.info-card {
+    background-color: #2a2d2f;
+    border: 2px solid #d0d0d0;
+    border-radius: 8px;
+    box-shadow: 3px 3px 1px #adadad;
+    color: white;
+}
+
+.form-card, .info-card {
+    width: 280px;
+    margin: auto;
+}
+
+.msg-input {
+    max-width: 95%;
+}
+
+@media screen and (min-width: 355px) {
+    .form-card, .info-card {
+        min-width: 350px;
+        width: 90%;
+    }
+    .main-container-centered {
+        padding: 10px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .form-card, .info-card {
+        min-height: 415px;
+    }
 }
