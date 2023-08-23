@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import EnquiryForm
 
@@ -12,6 +13,7 @@ def enquire(request):
             
             form.save()
 
+            messages.success(request, 'Enquiry sent successfully!')
             return redirect('/')
     else:
         form = EnquiryForm()
