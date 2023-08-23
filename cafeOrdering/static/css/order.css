@@ -1,7 +1,13 @@
+.main-container-centered {
+    min-height: calc(100vh - 50px);
+    background-image: url('/media/photos/Print.jpg');
+    background-size: cover;
+}
+
 .order-container {
-    width: 98%;
+    width: 100%;
     height: calc(100vh - 50px);
-    background-color: aqua;
+    background-color: rgba(0, 0, 0, 0.755);
     display: flex;
     justify-content: center;
     margin: auto;
@@ -16,6 +22,11 @@
     position: absolute;
     width: 95%;
     display: flex;
+    color: whitesmoke;
+}
+
+.white-title {
+    color: #f2f2f2;
 }
 
 .form-titles span {
@@ -69,6 +80,7 @@ input[type=number] {
     background-color: transparent;
     border: none;
     cursor: pointer;
+    color: #f2f2f2;
 }
 
 .prev-btn i {
@@ -105,6 +117,9 @@ table {
 .order-table tbody tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+.order-table tbody tr:nth-child(odd) {
+    background-color: #bcbcbc;
+}
 
 .order-table tbody tr:hover {
     background-color: #ddd;
@@ -112,7 +127,7 @@ table {
 
 
 .product-card {
-    background-color: #cac4c4;
+    background-color: #deddda;
     width: 98%;
     margin: auto;
     padding: 5px;
@@ -129,7 +144,8 @@ table {
 .address-inputs input {
     margin-bottom: 5px;
     width: 90%;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .date-time {
