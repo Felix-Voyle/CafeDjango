@@ -93,6 +93,10 @@ html {
     z-index: 99;
 }
 
+.dropdwn-mnu ul {
+    padding-left: 0;
+}
+
 .dropdwn-mnu ul li {
     list-style-type: none;
 }

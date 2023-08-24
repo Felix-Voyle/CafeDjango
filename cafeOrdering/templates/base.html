@@ -63,7 +63,7 @@
                     </li>
                     {% if user.is_superuser %}
                         <li class="text-center">
-                            <a href="/order/">Manage</a>
+                            <a href="/manage/">Manage</a>
                         </li>
                     {% else %}
                         <li class="text-center">
@@ -107,7 +107,7 @@
                     </a>
                     {% endif %}
                     {% if user.is_authenticated and user.is_superuser %}
-                    <a href="/order">
+                    <a href="/manage">
                         <li class="text-center">Manage</li>
                     </a>
                     {% endif %}
