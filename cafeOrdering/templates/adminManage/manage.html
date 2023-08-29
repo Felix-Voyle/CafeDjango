@@ -16,12 +16,23 @@
                 <form method="post">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-12">
                             {{ order.order_number }}
                         </div>
                     </div>
                     <div class="row">
-                        options for updating
+                        <div class="col-4">
+                            <label for="ordered">Ordered</label>
+                            <input name="ordered" type="checkbox" {% if order.status == 'ordered' %}checked disabled{% endif %}>
+                        </div>
+                        <div class="col-4">
+                            <label for="sent">Sent</label>
+                            <input name="sent" type="checkbox" {% if order.status == 'sent' %}checked{% endif %}>
+                        </div>
+                        <div class="col-4">
+                            <label for="invoiced">Invoiced</label>
+                            <input name="invoiced" type="checkbox" {% if order.status == 'invoiced' %}checked{% endif %}>
+                        </div>
                     </div>
                 </form>
                 {% endfor %}
