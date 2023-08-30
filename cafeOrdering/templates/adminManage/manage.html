@@ -13,7 +13,7 @@
         <div class="col-lg-6 col-sm-12 mb-5">
             <h3 class="text-center">Orders</h3>
             <section>
-                {% for order in orders %}
+                {% for order in orders reversed%}
                 <form class="order-card mb-2" method="post">
                     {% csrf_token %}
                     <div class="row">
@@ -47,11 +47,13 @@
                                 <p>Delivery Instructions - {{ order.delivery_instructions }}</p>
                                 {% endif %}
                                 {% for item in order.order_items.all %}
-                                <li class="d-flex order-item">
-                                    <span class="col-5">{{ item.product.name }} x {{ item.quantity }}</span>
-                                    <span class="col-2">-</span>
-                                    <span class="col-5">£ {{ item.get_total }}</span>
+                                {% if item.quantity > 0 %}
+                                <li class="d-flex order-item text-center">
+                                    <span class="col-6 no-pad">{{ item.product.name }}</span>
+                                    <span class="col-2 no-pad">x {{ item.quantity }}</span>
+                                    <span class="col-4 no-pad">£ {{ item.get_total }}</span>
                                 </li>
+                                {% endif %}
                             {% endfor %}
                             <hr>
                             <li class="d-flex">
