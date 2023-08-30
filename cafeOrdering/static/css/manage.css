@@ -4,4 +4,9 @@
 
 .order-item {
     border-bottom: 1px solid rgba(27, 27, 27, 0.928);
+    font-size: 14px;
+}
+
+.no-pad {
+    padding: 0;
 }
