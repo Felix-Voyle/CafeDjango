@@ -2,25 +2,26 @@
 {% load static %}
 
 {% block css %}
-<!-- <link rel="stylesheet" href="{% static 'css/enquire.css' %}"> -->
+<link rel="stylesheet" href="{% static 'css/manage.css' %}">
 {% endblock %}
 
 {% block content %}
 
 <div class="container">
-    <div class="row">
+    <div class="row no-gutters">
         <!-- First div -->
-        <div class="col-lg-6 col-sm-12 bg-primary mb-5">
+        <div class="col-lg-6 col-sm-12 mb-5">
+            <h3 class="text-center">Orders</h3>
             <section>
                 {% for order in orders %}
-                <form method="post">
+                <form class="order-card mb-2" method="post">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-12">
-                            {{ order.order_number }}
+                        <div class="col-12 text-center">
+                            {{ order.delivery_date }} @ {{ order.delivery_time }}
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row text-center">
                         <div class="col-4">
                             <label for="ordered">Ordered</label>
                             <input name="ordered" type="checkbox" {% if order.status == 'ordered' %}checked disabled{% endif %}>
@@ -34,6 +35,33 @@
                             <input name="invoiced" type="checkbox" {% if order.status == 'invoiced' %}checked{% endif %}>
                         </div>
                     </div>
+            
+                    <!-- Collapsible Card -->
+                    <div class="card mt-3">
+                        <div class="card-header text-center" data-toggle="collapse" data-target="#collapseCard2{{ forloop.counter }}">
+                            <h5 class="mb-0">{{ order.user }} - <span>{{ order.address_line1 }},</span> <span>{{ order.postcode }}</span></h5>
+                        </div>
+                        <div id="collapseCard2{{ forloop.counter }}" class="collapse">
+                            <div class="card-body">
+                                {% if order.delivery_instructions %}
+                                <p>Delivery Instructions - {{ order.delivery_instructions }}</p>
+                                {% endif %}
+                                {% for item in order.order_items.all %}
+                                <li class="d-flex order-item">
+                                    <span class="col-5">{{ item.product.name }} x {{ item.quantity }}</span>
+                                    <span class="col-2">-</span>
+                                    <span class="col-5">£ {{ item.get_total }}</span>
+                                </li>
+                            {% endfor %}
+                            <hr>
+                            <li class="d-flex">
+                                <span class="col-5"><strong>Total</strong></span>
+                                <span class="col-2">-</span>
+                                <span class="col-5">£ {{ order.order_total }}</span>
+                            </li>
+                            </div>
+                        </div>
+                    </div>
                 </form>
                 {% endfor %}
             </section>
@@ -41,9 +69,21 @@
 
         <!-- Second div -->
         <div class="col-lg-6 col-sm-12 text-center form-card mb-5">
+            <h3 class="text-center">Enquiries</h3>
             <section>
                 {% for enquiry in enquiries %}
-                <p>{{ enquiry.name }}, {{ enquiry.message }}</p>
+                <div class="mt-4">
+                    <div class="card">
+                        <div class="card-header" data-toggle="collapse" href="#collapseCard{{ forloop.counter }}">
+                            <h5 class="mb-0">{{ enquiry.name }} - {{ enquiry.email }}</h5>
+                        </div>
+                        <div id="collapseCard{{ forloop.counter }}" class="collapse">
+                            <div class="card-body">
+                                <p>{{ enquiry.message }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {% endfor %}
             </section>
         </div>

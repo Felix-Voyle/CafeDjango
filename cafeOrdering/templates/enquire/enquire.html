@@ -7,20 +7,23 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row no-gutters">
-        <!-- First div -->
-        <div class="col-lg-5 col-sm-12 info-card text-center mb-5">
-            <section>
+<div class="row no-gutters">
+    <!-- First div -->
+    <div class="col-lg-6 col-sm-12">
+        <section>
+            <div class="info-card text-center">
                 <h3>What we do</h3>
                 <p>We cater from office lunches to evening events</p>
                 <p>Our ordering system is currently under construction</p>
                 <p>Get in touch to see what we can do for you</p>
-            </section>
-        </div>
+            </div>
+        </section>
+    </div>
 
-        <!-- Second div -->
-        <div class="offset-lg-2 col-lg-5 col-sm-12 text-center form-card mb-5">
-            <h3 class="mb-2 mt-2" >Enquiry Form</h3>
+    <!-- Second div -->
+    <div class="col-lg-6 col-sm-12">
+        <div class="form-card text-center">
+            <h3 class="mb-2 mt-2">Enquiry Form</h3>
             <form class="enquire-form" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -28,4 +31,5 @@
             </form>
         </div>
     </div>
+</div>
 {% endblock %}
