@@ -1,0 +1,7 @@
+.order-card {
+    border: 1px solid black;
+}
+
+.order-item {
+    border-bottom: 1px solid rgba(27, 27, 27, 0.928);
+}
