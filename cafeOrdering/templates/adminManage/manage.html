@@ -27,18 +27,16 @@
                         </div>
                         <div class="row text-center">
                             <div class="col-4">
-                                <label for="ordered">Ordered</label>
-                                <input name="ordered" type="checkbox" checked
-                                    disabled>
+                                <input id="ordered-{{ order.id }}" name="ordered" type="checkbox" checked disabled>
+                                <label for="ordered-{{ order.id }}">Ordered</label>
                             </div>
                             <div class="col-4">
-                                <label for="sent">Sent</label>
-                                <input name="sent" type="checkbox" class="status-checkbox" data-order-id="{{ order.id }}" {% if order.status == 'sent' or order.status == 'invoiced' %}checked disabled {% endif %}>
+                                <input id="sent-{{ order.id }}" name="sent" type="checkbox" class="status-checkbox" data-order-id="{{ order.id }}" {% if order.status == 'sent' or order.status == 'invoiced' %}checked disabled {% endif %}>
+                                <label for="sent-{{ order.id }}">Sent</label>
                             </div>
                             <div class="col-4">
-                                <label for="invoiced">Invoiced</label>
-                                <input name="invoiced" type="checkbox" class="status-checkbox" data-order-id="{{ order.id }}"
-                                    {% if order.status == 'invoiced' %}checked disabled {% endif %}>
+                                <input id="invoiced-{{ order.id }}" name="invoiced" type="checkbox" class="status-checkbox" data-order-id="{{ order.id }}" {% if order.status == 'invoiced' %}checked disabled {% endif %}>
+                                <label for="invoiced-{{ order.id }}">Invoiced</label>
                             </div>
                         </div>
                     </form>
