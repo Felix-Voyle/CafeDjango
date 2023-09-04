@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
@@ -33,6 +34,7 @@ def update_order_status(request):
             order.status = status
             order.save()
             
+            messages.success(request, 'Order status updated!')
             return JsonResponse({'message': 'Order status updated successfully'})
         except Order.DoesNotExist:
             return JsonResponse({'error': 'Order not found'}, status=404)

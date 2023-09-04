@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             checkbox.checked = true;
             checkbox.disabled = true;
+            location.reload();
         })
         .catch(error => {
             console.error('Error updating order status:', error);
