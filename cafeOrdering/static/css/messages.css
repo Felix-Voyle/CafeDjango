@@ -1,6 +1,9 @@
 .messages {
     margin-top: 20px;
     z-index: 99;
+    position: absolute;
+    right: 0px;
+    top: -19px;
 }
 
 .message-card {
