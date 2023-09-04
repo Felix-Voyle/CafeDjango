@@ -1,5 +1,7 @@
 .order-card {
     border: 1px solid black;
+    width: 95%;
+    margin: auto;
 }
 
 .order-item {
@@ -9,4 +11,10 @@
 
 .no-pad {
     padding: 0;
+}
+
+
+.enquiry-card {
+    width: 95%;
+    margin: auto;
 }

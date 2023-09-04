@@ -43,10 +43,11 @@ def order(request):
 
 
         for product_id, quantity in zip(product_ids, quantities):
-            product = Product.objects.get(pk=product_id)
-            quantity = int(quantity)
+            if int(quantity) > 0:
+                product = Product.objects.get(pk=product_id)
+                quantity = int(quantity)
 
-            OrderItem.objects.create(order=order, product=product, quantity=quantity)
+                OrderItem.objects.create(order=order, product=product, quantity=quantity)
 
         order.update_total()
         messages.success(request, 'Order placed successfully!')
