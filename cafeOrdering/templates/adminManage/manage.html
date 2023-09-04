@@ -16,16 +16,16 @@
             <h3 class="text-center">Orders</h3>
             <section>
                 {% for order in orders reversed%}
-                <div class="order-card mb-2">
+                <div class="order-card mb-2 {% if order.status == 'ordered' %} ordered {% endif %} {% if order.status == 'sent' %} sent {% endif %} {% if order.status == 'invoiced' %} invoiced {% endif %}">
                     <form class="mb-1" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                         <div class="row">
                             <div class="col-12 text-center">
-                                {{ order.user }} - {{ order.delivery_date }} @ {{ order.delivery_time }}
+                                {{ order.delivery_date }} @ {{ order.delivery_time }}
                             </div>
                         </div>
-                        <div class="row text-center">
+                        <div class="row checkboxes text-center">
                             <div class="col-4">
                                 <input id="ordered-{{ order.id }}" name="ordered" type="checkbox" checked disabled>
                                 <label for="ordered-{{ order.id }}">Ordered</label>
@@ -45,14 +45,12 @@
                     <div class="card mt-3">
                         <div class="card-header text-center" data-toggle="collapse"
                             data-target="#collapseCard2{{ forloop.counter }}">
-                            <h5 class="mb-0"><span>{{ order.address_line1 }},</span> <span>{{ order.postcode }}</span>
-                            </h5>
+                            <h5 class="mb-0">Order - {{ order.order_number }}</h5>
                         </div>
                         <div id="collapseCard2{{ forloop.counter }}" class="collapse">
-                            <div class="card-body">
-                                {% if order.delivery_instructions %}
-                                <p>Delivery Instructions - {{ order.delivery_instructions }}</p>
-                                {% endif %}
+                            <div class="card-body order-details">
+                                <h6 class="text-center">{{ order.user }}</h6>
+                                <ul>
                                 {% for item in order.order_items.all %}
                                 {% if item.quantity > 0 %}
                                 <li class="d-flex order-item text-center">
@@ -68,6 +66,22 @@
                                     <span class="col-2">-</span>
                                     <span class="col-5">£ {{ order.order_total }}</span>
                                 </li>
+                                </ul>
+                                <div class="col-12 text-left mb-2">
+                                    {{ order.address_line1 }}
+                                    {% if order.address_line2 %}
+                                        <br>{{ order.address_line2 }}
+                                    {% endif %}
+                                    {% if order.address_line3 %}
+                                        <br>{{ order.address_line3 }}
+                                    {% endif %}
+                                        <br>{{ order.postcode }}
+                                </div>
+                                {% if order.delivery_instructions %}
+                                <div class="col-12 text-left">
+                                    <p>Delivery Instructions - {{ order.delivery_instructions }}</p>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
