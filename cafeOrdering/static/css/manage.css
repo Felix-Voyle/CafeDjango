@@ -1,5 +1,19 @@
+.ordered {
+    background-color: #FFA7A0;
+}
+
+.sent {
+    background-color: #F4D885;
+}
+
+.invoiced {
+    background-color: #C1E1C1;
+}
+
+
 .order-card {
     border: 1px solid black;
+    box-shadow: 1px 2px 2px black;
     width: 95%;
     margin: auto;
 }
@@ -13,8 +27,29 @@
     padding: 0;
 }
 
+.order-details ul {
+    padding-left: 0;
+}
+
 
 .enquiry-card {
+    border: 1px solid black;
+    box-shadow: 1px 2px 2px black;
     width: 95%;
     margin: auto;
+}
+
+.checkboxes div {
+    display: grid;
+}
+
+label {
+    margin-bottom: 0;
+}
+
+@media screen and (min-width: 768px) {
+    .checkboxes div {
+        display: flex;
+        justify-content: center;
+    }
 }
