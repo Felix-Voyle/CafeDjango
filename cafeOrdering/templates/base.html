@@ -59,20 +59,20 @@
             <ul class="user-options">
                 {% if user.is_authenticated %}
                     <li class="text-center">
-                        <a href="accounts/logout">Logout</a>
+                        <a href="{% url 'account_logout' %}">Logout</a>
                     </li>
                     {% if user.is_superuser %}
                         <li class="text-center">
-                            <a href="/manage/">Manage</a>
+                            <a href="{% url 'manage' %}">Manage</a>
                         </li>
                     {% else %}
                         <li class="text-center">
-                            <a href="/accounts/profile">Account</a>
+                            <a href="{% url 'view_profile' %}">Account</a>
                         </li>
                     {% endif %}
                 {% else %}
                     <li class="text-center">
-                        <a href="accounts/login/">Sign In</a>
+                        <a href="{% url 'account_login' %}">Sign In</a>
                     </li>
                 {% endif %}
             </ul>
@@ -97,17 +97,17 @@
                         <li class="text-center">Home</li>
                     </a>
                     {% if not user.is_authenticated %}
-                    <a href="/enquire">
+                    <a href="{% url 'enquire' %}">
                         <li class="text-center">Enquire</li>
                     </a>
                     {% endif %}
                     {% if user.is_authenticated and not user.is_superuser %}
-                    <a href="/order">
+                    <a href="{% url 'order' %}">
                         <li class="text-center">Order</li>
                     </a>
                     {% endif %}
                     {% if user.is_authenticated and user.is_superuser %}
-                    <a href="/manage">
+                    <a href="{% url 'manage' %}">
                         <li class="text-center">Manage</li>
                     </a>
                     {% endif %}

@@ -9,7 +9,7 @@
 
 <html data-csrf="{{ csrf_token }}">
 
-<div class="container">
+
     <div class="row no-gutters">
         <!-- First div -->
         <div class="col-lg-6 col-sm-12 mb-5">
@@ -91,12 +91,11 @@
         </div>
 
         <!-- Second div -->
-        <div class="col-lg-6 col-sm-12 text-center form-card mb-5">
+        <div class="col-lg-6 col-sm-12 mb-5">
             <h3 class="text-center">Enquiries</h3>
             <section>
                 {% for enquiry in enquiries %}
-                <div class="mt-4">
-                    <div class="enquiry-card">
+                    <div class="enquiry-card text-center">
                         <div class="card-header" data-toggle="collapse" href="#collapseCard{{ forloop.counter }}">
                             <h5 class="mb-0">{{ enquiry.name }} - {{ enquiry.email }}</h5>
                         </div>
@@ -106,12 +105,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
                 {% endfor %}
             </section>
         </div>
     </div>
-</div>
 
 </html>
 {% endblock %}
