@@ -7,6 +7,8 @@
 
 {% block content %}
 
+<html data-csrf="{{ csrf_token }}">
+
 <div class="container">
     <div class="row no-gutters">
         <!-- First div -->
@@ -14,32 +16,39 @@
             <h3 class="text-center">Orders</h3>
             <section>
                 {% for order in orders reversed%}
-                <form class="order-card mb-2" method="post">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-12 text-center">
-                            {{ order.delivery_date }} @ {{ order.delivery_time }}
+                <div class="order-card mb-2">
+                    <form class="mb-1" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                {{ order.user }} - {{ order.delivery_date }} @ {{ order.delivery_time }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="row text-center">
-                        <div class="col-4">
-                            <label for="ordered">Ordered</label>
-                            <input name="ordered" type="checkbox" {% if order.status == 'ordered' %}checked disabled{% endif %}>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <label for="ordered">Ordered</label>
+                                <input name="ordered" type="checkbox" checked
+                                    disabled>
+                            </div>
+                            <div class="col-4">
+                                <label for="sent">Sent</label>
+                                <input name="sent" type="checkbox" class="status-checkbox" data-order-id="{{ order.id }}" {% if order.status == 'sent' or order.status == 'invoiced' %}checked disabled {% endif %}>
+                            </div>
+                            <div class="col-4">
+                                <label for="invoiced">Invoiced</label>
+                                <input name="invoiced" type="checkbox" class="status-checkbox" data-order-id="{{ order.id }}"
+                                    {% if order.status == 'invoiced' %}checked disabled {% endif %}>
+                            </div>
                         </div>
-                        <div class="col-4">
-                            <label for="sent">Sent</label>
-                            <input name="sent" type="checkbox" {% if order.status == 'sent' %}checked{% endif %}>
-                        </div>
-                        <div class="col-4">
-                            <label for="invoiced">Invoiced</label>
-                            <input name="invoiced" type="checkbox" {% if order.status == 'invoiced' %}checked{% endif %}>
-                        </div>
-                    </div>
-            
+                    </form>
+
                     <!-- Collapsible Card -->
                     <div class="card mt-3">
-                        <div class="card-header text-center" data-toggle="collapse" data-target="#collapseCard2{{ forloop.counter }}">
-                            <h5 class="mb-0">{{ order.user }} - <span>{{ order.address_line1 }},</span> <span>{{ order.postcode }}</span></h5>
+                        <div class="card-header text-center" data-toggle="collapse"
+                            data-target="#collapseCard2{{ forloop.counter }}">
+                            <h5 class="mb-0"><span>{{ order.address_line1 }},</span> <span>{{ order.postcode }}</span>
+                            </h5>
                         </div>
                         <div id="collapseCard2{{ forloop.counter }}" class="collapse">
                             <div class="card-body">
@@ -54,17 +63,17 @@
                                     <span class="col-4 no-pad">£ {{ item.get_total }}</span>
                                 </li>
                                 {% endif %}
-                            {% endfor %}
-                            <hr>
-                            <li class="d-flex">
-                                <span class="col-5"><strong>Total</strong></span>
-                                <span class="col-2">-</span>
-                                <span class="col-5">£ {{ order.order_total }}</span>
-                            </li>
+                                {% endfor %}
+                                <hr>
+                                <li class="d-flex">
+                                    <span class="col-5"><strong>Total</strong></span>
+                                    <span class="col-2">-</span>
+                                    <span class="col-5">£ {{ order.order_total }}</span>
+                                </li>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
                 {% endfor %}
             </section>
         </div>
@@ -75,7 +84,7 @@
             <section>
                 {% for enquiry in enquiries %}
                 <div class="mt-4">
-                    <div class="card">
+                    <div class="enquiry-card">
                         <div class="card-header" data-toggle="collapse" href="#collapseCard{{ forloop.counter }}">
                             <h5 class="mb-0">{{ enquiry.name }} - {{ enquiry.email }}</h5>
                         </div>
@@ -91,4 +100,10 @@
         </div>
     </div>
 </div>
+
+</html>
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/manage.js' %}"></script>
 {% endblock %}
