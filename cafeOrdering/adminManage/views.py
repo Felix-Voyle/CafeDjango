@@ -37,8 +37,10 @@ def update_order_status(request):
             messages.success(request, 'Order status updated!')
             return JsonResponse({'message': 'Order status updated successfully'})
         except Order.DoesNotExist:
+            messages.error(request, 'Order not found')
             return JsonResponse({'error': 'Order not found'}, status=404)
         except Exception as e:
+            messages.error(request, str(e))
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
