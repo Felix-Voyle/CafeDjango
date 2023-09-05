@@ -95,8 +95,9 @@
             <h3 class="text-center">Enquiries</h3>
             <section>
                 {% for enquiry in enquiries %}
-                    <div class="enquiry-card text-center">
-                        <div class="card-header" data-toggle="collapse" href="#collapseCard{{ forloop.counter }}">
+                <div class="enquiry-card text-center">
+                    <div class="card">
+                        <div class="card-header" data-toggle="collapse" data-target="#collapseCard{{ forloop.counter }}">
                             <h5 class="mb-0">{{ enquiry.name }} - {{ enquiry.email }}</h5>
                         </div>
                         <div id="collapseCard{{ forloop.counter }}" class="collapse">
@@ -105,6 +106,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="arrow-box text-center">
+                        <span class="toggle-arrow" data-toggle="collapse" data-target="#collapseCard{{ forloop.counter }}">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                    </div>
+                </div>
                 {% endfor %}
             </section>
         </div>
