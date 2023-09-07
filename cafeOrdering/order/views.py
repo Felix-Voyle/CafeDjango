@@ -2,14 +2,16 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from .models import Order, OrderItem
-from products.models import Product
+from products.models import Product, Category
 
 
 def order(request):
     products = Product.objects.all()
+    categories = Category.objects.all()
 
     ctx = {
     'products': products,
+    'categories': categories,
     }
 
     if request.method == 'POST':
@@ -56,5 +58,27 @@ def order(request):
     else:
         products = Product.objects.all()
 
+
+    return render(request, 'order/order.html', ctx)
+
+
+def product_search(request):
+    keywords = request.GET.get('keywords', '')
+    category_name = request.GET.get('category', '')
+
+    products = Product.objects.all()
+
+    if keywords:
+        products = products.filter(name__icontains=keywords) | products.filter(description__icontains=keywords)
+
+    if category_name:
+        products = products.filter(category__name=category_name)
+
+    categories = Category.objects.all()
+
+    ctx = {
+        'products': products,
+        'categories': categories,
+    }
 
     return render(request, 'order/order.html', ctx)

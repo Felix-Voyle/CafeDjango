@@ -9,6 +9,27 @@
 {% endblock %}
 
 {% block content %}
+<div class="row search-and-categories">
+    <div class="offset-2 col-4 search-bar">
+        <form method="get" action="{% url 'product_search' %}">
+            <input type="text" name="keywords" id="productSearch" placeholder="Search for products..." value="{{ request.GET.keywords }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="col-4 category-dropdown">
+        <form method="get" action="{% url 'product_search' %}">
+            <select name="category" id="categorySelect">
+                <option value="">All Categories</option>
+                {% for category in categories %}
+                    <option value="{{ category.name }}" {% if request.GET.category == category.name %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+</div>
 <div class="order-container">
     <div id="formTitles" class="row form-titles">
         <span class="d-none d-sm-block text-center d col-sm-4"><strong>Product</strong></span>
