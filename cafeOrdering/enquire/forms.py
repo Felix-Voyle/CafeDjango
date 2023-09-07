@@ -2,12 +2,13 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from .models import Enquiry
 
-def input_attrs(type, class_name, placeholder):
+def input_attrs(type, class_name, placeholder, autocomplete):
     return({
         'type': type,
         'class': class_name,
         'placeholder': placeholder,
         'required': 'required',
+        'autocomplete': autocomplete,
     })
 
 class EnquiryForm(forms.ModelForm):
@@ -24,8 +25,8 @@ class EnquiryForm(forms.ModelForm):
         email = self.fields['email'].widget
         message = self.fields['message'].widget
         
-        name.attrs.update(input_attrs('text', 'name-input', 'Name'))
-        email.attrs.update(input_attrs('email', 'email-input', 'Email'))
-        message.attrs.update(input_attrs('text', 'msg-input', 'Message'))
+        name.attrs.update(input_attrs('text', 'name-input', 'Name', 'off'))
+        email.attrs.update(input_attrs('email', 'email-input', 'Email', 'on'))
+        message.attrs.update(input_attrs('text', 'msg-input', 'Message', 'off'))
         
 
