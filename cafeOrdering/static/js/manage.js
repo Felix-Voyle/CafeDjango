@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const orderId = this.getAttribute('data-order-id');
             const status = this.getAttribute('name');
 
-            updateOrderStatus(orderId, status, this); // Pass the checkbox element as an argument
+            updateOrderStatus(orderId, status, this);
         });
     });
 
