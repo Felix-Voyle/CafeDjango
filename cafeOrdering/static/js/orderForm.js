@@ -1,3 +1,4 @@
+// Display the next step in the order process
 function nextStep() {
   document.getElementById("order").style.display = "none";
   document.getElementById("details").style.display = "block";
@@ -7,18 +8,27 @@ function nextStep() {
 
   const inputs = document.querySelectorAll("input.qty-input");
   const tableBody = document.querySelector("#orderTable tbody");
-  const showTotal = document.getElementById('total');
-  
-  tableBody.innerHTML = '';
-  let total = 0
+  const showTotal = document.getElementById("total");
 
+  tableBody.innerHTML = "";
+  let total = 0;
+
+  showOrderSummary(inputs, total, tableBody);
+}
+
+// Calculate and display the order summary/checkout
+function showOrderSummary(inputs, total, tableBody) {
   inputs.forEach((input) => {
-    const price = input.parentElement.previousElementSibling.querySelector('span').textContent;
-    const product = input.parentElement.parentElement.querySelector('label').textContent;
+    const price =
+      input.parentElement.previousElementSibling.querySelector(
+        "span"
+      ).textContent;
+    const product =
+      input.parentElement.parentElement.querySelector("label").textContent;
     const quantity = parseInt(input.value, 10);
 
     if (quantity > 0) {
-      total += parseFloat(price) * quantity
+      total += parseFloat(price) * quantity;
       const row = document.createElement("tr");
 
       const productNameCell = document.createElement("td");
@@ -27,7 +37,7 @@ function nextStep() {
       row.appendChild(productNameCell);
 
       const priceCell = document.createElement("td");
-      priceCell.textContent = price
+      priceCell.textContent = price;
       priceCell.classList.add("text-center");
       row.appendChild(priceCell);
 
@@ -39,10 +49,11 @@ function nextStep() {
       tableBody.appendChild(row);
     }
   });
-  showTotal.innerHTML = total.toFixed(2)
+  const showTotal = document.getElementById("total");
+  showTotal.innerHTML = total.toFixed(2);
 }
 
-
+// Go back to the previous step in the order process
 function prevStep() {
   document.getElementById("details").style.display = "none";
   document.getElementById("order").style.display = "block";
@@ -51,14 +62,17 @@ function prevStep() {
   document.getElementById("formTitles").style.display = "flex";
 }
 
-
+// Check if the total order amount meets a minimum spending requirement
 function minSpend(minSpendValue) {
   const inputs = document.querySelectorAll("input.qty-input");
   const nextBtn = document.getElementById("nextBtn");
   let total = 0;
 
   inputs.forEach((input) => {
-    const price = parseFloat(input.parentElement.previousElementSibling.querySelector('span').textContent);
+    const price = parseFloat(
+      input.parentElement.previousElementSibling.querySelector("span")
+        .textContent
+    );
     const quantity = parseInt(input.value, 10);
     if (quantity > 0) {
       total += price * quantity;
@@ -74,7 +88,7 @@ function minSpend(minSpendValue) {
   }
 }
 
-
+// Increment the quantity of a product
 function incQuantity(e) {
   const input = e.target.previousElementSibling;
   let product = input.name;
@@ -84,9 +98,10 @@ function incQuantity(e) {
   }
   value += 1;
   input.value = value;
-  minSpend(20)
+  minSpend(20);
 }
 
+// Decrement the quantity of a product
 function decQuantity(e) {
   const input = e.target.nextElementSibling;
   let product = input.name;
@@ -96,34 +111,44 @@ function decQuantity(e) {
   }
   value -= 1;
   input.value = value;
-  minSpend(20)
+  minSpend(20);
 }
 
-$(document).ready(function() {
+// jQuery code for date and time picker
+$(document).ready(function () {
+  // Datepicker configuration
   $("#futureDate").datepicker({
     dateFormat: "dd/mm/yy",
-    beforeShowDay: function(date) {
+    beforeShowDay: function (date) {
       var now = new Date();
       var day = date.getDay();
       var timeDifference = date - now;
 
-      if (day === 0 || day === 6 || timeDifference < 0 || timeDifference <= 1000 * 60 * 60 * 48) {
+      if (
+        day === 0 ||
+        day === 6 ||
+        timeDifference < 0 ||
+        timeDifference <= 1000 * 60 * 60 * 48
+      ) {
         return [false, ""];
       }
       return [true, ""];
     },
-    onSelect: function(dateText, inst) {
-      var selectedDate = $.datepicker.formatDate("yy-mm-dd", $(this).datepicker("getDate"));
+    onSelect: function (dateText, inst) {
+      var selectedDate = $.datepicker.formatDate(
+        "yy-mm-dd",
+        $(this).datepicker("getDate")
+      );
       $("#futureDateFormatted").val(selectedDate);
-    }
+    },
   });
-  $('#timepicker').timepicker({
-    timeFormat: 'HH:mm', 
+  // Timepicker configuration
+  $("#timepicker").timepicker({
+    timeFormat: "HH:mm",
     interval: 15,
-    minTime: '7:30am',
-    maxTime: '5:30pm',         
-    dynamic: false,       
-    dropdown: true,       
-});
-
+    minTime: "7:30am",
+    maxTime: "5:30pm",
+    dynamic: false,
+    dropdown: true,
+  });
 });
