@@ -10,14 +10,14 @@
 
 {% block content %}
 <div class="row no-gutters search-and-categories">
-    <div class="col-s-12 col-sm-6 search-bar">
+    <div class="col-12 col-sm-6 search-bar">
         <form method="get" action="{% url 'product_search' %}">
             <input type="text" name="keywords" id="productSearch" placeholder="Search for products..." value="{{ request.GET.keywords }}">
             <button type="submit">Search</button>
         </form>
     </div>
-    <div class="col-s-12 col-sm-6 category-dropdown">
-        <form method="get" action="{% url 'product_search' %}">
+    <div class="col-12 col-sm-6 category-dropdown">
+        <form method="get" action="{% url 'product_search' %}" class="category-form">
             <select name="category" id="categorySelect" onchange="reloadPage(this.value)">
                 <option value="">All Categories</option>
                 {% for category in categories %}
