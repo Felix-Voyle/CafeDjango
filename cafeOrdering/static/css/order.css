@@ -1,3 +1,5 @@
+@import 'root.css';
+
 .main-container-centered {
     min-height: calc(100vh - 50px);
     background-image: url('/media/photos/Print.jpg');
@@ -10,6 +12,7 @@
     padding: 5px;
     display: grid;
     justify-content: center;
+    box-shadow: inset 0px -2px 3px 0px black;
 }
 
 .order-container {
@@ -30,11 +33,11 @@
     position: absolute;
     width: 95%;
     display: flex;
-    color: whitesmoke;
+    color: var(--off-white);
 }
 
 .white-title {
-    color: #f2f2f2;
+    color: var(--off-white);
 }
 
 .form-titles span {
@@ -88,7 +91,7 @@ input[type=number] {
     background-color: transparent;
     border: none;
     cursor: pointer;
-    color: #f2f2f2;
+    color: var(--off-white);
 }
 
 .prev-btn i {
@@ -119,23 +122,23 @@ table {
 }
 
 .order-table th {
-    background-color: #f2f2f2;
+    background-color: var(--off-white);
 }
 
 .order-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: var(--off-white);
 }
 .order-table tbody tr:nth-child(odd) {
-    background-color: #bcbcbc;
+    background-color: var(--grey);
 }
 
 .order-table tbody tr:hover {
-    background-color: #ddd;
+    background-color: var(--light-grey);
 }
 
 
 .product-card {
-    background-color: #deddda;
+    background-color: var(--light-grey);
     width: 98%;
     margin: auto;
     padding: 5px;
@@ -159,7 +162,6 @@ table {
 .date-time {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    /* Two equal-width columns */
     gap: 10px;
     margin-top: 10px;
     width: 95%;
