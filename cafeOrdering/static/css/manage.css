@@ -1,13 +1,15 @@
+@import 'root.css';
+
 .ordered {
-    background-color: #FFA7A0;
+    background-color: var(--pastel-red);
 }
 
 .sent {
-    background-color: #F4D885;
+    background-color: var(--pastel-yellow);
 }
 
 .invoiced {
-    background-color: #C1E1C1;
+    background-color: var(--pastel-green);
 }
 
 

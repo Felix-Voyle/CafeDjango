@@ -1,3 +1,5 @@
+@import 'root.css';
+
 main {
     width: 100%;
 }
@@ -22,13 +24,13 @@ main {
 
 .form-card {
     background-color: #bfbfbf;
-    border: 2px solid #2a2d2f;
+    border: 2px solid var(--off-black);
     border-radius: 8px;
-    box-shadow: 3px 3px 1px #2a2d2f;
+    box-shadow: 3px 3px 1px var(--off-black);
 }
 
 .info-card {
-    background-color: #2a2d2f;
+    background-color: var(--off-black);
     border: 2px solid #d0d0d0;
     border-radius: 8px;
     box-shadow: 3px 3px 1px #adadad;
