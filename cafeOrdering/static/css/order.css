@@ -8,6 +8,8 @@
     background-color: grey;
     align-items: center;
     padding: 5px;
+    display: grid;
+    justify-content: center;
 }
 
 .order-container {
@@ -169,4 +171,14 @@ table {
     .custom-hr hr {
         display: none;
     }
+    .category-form {
+        display: flex;
+        justify-content: end;
+    }
+    .search-and-categories {
+        display: flex;
+    }
+    .text-center-sm {
+        text-align: center !important;
+      }
 }
