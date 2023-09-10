@@ -4,6 +4,12 @@
     background-size: cover;
 }
 
+.search-and-categories {
+    background-color: grey;
+    align-items: center;
+    padding: 5px;
+}
+
 .order-container {
     width: 100%;
     height: calc(100vh - 50px);

@@ -43,7 +43,6 @@ function nextStep() {
 }
 
 
-
 function prevStep() {
   document.getElementById("details").style.display = "none";
   document.getElementById("order").style.display = "block";
@@ -51,6 +50,7 @@ function prevStep() {
   document.getElementById("nextBtn").style.display = "block";
   document.getElementById("formTitles").style.display = "flex";
 }
+
 
 function minSpend(minSpendValue) {
   const inputs = document.querySelectorAll("input.qty-input");
@@ -73,6 +73,7 @@ function minSpend(minSpendValue) {
     nextBtn.setAttribute("disabled", "disabled");
   }
 }
+
 
 function incQuantity(e) {
   const input = e.target.previousElementSibling;
