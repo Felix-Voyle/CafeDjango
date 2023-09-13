@@ -91,7 +91,7 @@ function minSpend(minSpendValue) {
 // Increment the quantity of a product
 function incQuantity(e) {
   const input = e.target.previousElementSibling;
-  let product = input.name;
+  let id = input.name;
   let value = parseInt(input.value, 10);
   if (value === 100) {
     return;
@@ -99,12 +99,13 @@ function incQuantity(e) {
   value += 1;
   input.value = value;
   minSpend(20);
+  updateCart(id, value);
 }
 
 // Decrement the quantity of a product
 function decQuantity(e) {
   const input = e.target.nextElementSibling;
-  let product = input.name;
+  let id = input.name;
   let value = parseInt(input.value, 10);
   if (value === 0) {
     return;
@@ -112,6 +113,30 @@ function decQuantity(e) {
   value -= 1;
   input.value = value;
   minSpend(20);
+  updateCart(id, value);
+}
+
+function updateCart(productId, quantity) {
+  // Get the current cart data from Session Storage
+  const cart = JSON.parse(sessionStorage.getItem('cart')) || {};
+
+  // Update the quantity for the given product ID
+  cart[productId] = quantity;
+
+  // Store the updated cart data back in Session Storage
+  sessionStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function onLoadInputs() {
+  const cart = JSON.parse(sessionStorage.getItem('cart')) || {};
+
+  for (const productId in cart) {
+    const quantity = cart[productId];
+    const input = document.querySelector(`input[name="${productId}"]`);
+    if (input) {
+      input.value = quantity;
+    }
+  }
 }
 
 // jQuery code for date and time picker
@@ -152,3 +177,5 @@ $(document).ready(function () {
     dropdown: true,
   });
 });
+
+window.addEventListener('load', onLoadInputs);
