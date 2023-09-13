@@ -53,7 +53,7 @@
                 </div>
                 <div class="col-6 p-0 col-sm-4 offset-6 offset-sm-0 text-center">
                     <button type="button" class="dec-btn" onclick="decQuantity(event)">-</button>
-                    <input type="number" class="text-center qty-input" name="quantity" min="0" value="0">
+                    <input type="number" class="text-center qty-input" name="{{ product.id }}" min="0" value="0">
                     <button type="button" class="inc-btn" onclick="incQuantity(event)" id="incBtn">+</button>
                 </div>
             </div>
