@@ -88,29 +88,27 @@ function prevStep() {
 
 // Check if the total order amount meets a minimum spending requirement
 function minSpend(minSpendValue) {
-  const inputs = document.querySelectorAll("input.qty-input");
-  const nextBtn = document.getElementById("nextBtn");
+  const cart = JSON.parse(sessionStorage.getItem('cart')) || {};
+  const nextBtn = document.getElementById('nextBtn');
   let total = 0;
 
-  inputs.forEach((input) => {
-    const price = parseFloat(
-      input.parentElement.previousElementSibling.querySelector("span")
-        .textContent
-    );
-    const quantity = parseInt(input.value, 10);
+  for (const productId in cart) {
+    const { quantity, price } = cart[productId];
+
     if (quantity > 0) {
       total += price * quantity;
     }
-  });
+  }
 
   total = parseFloat(total.toFixed(2));
 
   if (total >= minSpendValue) {
-    nextBtn.removeAttribute("disabled");
+    nextBtn.removeAttribute('disabled');
   } else {
-    nextBtn.setAttribute("disabled", "disabled");
+    nextBtn.setAttribute('disabled', 'disabled');
   }
 }
+
 
 // Increment the quantity of a product
 function incQuantity(e) {
@@ -124,8 +122,8 @@ function incQuantity(e) {
   }
   value += 1;
   input.value = value;
-  minSpend(20);
   updateCart(id, value, name, price);
+  minSpend(20);
 }
 
 // Decrement the quantity of a product
@@ -140,8 +138,8 @@ function decQuantity(e) {
   }
   value -= 1;
   input.value = value;
-  minSpend(20);
   updateCart(id, value, name, price);
+  minSpend(20);
 }
 
 function updateCart(productId, quantity, name, price) {
