@@ -10,7 +10,6 @@ class Order(models.Model):
         ('ordered', 'Ordered'),
         ('sent', 'Sent'),
         ('invoiced', 'Invoiced'),
-        ('complete', 'Complete'),
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -1,5 +1,11 @@
 @import 'root.css';
 
+.plain-input {
+    border: none;
+    background: none;
+    outline: none;
+}
+
 .main-container-centered {
     min-height: calc(100vh - 50px);
     background-image: url('/media/photos/Print.jpg');

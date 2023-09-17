@@ -13,45 +13,69 @@ function nextStep() {
   tableBody.innerHTML = "";
   let total = 0;
 
-  showOrderSummary(inputs, total, tableBody);
+  showOrderSummary(total, tableBody);
 }
 
-// Calculate and display the order summary/checkout
-function showOrderSummary(inputs, total, tableBody) {
-  inputs.forEach((input) => {
-    const price =
-      input.parentElement.previousElementSibling.querySelector(
-        "span"
-      ).textContent;
-    const product =
-      input.parentElement.parentElement.querySelector("label").textContent;
-    const quantity = parseInt(input.value, 10);
+function showOrderSummary(total, tableBody) {
+  // Get the current cart data from Session Storage
+  const cart = JSON.parse(sessionStorage.getItem('cart')) || {};
+
+  for (const productId in cart) {
+    const { quantity, price, name } = cart[productId];
 
     if (quantity > 0) {
-      total += parseFloat(price) * quantity;
-      const row = document.createElement("tr");
+      const row = document.createElement('tr');
 
-      const productNameCell = document.createElement("td");
-      productNameCell.textContent = product;
-      productNameCell.classList.add("text-center");
+      const productNameCell = document.createElement('td');
+      productNameCell.classList.add('text-center', 'col-6')
+
+      // Create a label element
+      const productNameLabel = document.createElement('label');
+      productNameLabel.textContent = name; // Set the label text to the product name
+      productNameLabel.classList.add('text-center');
+      productNameCell.appendChild(productNameLabel);
+
+      // Create a hidden input element
+      const productNameInput = document.createElement('input');
+      productNameInput.type = 'hidden';
+      productNameInput.name = `confirmed-product`;
+      productNameInput.value = productId;
+      productNameInput.classList.add('text-center');
+      productNameCell.appendChild(productNameInput);
+
       row.appendChild(productNameCell);
 
-      const priceCell = document.createElement("td");
-      priceCell.textContent = price;
-      priceCell.classList.add("text-center");
+      const priceCell = document.createElement('td');
+      priceCell.textContent = `£${price}`;
+      priceCell.classList.add('text-center');
       row.appendChild(priceCell);
 
-      const quantityCell = document.createElement("td");
-      quantityCell.textContent = quantity;
-      quantityCell.classList.add("text-center");
+      const quantityCell = document.createElement('td');
+      quantityCell.classList.add('text-center')
+      const quantityInput = document.createElement('input');
+      quantityInput.type = 'number';
+      quantityInput.name = `confirmed-qty`;
+      quantityInput.value = quantity;
+      quantityInput.classList.add('text-center', 'plain-input');
+      quantityInput.readOnly = true;
+      quantityCell.appendChild(quantityInput);
       row.appendChild(quantityCell);
 
       tableBody.appendChild(row);
     }
-  });
-  const showTotal = document.getElementById("total");
-  showTotal.innerHTML = total.toFixed(2);
+  }
+
+  const showTotal = document.getElementById('total');
+  let totalAmount = 0;
+
+  for (const productId in cart) {
+    const { quantity, price } = cart[productId];
+    totalAmount += parseFloat(price) * quantity;
+  }
+
+  showTotal.innerHTML = `${totalAmount.toFixed(2)}`;
 }
+
 
 // Go back to the previous step in the order process
 function prevStep() {
@@ -92,6 +116,8 @@ function minSpend(minSpendValue) {
 function incQuantity(e) {
   const input = e.target.previousElementSibling;
   let id = input.name;
+  let name = input.getAttribute('data-product-name')
+  let price = input.getAttribute('data-product-price')
   let value = parseInt(input.value, 10);
   if (value === 100) {
     return;
@@ -99,13 +125,15 @@ function incQuantity(e) {
   value += 1;
   input.value = value;
   minSpend(20);
-  updateCart(id, value);
+  updateCart(id, value, name, price);
 }
 
 // Decrement the quantity of a product
 function decQuantity(e) {
   const input = e.target.nextElementSibling;
   let id = input.name;
+  let name = input.getAttribute('data-product-name')
+  let price = input.getAttribute('data-product-price')
   let value = parseInt(input.value, 10);
   if (value === 0) {
     return;
@@ -113,15 +141,19 @@ function decQuantity(e) {
   value -= 1;
   input.value = value;
   minSpend(20);
-  updateCart(id, value);
+  updateCart(id, value, name, price);
 }
 
-function updateCart(productId, quantity) {
+function updateCart(productId, quantity, name, price) {
   // Get the current cart data from Session Storage
   const cart = JSON.parse(sessionStorage.getItem('cart')) || {};
 
   // Update the quantity for the given product ID
-  cart[productId] = quantity;
+  cart[productId] = {
+    name,
+    quantity,
+    price
+  }
 
   // Store the updated cart data back in Session Storage
   sessionStorage.setItem('cart', JSON.stringify(cart));
@@ -131,12 +163,13 @@ function onLoadInputs() {
   const cart = JSON.parse(sessionStorage.getItem('cart')) || {};
 
   for (const productId in cart) {
-    const quantity = cart[productId];
+    const quantity = cart[productId].quantity;
     const input = document.querySelector(`input[name="${productId}"]`);
     if (input) {
       input.value = quantity;
     }
   }
+  minSpend(20)
 }
 
 // jQuery code for date and time picker

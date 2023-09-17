@@ -40,8 +40,9 @@ def order(request):
         order.save()
 
 
-        product_ids = request.POST.getlist('data-product-id')  # Get the list of product names
-        quantities = request.POST.getlist('quantity')
+        product_ids = request.POST.getlist('confirmed-product')  # Get the list of product names
+        quantities = request.POST.getlist('confirmed-qty')
+        print(product_ids, quantities)
 
 
         for product_id, quantity in zip(product_ids, quantities):
