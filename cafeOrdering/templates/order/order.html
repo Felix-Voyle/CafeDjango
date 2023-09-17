@@ -37,7 +37,7 @@
     </div>
     <form method="post">
         {% csrf_token %}
-        <div id="order" class="form-card order">
+        <div id="order" class="form-card order product-cards-container">
             {% for product in products %}
             <div class="row product-card align-items-center my-2">
                 <div class="col-sm-4 col-6 text-center">
