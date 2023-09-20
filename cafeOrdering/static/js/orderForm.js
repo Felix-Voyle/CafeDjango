@@ -13,7 +13,24 @@ function nextStep() {
   tableBody.innerHTML = "";
   let total = 0;
 
+  disableFilterProduct(true)
   showOrderSummary(total, tableBody);
+}
+
+function disableFilterProduct(bool) {
+  const selectElements = document.querySelectorAll("select[name='category']");
+  selectElements.forEach(function(select) {
+    select.disabled = bool;
+  });
+
+  const productSearchForm = document.querySelector(".category-form");
+  productSearchForm.disabled = bool;
+
+  const inputField = document.getElementById("productSearch");
+  inputField.disabled = bool;
+
+  const productSearchBtn = document.getElementById("productSearchBtn");
+  productSearchBtn.disabled = bool;
 }
 
 function showOrderSummary(total, tableBody) {
@@ -84,6 +101,8 @@ function prevStep() {
   document.getElementById("prevBtn").style.display = "none";
   document.getElementById("nextBtn").style.display = "block";
   document.getElementById("formTitles").style.display = "flex";
+
+  disableFilterProduct(false)
 }
 
 // Check if the total order amount meets a minimum spending requirement
