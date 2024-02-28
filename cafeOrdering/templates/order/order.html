@@ -83,10 +83,11 @@
                 <!-- Second div -->
                 <div class="col-lg-6 col-sm-12 text-center form-card mb-5 address-inputs">
                     <h3 class="mb-2 mt-2 white-title" >Address</h3>
-                    <input type="text" required name="address_line1" placeholder="Address Line 1">
-                    <input type="text" name="address_line2" placeholder="Address Line 2">
-                    <input type="text" name="address_line3" placeholder="Address Line 3">
-                    <input type="text" required name="postcode" placeholder="Post Code">
+                    <input type="text" name="address_line1" {% if initial_data.address_line1 %}value="{{ initial_data.address_line1 }}"{% else %}placeholder="Address Line 1"{% endif %}>
+                    <input type="text" name="address_line2" {% if initial_data.address_line2 %}value="{{ initial_data.address_line2 }}"{% else %}placeholder="Address Line 2"{% endif %}>
+                    <input type="text" name="address_line3" {% if initial_data.address_line3 %}value="{{ initial_data.address_line3 }}"{% else %}placeholder="Address Line 3"{% endif %}>
+                    <input type="text" name="postcode" {% if initial_data.postcode %}value="{{ initial_data.postcode }}"{% else %}placeholder="Post Code"{% endif %}>
+
                     <input type="text" name="delivery_instructions" placeholder="Delivery notes...">
                     <div class="date-time">
                         <input type="text" required placeholder="Select delivery date.." id="futureDate" autocomplete="off">
