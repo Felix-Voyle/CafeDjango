@@ -3,15 +3,29 @@ from django.shortcuts import render, redirect
 
 from .models import Order, OrderItem
 from products.models import Product, Category
+from users.models import UserProfile
 
 
 def order(request):
     products = Product.objects.all()
     categories = Category.objects.all()
 
+        # Check if the user has a profile
+    if hasattr(request.user, 'userprofile'):
+        user_profile = request.user.userprofile
+        initial_data = {
+            'address_line1': user_profile.address_line1,
+            'address_line2': user_profile.address_line2,
+            'address_line3': user_profile.address_line3,
+            'postcode': user_profile.postcode,
+        }
+    else:
+        initial_data = {}
+
     ctx = {
-    'products': products,
-    'categories': categories,
+        'products': products,
+        'categories': categories,
+        'initial_data': initial_data,
     }
 
     if request.method == 'POST':
