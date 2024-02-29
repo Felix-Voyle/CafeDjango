@@ -11,8 +11,8 @@
                             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ order.id }}" aria-expanded="true" aria-controls="collapse{{ order.id }}">
                                 Order #: {{ order.order_number }} | Total: £ {{ order.order_total }}
                             </button>
-                            {% if order.reportable %}
-                                <button class="btn btn-sm btn-danger ml-auto" onclick="reportProblem('{{ order.id }}')">Report Problem</button>
+                            {% if order.reportable and not order.reported_problem %}
+                                <button id="reportButton_{{ order.id }}" class="btn btn-sm btn-danger ml-auto" onclick="reportProblem('{{ order.id }}')">Report Problem</button>
                             {% endif %}
                         </h2>
                     </div>
@@ -93,6 +93,8 @@
                     $('#reportProblemModal').modal('hide');
                     // Display success message or perform any other actions
                     alert('Problem reported successfully!');
+                    // Hide the "Report Problem" button after reporting
+                    $('#reportButton_' + orderId).hide();
                 },
                 error: function(xhr, errmsg, err) {
                     // Handle errors
