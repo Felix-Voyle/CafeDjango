@@ -4,40 +4,105 @@
     <h2>Orders</h2>
     <div class="accordion" id="ordersAccordion">
         {% if orders %}
-        {% for order in orders %}
-            <div class="card">
-                <div class="card-header" id="order{{ order.id }}">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ order.id }}" aria-expanded="true" aria-controls="collapse{{ order.id }}">
-                            Order #: {{ order.order_number }} | Total: £ {{ order.order_total }}
-                        </button>
-                    </h2>
-                </div>
+            {% for order in orders %}
+                <div class="card">
+                    <div class="card-header" id="order{{ order.id }}">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ order.id }}" aria-expanded="true" aria-controls="collapse{{ order.id }}">
+                                Order #: {{ order.order_number }} | Total: £ {{ order.order_total }}
+                            </button>
+                            {% if order.reportable %}
+                                <button class="btn btn-sm btn-danger ml-auto" onclick="reportProblem('{{ order.id }}')">Report Problem</button>
+                            {% endif %}
+                        </h2>
+                    </div>
 
-                <div id="collapse{{ order.id }}" class="collapse" aria-labelledby="order{{ order.id }}" data-parent="#ordersAccordion">
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            {% for item in order.order_items.all %}
+                    <div id="collapse{{ order.id }}" class="collapse" aria-labelledby="order{{ order.id }}" data-parent="#ordersAccordion">
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                {% for item in order.order_items.all %}
+                                    <li class="d-flex">
+                                        <span class="col-4">{{ item.product.name }} x {{ item.quantity }}</span>
+                                        <span class="col-1">-</span>
+                                        <span class="col-4">£ {{ item.get_total }}</span>
+                                    </li>
+                                {% endfor %}
+                                <hr>
                                 <li class="d-flex">
-                                    <span class="col-4">{{ item.product.name }} x {{ item.quantity }}</span>
+                                    <span class="col-4"><strong>Total</strong></span>
                                     <span class="col-1">-</span>
-                                    <span class="col-4">£ {{ item.get_total }}</span>
+                                    <span class="col-4">£ {{ order.order_total }}</span>
                                 </li>
-                            {% endfor %}
-                            <hr>
-                            <li class="d-flex">
-                                <span class="col-4"><strong>Total</strong></span>
-                                <span class="col-1">-</span>
-                                <span class="col-4">£ {{ order.order_total }}</span>
-                            </li>
-                        </ul>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
         {% else %}
             <p>There are no orders to display..</p>
         {% endif %}
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="reportProblemModal" tabindex="-1" role="dialog" aria-labelledby="reportProblemModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportProblemModalLabel">Report Problem</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="orderIdInput"> <!-- Hidden input to store orderId -->
+                    <textarea id="problemDescription" class="form-control" rows="4"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="submitProblem()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function reportProblem(orderId) {
+            // Set the hidden input value to the orderId
+            $('#orderIdInput').val(orderId);
+            // Show the modal
+            $('#reportProblemModal').modal('show');
+        }
+
+        function submitProblem() {
+            // Get the problem description from the textarea
+            var problemDescription = $('#problemDescription').val();
+            // Get the orderId from the hidden input
+            var orderId = $('#orderIdInput').val();
+
+            // AJAX call to submit the problem
+            $.ajax({
+                type: 'POST',
+                url: '{% url "report_problem" %}',  // Update to use the correct URL pattern name
+                data: {
+                    'order_id': orderId,
+                    'problem_description': problemDescription,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    // Close the modal
+                    $('#reportProblemModal').modal('hide');
+                    // Display success message or perform any other actions
+                    alert('Problem reported successfully!');
+                },
+                error: function(xhr, errmsg, err) {
+                    // Handle errors
+                    alert('Error reporting problem: ' + errmsg);
+                }
+            });
+        }
+    </script>
 {% endblock %}
+
+
+
 

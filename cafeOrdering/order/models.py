@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.db.models import Sum
 from django.contrib.auth.models import User
+from django.utils import timezone
 from products.models import Product
 
 class Order(models.Model):
@@ -18,13 +19,13 @@ class Order(models.Model):
     address_line2 = models.CharField(max_length=100, blank=True, null=True)
     address_line3 = models.CharField(max_length=100, blank=True, null=True)
     postcode = models.CharField(max_length=10)
-    delivery_instructions = models.TextField(blank=True, null=True)
+    delivery_instructions = models.TextField(max_length=150, blank=True, null=True)
     delivery_date = models.DateField()
     delivery_time = models.TimeField()
     order_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     order_number = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     status = models.CharField(max_length=20, choices=ORDER_STATUS, default='ordered')
-
+    reported_problem = models.TextField(max_length=200, blank=True, null=True)
 
 
     def _generate_order_number(self):
@@ -47,7 +48,24 @@ class Order(models.Model):
         
     def finalize_order(self):
         self.update_total()
- 
+    
+
+    def is_reportable(self):
+        """
+        Check if the order can be reported for problems within 24 hours of the delivery date.
+        """
+        # Calculate the difference between the current time and the delivery date
+        time_difference = self.delivery_date - timezone.now().date()
+        
+        # Check if the time difference is within 24 hours
+        return time_difference.days <= 1
+
+    @property
+    def reportable(self):
+        """
+        Property method to make it easier to access the reportable status in templates.
+        """
+        return self.is_reportable()
 
     def __str__(self):
         return f"Order #{self.order_number} for {self.user.username}"

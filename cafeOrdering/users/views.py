@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 from order.models import Order
-
 
 def sign_up(request):
     return render(request, 'users/signup.html') 
@@ -17,3 +18,22 @@ def view_profile(request):
     }
 
     return render(request, 'users/profile.html', ctx)
+
+@require_POST
+def report_problem(request):
+    # Extract data from the POST request
+    order_id = request.POST.get('order_id')
+    problem_description = request.POST.get('problem_description')
+
+    # Fetch the order
+    try:
+        order = Order.objects.get(id=order_id)
+    except Order.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Order not found'}, status=404)
+
+    # Update the order with the reported problem
+    order.reported_problem = problem_description
+    order.save()
+
+    # Return a JSON response indicating success
+    return JsonResponse({'success': True, 'message': 'Problem reported successfully'})
