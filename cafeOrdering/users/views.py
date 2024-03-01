@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -30,10 +31,14 @@ def report_problem(request):
         order = Order.objects.get(id=order_id)
     except Order.DoesNotExist:
         return JsonResponse({'success': False, 'message': 'Order not found'}, status=404)
-
+    
     # Update the order with the reported problem
     order.reported_problem = problem_description
     order.save()
 
-    # Return a JSON response indicating success
-    return JsonResponse({'success': True, 'message': 'Problem reported successfully'})
+    # Check if the reported problem was updated successfully
+    if order.reported_problem == problem_description:
+        messages.success(request, 'Problem reported successfully!')
+        return JsonResponse({'success': True, 'message': 'Problem reported successfully'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Failed to report problem'}, status=500)
