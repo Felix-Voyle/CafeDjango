@@ -1,25 +1,25 @@
+import json
 from django.shortcuts import render
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-import json
-
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
 from enquire.models import Enquiry
 from order.models import Order
 
-
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def manage(request):
     enquiries = Enquiry.objects.all()
     orders = Order.objects.all()
     
-
     ctx = {
-    'enquiries': enquiries,
-    'orders': orders,
+        'enquiries': enquiries,
+        'orders': orders,
     }
 
-
     return render(request, 'adminManage/manage.html', ctx)
+
 
 
 @require_POST
