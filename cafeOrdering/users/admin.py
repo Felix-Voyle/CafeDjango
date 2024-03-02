@@ -6,8 +6,8 @@ from allauth.socialaccount.models import SocialAccount, SocialToken, SocialApp
 from .models import UserProfile
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'is_staff', 'is_workspace', 'address_line1', 'postcode']
-    list_filter = ['is_staff', 'is_workspace']
+    list_display = ['user',  'is_workspace', 'address_line1', 'postcode']
+    list_filter = ['is_workspace']
     search_fields = ['user__username', 'address_line1', 'postcode']
 
 admin.site.register(UserProfile, UserProfileAdmin)

@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.shortcuts import redirect
 from order.models import Order
 
 def sign_up(request):
@@ -10,6 +11,12 @@ def sign_up(request):
 
 @login_required
 def view_profile(request):
+
+    # Check if the user is staff or superuser
+    if request.user.is_staff or request.user.is_superuser:
+        # Redirect staff or superusers to the admin manage page
+        return redirect('manage')  # Adjust the URL name as per your project setup
+
     user_profile = request.user.userprofile
     orders = Order.objects.filter(user=request.user) 
     
