@@ -21,8 +21,22 @@
                         {% csrf_token %}
                         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                         <div class="row">
-                            <div class="col-12 text-center">
-                                {{ order.delivery_date }} @ {{ order.delivery_time }}
+                            <div class="col-12">
+                                {% if order.reported_problem %}
+                                    <div class="row mt-1">
+                                        <div class="col ml-2 text-left">
+                                            <span class="exclamation">!</span>
+                                        </div>
+                                        <div class="col mr-2 text-right">
+                                            <span>edit</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col text-center">
+                                        {{ order.delivery_date }} @ {{ order.delivery_time }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row checkboxes text-center">
