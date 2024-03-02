@@ -20,6 +20,10 @@
     margin: auto;
 }
 
+.card-header {
+    cursor: pointer;
+}
+
 .order-item {
     border-bottom: 1px solid rgba(27, 27, 27, 0.928);
     font-size: 14px;
@@ -48,6 +52,19 @@
 label {
     margin-bottom: 0;
 }
+
+.exclamation {
+    display: inline-block;
+    width: 25px; 
+    height: 25px;
+    border: 2px solid black;
+    background-color: orangered; 
+    border-radius: 50%; 
+    text-align: center; 
+    line-height: 20px; 
+    font-size: 20px; 
+}
+
 
 @media screen and (min-width: 768px) {
     .checkboxes div {
