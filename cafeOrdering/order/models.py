@@ -52,13 +52,19 @@ class Order(models.Model):
 
     def is_reportable(self):
         """
-        Check if the order can be reported for problems within 24 hours of the delivery date.
+        Check if the order can be reported for problems within 24 hours of the delivery date and time.
         """
-        # Calculate the difference between the current time and the delivery date
-        time_difference = self.delivery_date - timezone.now().date()
+        # Calculate the current datetime
+        current_datetime = timezone.now()
+
+        # Combine the delivery date and time into a single datetime object
+        delivery_datetime = timezone.datetime.combine(self.delivery_date, self.delivery_time)
+
+        # Calculate the difference between the current datetime and the delivery datetime
+        time_difference = current_datetime - delivery_datetime
         
         # Check if the time difference is within 24 hours
-        return time_difference.days <= 1
+        return time_difference.days == 0 and time_difference.seconds < 86400
 
     @property
     def reportable(self):
