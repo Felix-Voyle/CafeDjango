@@ -28,7 +28,7 @@
                                             <span class="exclamation">!</span>
                                         </div>
                                         <div class="col mr-2 text-right">
-                                            <span>edit</span>
+                                            <a href="{% url 'edit_order' order.order_id %}"><span>edit</span></a>
                                         </div>
                                     </div>
                                 {% endif %}
@@ -59,7 +59,7 @@
                     <div class="card mt-3">
                         <div class="card-header text-center" data-toggle="collapse"
                             data-target="#collapseCard2{{ forloop.counter }}">
-                            <h5 class="mb-0">Order - {{ order.order_number }}</h5>
+                            <h5 class="mb-0">Order - {{ order.order_id }}</h5>
                         </div>
                         <div id="collapseCard2{{ forloop.counter }}" class="collapse">
                             <div class="card-body order-details">

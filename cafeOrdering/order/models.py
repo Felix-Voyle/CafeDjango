@@ -1,4 +1,5 @@
-import uuid
+import random
+import string
 from django.db import models
 from django.db.models import Sum
 from django.contrib.auth.models import User
@@ -23,17 +24,22 @@ class Order(models.Model):
     delivery_date = models.DateField()
     delivery_time = models.TimeField()
     order_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    order_number = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    order_id = models.TextField(max_length=5, editable=False, unique=True)
     status = models.CharField(max_length=20, choices=ORDER_STATUS, default='ordered')
     reported_problem = models.TextField(max_length=200, blank=True, null=True)
 
 
-    def _generate_order_number(self):
-        return uuid.uuid4().hex.upper()
+    def _generate_order_id(self):
+        retry_limit = 5
+        for _ in range(retry_limit):
+            order_id = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
+            if not Order.objects.filter(order_id=order_id).exists():
+                return order_id
+        raise ValueError("Failed to generate a unique order ID after {} retries.".format(retry_limit))
     
     def save(self, *args, **kwargs):
-        if not self.order_number:
-            self.order_number = self._generate_order_number()
+        if not self.order_id:
+            self.order_id = self._generate_order_id()
 
         super(Order, self).save(*args, **kwargs)
     
@@ -74,7 +80,7 @@ class Order(models.Model):
         return self.is_reportable()
 
     def __str__(self):
-        return f"Order #{self.order_number} for {self.user.username}"
+        return f"Order #{self.order_id} for {self.user.username}"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='order_items', on_delete=models.CASCADE)
