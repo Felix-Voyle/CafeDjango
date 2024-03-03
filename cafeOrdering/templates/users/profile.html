@@ -9,7 +9,7 @@
                     <div class="card-header" id="order{{ order.id }}">
                         <h2 class="mb-0">
                             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ order.id }}" aria-expanded="true" aria-controls="collapse{{ order.id }}">
-                                Order #: {{ order.order_number }} | Total: £ {{ order.order_total }}
+                                Order #: {{ order.order_id }} | Total: £ {{ order.order_total }}
                             </button>
                             {% if order.reportable and not order.reported_problem %}
                                 <button class="btn btn-sm btn-danger ml-auto" onclick="reportProblem('{{ order.id }}')">Report Problem</button>

@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import Order, OrderItem
 from products.models import Product, Category
@@ -96,3 +96,10 @@ def product_search(request):
     }
 
     return render(request, 'order/order.html', ctx)
+
+
+def edit_order(request, order_id):
+    
+    order = get_object_or_404(Order, order_id=order_id)
+   
+    return render(request, 'order/edit_order.html', {'order': order})
