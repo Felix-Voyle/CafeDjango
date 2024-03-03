@@ -35,7 +35,7 @@
         <span class="d-none d-sm-block text-center d col-sm-4"><strong>Price</strong></span>
         <span class="d-none d-sm-block text-center d col-sm-4"><strong>Quantity</strong></span>
     </div>
-    <form method="post">
+    <form method="post" onsubmit="clearCart()">
         {% csrf_token %}
         <div id="order" class="form-card order product-cards-container">
             {% for product in products %}
