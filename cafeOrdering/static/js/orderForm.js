@@ -228,4 +228,8 @@ $(document).ready(function () {
   });
 });
 
+function clearCart() {
+  sessionStorage.removeItem('cart');
+}
+
 window.addEventListener('load', onLoadInputs);
