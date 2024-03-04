@@ -11,6 +11,7 @@
                             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ order.id }}" aria-expanded="true" aria-controls="collapse{{ order.id }}">
                                 Order #: {{ order.order_id }} | Total: £ {{ order.order_total }}
                             </button>
+                            <a href="{% url 'edit_order' order.order_id %}">Edit</a>
                             {% if order.reportable and not order.reported_problem %}
                                 <button class="btn btn-sm btn-danger ml-auto" onclick="reportProblem('{{ order.id }}')">Report Problem</button>
                             {% endif %}
