@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-
+import json
 from .models import Order, OrderItem
 from products.models import Product, Category
 from users.models import UserProfile
@@ -99,7 +99,24 @@ def product_search(request):
 
 
 def edit_order(request, order_id):
-    
     order = get_object_or_404(Order, order_id=order_id)
-   
-    return render(request, 'order/edit_order.html', {'order': order})
+    products = Product.objects.all()
+    quantities = {item.product_id: item.quantity for item in order.order_items.all()}
+    cart_data = {}
+    for item in order.order_items.all():
+        cart_data[item.product_id] = {
+            'name': item.product.name,
+            'quantity': item.quantity,
+            'price': str(item.product.price),
+        }
+
+        print(cart_data)
+
+    ctx = {
+        'order': order,
+        'products': products,
+        'quantities': quantities,
+        'cart_data': json.dumps(cart_data),
+    }
+    
+    return render(request, 'order/edit_order.html', ctx)
