@@ -36,8 +36,8 @@ def order(request):
         address_line3 = request.POST.get('address_line3', '')
         postcode = request.POST['postcode']
         delivery_instructions = request.POST.get('delivery_instructions', '')
-        delivery_date = request.POST.get('delivery_date', '')
-        delivery_time = request.POST.get('delivery_time', '')
+        delivery_date = request.POST.get('delivery_date')
+        delivery_time = request.POST.get('delivery_time')
 
 
         order = Order.objects.create(
@@ -100,6 +100,52 @@ def product_search(request):
 
 def edit_order(request, order_id):
     order = get_object_or_404(Order, order_id=order_id)
+    print(order.delivery_date)
+    print(order.delivery_time)
+    if request.method == 'POST':
+        # Retrieve data from the form
+        address_line1 = request.POST['address_line1']
+        address_line2 = request.POST.get('address_line2', '')
+        address_line3 = request.POST.get('address_line3', '')
+        postcode = request.POST['postcode']
+        delivery_instructions = request.POST.get('delivery_instructions', '')
+        delivery_date = request.POST.get('delivery_date')
+        delivery_time = request.POST.get('delivery_time')
+
+        # Update order fields
+        order.address_line1 = address_line1
+        order.address_line2 = address_line2
+        order.address_line3 = address_line3
+        order.postcode = postcode
+        order.delivery_instructions = delivery_instructions
+        order.delivery_date = delivery_date
+        order.delivery_time = delivery_time
+
+        # Save the order
+        order.save()
+
+        # Handle order items
+        product_ids = request.POST.getlist('confirmed-product')
+        quantities = request.POST.getlist('confirmed-qty')
+
+        # Clear existing order items
+        order.order_items.all().delete()
+
+        # Create new order items
+        for product_id, quantity in zip(product_ids, quantities):
+            if int(quantity) > 0:
+                product = Product.objects.get(pk=product_id)
+                quantity = int(quantity)
+                OrderItem.objects.create(order=order, product=product, quantity=quantity)
+
+        # Update total price
+        order.update_total()
+
+        # Optionally add success message or redirect
+        messages.success(request, 'Order updated successfully!')
+        return redirect('/')  # Redirect to a relevant page after editing the order
+
+    # If it's a GET request, populate the context with necessary data
     products = Product.objects.all()
     quantities = {item.product_id: item.quantity for item in order.order_items.all()}
     cart_data = {}
@@ -110,13 +156,22 @@ def edit_order(request, order_id):
             'price': str(item.product.price),
         }
 
-        print(cart_data)
+    initial_data = {
+        'address_line1': order.address_line1,
+        'address_line2': order.address_line2,
+        'address_line3': order.address_line3,
+        'postcode': order.postcode,
+        'delivery_instructions': order.delivery_instructions,
+        'delivery_date': order.delivery_date,
+        'delivery_time': order.delivery_time,
+    }
 
     ctx = {
         'order': order,
         'products': products,
         'quantities': quantities,
         'cart_data': json.dumps(cart_data),
+        'initial_data': initial_data,
     }
     
     return render(request, 'order/edit_order.html', ctx)

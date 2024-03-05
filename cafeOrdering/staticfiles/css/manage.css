@@ -1,0 +1,74 @@
+@import 'root.css';
+
+.ordered {
+    background-color: var(--pastel-red);
+}
+
+.sent {
+    background-color: var(--pastel-yellow);
+}
+
+.invoiced {
+    background-color: var(--pastel-green);
+}
+
+
+.order-card {
+    border: 1px solid black;
+    box-shadow: 1px 2px 2px black;
+    width: 95%;
+    margin: auto;
+}
+
+.card-header {
+    cursor: pointer;
+}
+
+.order-item {
+    border-bottom: 1px solid rgba(27, 27, 27, 0.928);
+    font-size: 14px;
+}
+
+.no-pad {
+    padding: 0;
+}
+
+.order-details ul {
+    padding-left: 0;
+}
+
+
+.enquiry-card {
+    border: 1px solid black;
+    box-shadow: 1px 2px 2px black;
+    width: 95%;
+    margin: auto;
+}
+
+.checkboxes div {
+    display: grid;
+}
+
+label {
+    margin-bottom: 0;
+}
+
+.exclamation {
+    display: inline-block;
+    width: 25px; 
+    height: 25px;
+    border: 2px solid black;
+    background-color: orangered; 
+    border-radius: 50%; 
+    text-align: center; 
+    line-height: 20px; 
+    font-size: 20px; 
+}
+
+
+@media screen and (min-width: 768px) {
+    .checkboxes div {
+        display: flex;
+        justify-content: center;
+    }
+}

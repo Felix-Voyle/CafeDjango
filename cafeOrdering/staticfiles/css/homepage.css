@@ -1,0 +1,13 @@
+.home-container {
+    height: calc(100vh -50px);
+    width: 100%;
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.picture-container, .find-us {
+    flex-grow: 1;
+    width: 100%;
+}
