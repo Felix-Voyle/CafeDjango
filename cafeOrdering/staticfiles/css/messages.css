@@ -1,0 +1,54 @@
+.messages {
+    margin-top: 20px;
+    z-index: 99;
+    position: absolute;
+    right: 0px;
+    top: -19px;
+}
+
+.message-card {
+    width: 140px;
+    height: fit-content;
+    background-color: #cecdd7;
+    border-radius: 5px;
+    border: 2px solid #686c6a;
+    position: absolute;
+    right: 19px;
+    top: 50px;
+    box-shadow: 2px 3px 3px #2e2e2e;
+    padding-top: 5px;
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+.message-card.fade-out {
+    opacity: 0;
+}
+
+.message-line {
+    width: 100%;
+    height: 3px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.success .message-line {
+    background-color: #4caf50;
+}
+
+.info .message-line {
+    background-color: #2196f3;
+}
+
+.warning .message-line {
+    background-color: #ff9800;
+}
+
+.error .message-line {
+    background-color: #f44336;
+}
+
+.message-content {
+    margin-top: 5px;
+}

@@ -35,7 +35,7 @@
         <span class="d-none d-sm-block text-center d col-sm-4"><strong>Price</strong></span>
         <span class="d-none d-sm-block text-center d col-sm-4"><strong>Quantity</strong></span>
     </div>
-    <form method="post" onsubmit="clearCart()">
+    <form method="post" action="{% url 'edit_order' order.order_id %}" onsubmit="clearCart()">
         {% csrf_token %}
         <div id="order" class="form-card order product-cards-container">
             {% for product in products %}
@@ -53,7 +53,8 @@
                 </div>
                 <div class="col-6 p-0 col-sm-4 offset-6 offset-sm-0 text-center">
                     <button type="button" class="dec-btn" onclick="decQuantity(event)">-</button>
-                    <input type="number" class="text-center qty-input" name="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}" min="0" value="{{ quantities|get_quantity:product.id }}">
+                    <input type="number" class="text-center qty-input" name="{{ product.id }}" data-product-name="{{ product.name }}" 
+                    data-product-price="{{ product.price }}" min="0" value="{{ quantities|get_quantity:product.id }}">
                     <button type="button" class="inc-btn" onclick="incQuantity(event)" id="incBtn">+</button>
                 </div>
             </div>
@@ -82,19 +83,19 @@
         
                 <!-- Second div -->
                 <div class="col-lg-6 col-sm-12 text-center form-card mb-5 address-inputs">
-                    <h3 class="mb-2 mt-2 white-title" >Address</h3>
+                    <h3 class="mb-2 mt-2 white-title">Address</h3>
                     <input type="text" name="address_line1" {% if initial_data.address_line1 %}value="{{ initial_data.address_line1 }}"{% else %}placeholder="Address Line 1"{% endif %}>
                     <input type="text" name="address_line2" {% if initial_data.address_line2 %}value="{{ initial_data.address_line2 }}"{% else %}placeholder="Address Line 2"{% endif %}>
                     <input type="text" name="address_line3" {% if initial_data.address_line3 %}value="{{ initial_data.address_line3 }}"{% else %}placeholder="Address Line 3"{% endif %}>
                     <input type="text" name="postcode" {% if initial_data.postcode %}value="{{ initial_data.postcode }}"{% else %}placeholder="Post Code"{% endif %}>
-
-                    <input type="text" name="delivery_instructions" placeholder="Delivery notes...">
+                    <input type="text" name="delivery_instructions" {% if initial_data.delivery_instructions %}value="{{ initial_data.delivery_instructions }}"{% else %}placeholder="Delivery notes..."{% endif %}>
                     <div class="date-time">
-                        <input type="text" required placeholder="Select delivery date.." id="futureDate" autocomplete="off">
+                        <input type="text" required placeholder="Select delivery date.." id="futureDate" autocomplete="off" {% if initial_data.delivery_date %}value="{{ initial_data.delivery_date|date:'Y-m-d' }}"{% endif %}>
                         <input type="text" hidden name="delivery_date" id="futureDateFormatted">
-                        <input type="text" required name="delivery_time" placeholder="Select delivery time.." id="timepicker" autocomplete="off">
+                        <input type="text" required name="delivery_time" placeholder="Select delivery time.." id="timepicker" autocomplete="off" {% if initial_data.delivery_time %}value="{{ initial_data.delivery_time|time:'H:i' }}"{% endif %}>
                     </div>
                 </div>
+                
             </div>
 
             <button type="submit" class="submit-btn" onclick="formSubmit()">Submit</button>
@@ -104,23 +105,25 @@
     <button id="nextBtn" type="button" onclick="nextStep()" class="next-btn">Next</button>
 </div>
 
+{% endblock %}
+
 {% block javascript %}
 <script src="{% static 'js/orderForm.js' %}"></script>
 <script>
+    // Access cart data from the context and store it in session storage
+    const cartData = JSON.parse("{{ cart_data|escapejs }}");
+    sessionStorage.setItem('cart', JSON.stringify(cartData));
+
+    // Add event listener to remove cart data from session storage beforeunload
+    window.addEventListener('beforeunload', function (event) {
+        sessionStorage.removeItem('cart');
+    });
+    // Function to reload the page with selected category
     function reloadPage(selectedCategory) {
         window.location.href = "{% url 'product_search' %}?category=" + selectedCategory;
     }
 </script>
-<script>
-    // Access cart data from the context
-    const cartData = JSON.parse("{{ cart_data|escapejs }}");
-    
-    // Store cart data in session storage
-    sessionStorage.setItem('cart', JSON.stringify(cartData));
-  </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
-{% endblock %}
-
 {% endblock %}

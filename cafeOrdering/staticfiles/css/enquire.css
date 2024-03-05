@@ -1,0 +1,64 @@
+@import 'root.css';
+
+main {
+    width: 100%;
+}
+
+.main-container-centered {
+    min-height: calc(100vh - 50px);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-image: url('/media/photos/Print.jpg');
+    background-size: cover;
+}
+
+.enquire-form p label {
+    display: none;
+}
+
+.enquire-form p {
+    margin-bottom: 5px;
+}
+
+.form-card {
+    background-color: #bfbfbf;
+    border: 2px solid var(--off-black);
+    border-radius: 8px;
+    box-shadow: 3px 3px 1px var(--off-black);
+}
+
+.info-card {
+    background-color: var(--off-black);
+    border: 2px solid #d0d0d0;
+    border-radius: 8px;
+    box-shadow: 3px 3px 1px #adadad;
+    color: white;
+}
+
+.form-card, .info-card {
+    width: 280px;
+    margin: auto;
+}
+
+.msg-input {
+    max-width: 95%;
+}
+
+@media screen and (min-width: 355px) {
+    .form-card, .info-card {
+        min-width: 350px;
+        width: 90%;
+    }
+    .main-container-centered {
+        padding: 10px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .form-card, .info-card {
+        min-height: 415px;
+        min-width: 450px;
+    }
+}
