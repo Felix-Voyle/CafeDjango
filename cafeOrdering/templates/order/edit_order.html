@@ -90,8 +90,8 @@
                     <input type="text" name="postcode" {% if initial_data.postcode %}value="{{ initial_data.postcode }}"{% else %}placeholder="Post Code"{% endif %}>
                     <input type="text" name="delivery_instructions" {% if initial_data.delivery_instructions %}value="{{ initial_data.delivery_instructions }}"{% else %}placeholder="Delivery notes..."{% endif %}>
                     <div class="date-time">
-                        <input type="text" required placeholder="Select delivery date.." id="futureDate" autocomplete="off" {% if initial_data.delivery_date %}value="{{ initial_data.delivery_date|date:'Y-m-d' }}"{% endif %}>
-                        <input type="text" hidden name="delivery_date" id="futureDateFormatted">
+                        <input type="text" required placeholder="Select delivery date.." id="futureDate" autocomplete="off" {% if initial_data.delivery_date %}value="{{ initial_data.delivery_date|date:'d/m/Y' }}"{% endif %}>
+                        <input type="text" hidden name="delivery_date" id="futureDateFormatted" value="{{ initial_data.delivery_date|date:'Y-m-d' }}">
                         <input type="text" required name="delivery_time" placeholder="Select delivery time.." id="timepicker" autocomplete="off" {% if initial_data.delivery_time %}value="{{ initial_data.delivery_time|time:'H:i' }}"{% endif %}>
                     </div>
                 </div>

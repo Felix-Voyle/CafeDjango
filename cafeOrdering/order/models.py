@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models import Sum
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.utils.timezone import make_aware
 from products.models import Product
 
 class Order(models.Model):
@@ -55,6 +56,27 @@ class Order(models.Model):
     def finalize_order(self):
         self.update_total()
     
+    
+    def is_editable(self):
+        """
+        Check if the order can be edited.
+        """
+        current_datetime = timezone.now()
+
+        delivery_datetime = timezone.datetime.combine(self.delivery_date, self.delivery_time)
+        delivery_datetime_aware = make_aware(delivery_datetime)
+
+        time_difference = delivery_datetime_aware - current_datetime
+        
+        return time_difference.total_seconds() >= 48 * 3600
+
+    @property
+    def can_edit(self):
+        """
+        Property method to make it easier to access the editability status.
+        """
+        return self.is_editable()
+
 
     def is_reportable(self):
         """
