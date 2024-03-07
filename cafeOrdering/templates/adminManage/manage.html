@@ -50,8 +50,8 @@
                             </div>
                             <div class="col-4">
                                 <input id="invoiced-{{ order.id }}" name="invoiced" type="checkbox" class="status-checkbox" data-order-id="{{ order.id }}" {% if order.status == 'invoiced' %}checked disabled {% endif %}>
-                                <label for="invoiced-{{ order.id }}">Invoiced</label>
-                            </div>
+                                <a href="{% url 'send_invoice' order.order_id %}"><label for="invoiced-{{ order.id }}">Invoice</label></a>
+                            </div> 
                         </div>
                     </form>
 

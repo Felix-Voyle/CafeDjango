@@ -45,8 +45,9 @@ def recipient_information(can, recipient_info):
     # Draw recipient information
     recipient_y_coordinate = 720
     for line in recipient_info:
-        can.drawString(45, recipient_y_coordinate, line)
-        recipient_y_coordinate -= 10
+        if line is not None:
+            can.drawString(45, recipient_y_coordinate, line)
+            recipient_y_coordinate -= 10
 
 
 def invoice_information(can, additional_info):
@@ -112,7 +113,7 @@ def invoice_totals(can, y_coordinate, totals):
         y_coordinate -= 10  # Adjust for spacing between lines
 
 
-def generate_invoice(recipient_info, order_info, cart, totals):
+def generate_invoice(recipient_info, order_info, cart):
     # Create a PdfWriter object to store the pages
     output_pdf = PdfWriter()
 
@@ -131,8 +132,8 @@ def generate_invoice(recipient_info, order_info, cart, totals):
         invoice_information(can, order_info)
         draw_table_header(can)
         y_coordinate = order_information(can, cart, start_index, end_index)  # Add numbers specific to each page
-        if page_num == (num_items + items_per_page - 1) // items_per_page - 1:
-            invoice_totals(can, y_coordinate, totals)
+        #if page_num == (num_items + items_per_page - 1) // items_per_page - 1:
+            #invoice_totals(can, y_coordinate, totals)
         can.save()
 
         packet.seek(0)
@@ -143,3 +144,5 @@ def generate_invoice(recipient_info, order_info, cart, totals):
     # Write the output PDF to a file
     with open("output.pdf", "wb") as output_stream:
         output_pdf.write(output_stream)
+
+

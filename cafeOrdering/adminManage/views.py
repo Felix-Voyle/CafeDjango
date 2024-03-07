@@ -1,10 +1,11 @@
 import json
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
 from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
+from .pdf_generator import generate_invoice
 from enquire.models import Enquiry
 from order.models import Order
 
@@ -44,3 +45,37 @@ def update_order_status(request):
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
+    
+
+def send_invoice(request, order_id):
+    order = get_object_or_404(Order, order_id=order_id)
+    cart = order.order_items.all()
+    invoice_items = []
+
+    user_profile = order.user.userprofile
+
+    recipient_info = [
+    user_profile.invoice_business,
+    user_profile.invoice_address_line1,
+    user_profile.invoice_address_line2,
+    user_profile.invoice_address_line3,
+    user_profile.invoice_postcode
+    ]
+
+    order_info = [
+    "Order Reference: " + order_id,
+    "Invoice Date: " + order.delivery_date.strftime('%d/%m/%Y'),
+    "Payment Terms: 30 days"
+    ]
+
+    for item in cart:
+        product = item.product.name
+        quantity = item.quantity  
+        price = '{:.2f}'.format(item.product.price)
+        subtotal = '{:.2f}'.format(item.get_total())
+        invoice_items.append({"description": product, "quantity": quantity, "price": price, "subtotal": subtotal},)
+
+    generate_invoice(recipient_info, order_info, invoice_items)
+
+    return HttpResponse("Invoice sent successfully")
+    
