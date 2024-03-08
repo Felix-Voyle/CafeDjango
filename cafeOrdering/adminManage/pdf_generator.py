@@ -71,9 +71,9 @@ def draw_table_header(can):
 
     # Draw header text
     can.drawString(45, 635, "Description")
-    can.drawString(285, 635, "Quantity")
-    can.drawString(415, 635, "Price")
-    can.drawString(530, 635, "Subtotal")
+    can.drawString(275, 635, "Quantity")
+    can.drawString(414, 635, "Price")
+    can.drawString(526, 635, "Subtotal")
 
 
 def order_information(can, cart, start_index, end_index):
@@ -109,11 +109,11 @@ def invoice_totals(can, y_coordinate, totals):
         
         # Draw a horizontal line after the label and value
         y_coordinate -= 5  # Adjust for spacing
-        can.line(415, y_coordinate, 550, y_coordinate)
+        can.line(415, y_coordinate, 555, y_coordinate)
         y_coordinate -= 10  # Adjust for spacing between lines
 
 
-def generate_invoice(recipient_info, order_info, cart):
+def generate_invoice(recipient_info, order_info, cart, totals):
     # Create a PdfWriter object to store the pages
     output_pdf = PdfWriter()
 
@@ -132,8 +132,8 @@ def generate_invoice(recipient_info, order_info, cart):
         invoice_information(can, order_info)
         draw_table_header(can)
         y_coordinate = order_information(can, cart, start_index, end_index)  # Add numbers specific to each page
-        #if page_num == (num_items + items_per_page - 1) // items_per_page - 1:
-            #invoice_totals(can, y_coordinate, totals)
+        if page_num == (num_items + items_per_page - 1) // items_per_page - 1:
+            invoice_totals(can, y_coordinate, totals)
         can.save()
 
         packet.seek(0)

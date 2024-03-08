@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
 from .pdf_generator import generate_invoice
 from enquire.models import Enquiry
+from decimal import Decimal, ROUND_HALF_UP
 from order.models import Order
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
@@ -75,7 +76,27 @@ def send_invoice(request, order_id):
         subtotal = '{:.2f}'.format(item.get_total())
         invoice_items.append({"description": product, "quantity": quantity, "price": price, "subtotal": subtotal},)
 
-    generate_invoice(recipient_info, order_info, invoice_items)
+    totals = {
+    "Subtotal incl. VAT": '{:.2f}'.format(order.order_total)
+    }
+
+    # Calculate the discount
+    discount_rate = Decimal('0.20')
+    discount = (order.order_total * discount_rate).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+    print(discount)
+
+    # Check if the user's profile is workspace
+    if user_profile == "workspace":
+        totals["Discount 20%"] = '{:.2f}'.format(discount)
+        totals["Total excl. VAT"] = '{:.2f}'.format(order.order_total - discount)
+        totals["Total amount due"] = '{:.2f}'.format(order.order_total - discount)
+    else:
+        totals["Total excl. VAT"] = '{:.2f}'.format(order.order_total - discount)
+        totals["Total amount due"] = '{:.2f}'.format(order.order_total)
+
+    print(totals)
+
+    generate_invoice(recipient_info, order_info, invoice_items, totals)
 
     return HttpResponse("Invoice sent successfully")
     
