@@ -1,0 +1,22 @@
+main {
+    min-height: calc(100vh - 50px);
+}
+
+.card, .card-body {
+    width: 90%;
+    margin: auto;
+}
+
+.card-body {
+    background-color: rgb(154, 154, 154);
+    position: relative;
+    top: -8px;
+}
+
+.order-info {
+    font-size: small;
+}
+
+.no-pad {
+    padding: 0;
+}

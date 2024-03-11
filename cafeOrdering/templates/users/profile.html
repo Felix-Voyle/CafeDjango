@@ -1,57 +1,107 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
 
 {% block content %}
 <h2>Orders</h2>
-<div class="accordion" id="ordersAccordion">
+<div class="accordion mb-2" id="ordersAccordion">
     {% if orders %}
     {% for order in orders reversed %}
-    <div class="card">
+    <div class="card mb-2">
         <div class="card-header" id="order{{ order.id }}">
-            <h2 class="mb-0">
-                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ order.id }}"
-                    aria-expanded="true" aria-controls="collapse{{ order.id }}">
-                    Order #: {{ order.order_id }} | Total: £ {{ order.order_total }}
-                </button>
-                {% if order.can_edit %}
-                <a href="{% url 'edit_order' order.order_id %}">Edit</a>
-                {% else %}
-                <span>Edit</span>
-                {% endif %}
-                {% if order.reportable and not order.reported_problem %}
-                <button class="btn btn-sm btn-danger ml-auto" onclick="reportProblem('{{ order.id }}')">Report
-                    Problem</button>
-                {% endif %}
-            </h2>
-        </div>
-
-        <div id="collapse{{ order.id }}" class="collapse" aria-labelledby="order{{ order.id }}"
-            data-parent="#ordersAccordion">
-            <div class="card-body">
-                <ul class="list-unstyled">
-                    {% for item in order.order_items.all %}
-                    <li class="d-flex">
-                        <span class="col-4">{{ item.product.name }} x {{ item.quantity }}</span>
-                        <span class="col-1">-</span>
-                        <span class="col-4">£ {{ item.get_total }}</span>
-                    </li>
-                    {% endfor %}
-                    <hr>
-                    <li class="d-flex">
-                        <span class="col-4"><strong>Total</strong></span>
-                        <span class="col-1">-</span>
-                        <span class="col-4">£ {{ order.order_total }}</span>
-                    </li>
-                </ul>
+            <div class="row">
+                <span class="col-12 order-info">{{ order.delivery_date }} @ {{ order.delivery_time }}</span>
+            </div>
+            <div class="row text-center">
+                <div class="col-12">
+                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                        data-target="#collapse{{ order.id }}" aria-expanded="true"
+                        aria-controls="collapse{{ order.id }}">
+                        Order #: {{ order.order_id }} | Total: £ {{ order.order_total }}
+                    </button>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-4 m-auto">
+                    {% if order.can_edit %}
+                    <a href="{% url 'edit_order' order.order_id %}">Edit</a>
+                    {% else %}
+                    <span onclick="showEditModal()">Edit</span>
+                    {% endif %}
+                </div>
+                <div class="col-4 m-auto">
+                    {% if order.can_edit %}
+                    <a href="">Cancel</a>
+                    {% else %}
+                    <span onclick="showEditModal()">Cancel</span>
+                    {% endif %}
+                </div>
+                <div class="col-4">{% if order.reportable and not order.reported_problem %}
+                    <button class="btn btn-sm btn-danger ml-auto" onclick="reportProblem('{{ order.id }}')">Report
+                        Issue</button>
+                    {% else %}
+                    <span>report</span>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
-    {% endfor %}
-    {% else %}
-    <p>There are no orders to display..</p>
-    {% endif %}
+
+    <div id="collapse{{ order.id }}" class="collapse" aria-labelledby="order{{ order.id }}"
+        data-parent="#ordersAccordion">
+        <div class="card-body">
+            <ul class="list-unstyled">
+                {% for item in order.order_items.all %}
+                <li class="d-flex order-item mb-1 text-center">
+                    <span class="col-6 m-auto no-pad">{{ item.product.name }}</span>
+                    <span class="col-2 m-auto no-pad">x {{ item.quantity }}</span>
+                    <span class="col-4 m-auto no-pad">£ {{ item.get_total }}</span>
+                </li>
+                {% endfor %}
+                <hr>
+                <li class="d-flex text-center">
+                    <span class="col-6 no-pad"><strong>Total</strong></span>
+                    <span class="col-2 no-pad">-</span>
+                    <span class="col-4 no-pad">£ {{ order.order_total }}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endfor %}
 </div>
 
-<!-- Modal -->
+{% else %}
+<p>There are no orders to display..</p>
+{% endif %}
+</div>
+
+<!-- Edit/Cancel Modal -->
+<div class="modal fade" id="editCancelModal" tabindex="-1" role="dialog" aria-labelledby="reportProblemModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reportProblemModalLabel">Notice</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>You can't edit or cancel an order after delivery or within 48 hours.</p>
+                <p>Please report any issues within 24 hours of delivery.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Report Issue Modal -->
 <div class="modal fade" id="reportProblemModal" tabindex="-1" role="dialog" aria-labelledby="reportProblemModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -75,6 +125,9 @@
 </div>
 
 <script>
+    function showEditModal() {
+    $('#editCancelModal').modal('show');
+    }
     function reportProblem(orderId) {
         // Set the hidden input value to the orderId
         $('#orderIdInput').val(orderId);
@@ -111,6 +164,3 @@
     }
 </script>
 {% endblock %}
-
-
-
