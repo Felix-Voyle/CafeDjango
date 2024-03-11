@@ -10,31 +10,47 @@
 {% endblock %}
 
 {% block content %}
-<div class="home-container">
-    <div class="row no-gutters">
-        <div class="col-lg-6 col-sm-12 text-center mb-5">
-            <div class="col-lg-4 text-left mb-2">
-                <strong>FIND US:</strong>
-            </div>
-            <div class="col-12 text-left">
-                The Leather Market,
-            </div>
-            <div class="col-12 text-left">
-                Weston St,
-            </div>
-            <div class="col-12 text-left">
-                London
-            </div>
-            <div class="col-12 text-left">
-                SE1 3ER
-            </div>
-            <div class="col-12 text-left">
-                <strong>Open</strong> <p>Mon - Fri, 7:30 - 4:30</p>
-            </div>
+<section class="hero">
+    <div class="hero-content">
+        <div class="landscape-container">
+        <img class="landscape-hero" src="{% static 'images/landscape_hero.jpg' %}" alt="Arrow Down">
         </div>
-        <div class="col-lg-6 col-sm-12 text-center mb-5">
-            Map of location here
+        <div class="portrait-container">
+        <img class="portrait-hero" src="{% static 'images/portrait_hero.jpg' %}" alt="Arrow Down">
+        </div>
+        <a href="#address-section">
+            <img class="down-arrow" src="{% static 'images/down_arrow.png' %}" alt="Arrow Down">
+        </a>
+    </div>
+</section>
+
+<section id="address-section">
+    <div class="container">
+        <div class="row no-gutters">
+            <div class="col-lg-6 col-sm-12 text-center mb-5">
+                <div class="col-lg-4 text-left mb-2">
+                    <strong>FIND US:</strong>
+                </div>
+                <div class="col-12 text-left">
+                    The Leather Market,
+                </div>
+                <div class="col-12 text-left">
+                    Weston St,
+                </div>
+                <div class="col-12 text-left">
+                    London
+                </div>
+                <div class="col-12 text-left">
+                    SE1 3ER
+                </div>
+                <div class="col-12 text-left">
+                    <strong>Open</strong> <p>Mon - Fri, 7:30 - 4:30</p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-12 text-center mb-5">
+                Map of location here
+            </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
