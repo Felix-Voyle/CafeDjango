@@ -64,6 +64,9 @@
                         <div id="collapseCard2{{ forloop.counter }}" class="collapse">
                             <div class="card-body order-details">
                                 <h6 class="text-center">{{ order.user }}</h6>
+                                {% if order.reported_problem %}
+                                <p>{{ order.reported_problem }}</p>
+                                {% endif %}
                                 <ul>
                                 {% for item in order.order_items.all %}
                                 {% if item.quantity > 0 %}
@@ -75,10 +78,10 @@
                                 {% endif %}
                                 {% endfor %}
                                 <hr>
-                                <li class="d-flex">
-                                    <span class="col-5"><strong>Total</strong></span>
-                                    <span class="col-2">-</span>
-                                    <span class="col-5">£ {{ order.order_total }}</span>
+                                <li class="d-flex text-center">
+                                    <span class="col-6 no-pad"><strong>Total</strong></span>
+                                    <span class="col-2 no-pad">-</span>
+                                    <span class="col-4 no-pad">£ {{ order.order_total }}</span>
                                 </li>
                                 </ul>
                                 <div class="col-12 text-left mb-2">
