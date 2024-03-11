@@ -58,15 +58,12 @@ class Order(models.Model):
     
     
     def is_editable(self):
-        """
-        Check if the order can be edited.
-        """
-        current_datetime = timezone.now()
+    
+        current_datetime = timezone.localtime(timezone.now())
 
-        delivery_datetime = timezone.datetime.combine(self.delivery_date, self.delivery_time)
-        delivery_datetime_aware = make_aware(delivery_datetime)
+        delivery_datetime = make_aware(timezone.datetime.combine(self.delivery_date, self.delivery_time))
 
-        time_difference = delivery_datetime_aware - current_datetime
+        time_difference = delivery_datetime - current_datetime
         
         return time_difference.total_seconds() >= 48 * 3600
 
@@ -79,20 +76,20 @@ class Order(models.Model):
 
 
     def is_reportable(self):
-        """
-        Check if the order can be reported for problems within 24 hours of the delivery date and time.
-        """
-        # Calculate the current datetime
-        current_datetime = timezone.now()
+    
+        # Make current datetime timezone-aware
+        current_datetime = timezone.localtime(timezone.now())
 
-        # Combine the delivery date and time into a single datetime object
+        # Check if delivery_date and delivery_time are naive, if so, make them timezone-aware
         delivery_datetime = timezone.datetime.combine(self.delivery_date, self.delivery_time)
+        if timezone.is_naive(delivery_datetime):
+            delivery_datetime = timezone.make_aware(delivery_datetime)
 
         # Calculate the difference between the current datetime and the delivery datetime
         time_difference = current_datetime - delivery_datetime
-        
+
         # Check if the time difference is within 24 hours
-        return time_difference.days == 0 and time_difference.seconds < 86400
+        return time_difference.days == 0 and time_difference.total_seconds() < 86400
 
     @property
     def reportable(self):
