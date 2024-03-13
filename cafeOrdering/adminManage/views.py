@@ -22,6 +22,16 @@ def manage(request):
 
     return render(request, 'adminManage/manage.html', ctx)
 
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
+def enquiries(request):
+    enquiries = Enquiry.objects.all()
+    
+    ctx = {
+        'enquiries': enquiries,
+    }
+
+    return render(request, 'adminManage/enquiries.html', ctx)
+
 
 
 @require_POST
