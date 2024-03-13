@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 import json
 from .models import Order, OrderItem
 from products.models import Product, Category
-from users.models import UserProfile
 
 
 def order(request):
@@ -104,13 +103,13 @@ def edit_order(request, order_id):
     print(order.delivery_time)
     if request.method == 'POST':
         # Retrieve data from the form
-        address_line1 = request.POST['address_line1']
+        address_line1 = request.POST.get('address_line1', order.address_line1)
         address_line2 = request.POST.get('address_line2', '')
         address_line3 = request.POST.get('address_line3', '')
-        postcode = request.POST['postcode']
+        postcode = request.POST.get('postcode', order.postcode)
         delivery_instructions = request.POST.get('delivery_instructions', '')
-        delivery_date = request.POST.get('delivery_date')
-        delivery_time = request.POST.get('delivery_time')
+        delivery_date = request.POST.get('delivery_date', order.delivery_date)
+        delivery_time = request.POST.get('delivery_time', order.delivery_time)
 
         # Update order fields
         order.address_line1 = address_line1
@@ -121,7 +120,9 @@ def edit_order(request, order_id):
         order.delivery_date = delivery_date
         order.delivery_time = delivery_time
 
-        # Save the order
+        if request.user.is_superuser or request.user.is_staff:
+            order.reported_problem = None
+        
         order.save()
 
         # Handle order items
