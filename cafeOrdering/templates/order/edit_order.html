@@ -84,21 +84,70 @@
                 <!-- Second div -->
                 <div class="col-lg-6 col-sm-12 text-center form-card mb-5 address-inputs">
                     <h3 class="mb-2 mt-2 white-title">Address</h3>
-                    <input type="text" name="address_line1" {% if initial_data.address_line1 %}value="{{ initial_data.address_line1 }}"{% else %}placeholder="Address Line 1"{% endif %}>
-                    <input type="text" name="address_line2" {% if initial_data.address_line2 %}value="{{ initial_data.address_line2 }}"{% else %}placeholder="Address Line 2"{% endif %}>
-                    <input type="text" name="address_line3" {% if initial_data.address_line3 %}value="{{ initial_data.address_line3 }}"{% else %}placeholder="Address Line 3"{% endif %}>
-                    <input type="text" name="postcode" {% if initial_data.postcode %}value="{{ initial_data.postcode }}"{% else %}placeholder="Post Code"{% endif %}>
-                    <input type="text" name="delivery_instructions" {% if initial_data.delivery_instructions %}value="{{ initial_data.delivery_instructions }}"{% else %}placeholder="Delivery notes..."{% endif %}>
+                    <input type="text" name="address_line1"
+                    {% if initial_data.address_line1 %}
+                        value="{{ initial_data.address_line1 }}"
+                    {% else %}
+                        placeholder="Address Line 1"
+                    {% endif %}
+                    {% if request.user != order.user %}
+                        disabled
+                    {% endif %}>
+                    <input type="text" name="address_line2" 
+                    {% if initial_data.address_line2 %}
+                        value="{{ initial_data.address_line2 }}"
+                    {% else %}
+                        placeholder="Address Line 2"
+                    {% endif %} 
+                    {% if request.user != order.user %}
+                        disabled
+                    {% endif %}>
+                    <input type="text" name="address_line3" 
+                    {% if initial_data.address_line3 %}
+                        value="{{ initial_data.address_line3 }}"
+                    {% else %}placeholder="Address Line 3"
+                    {% endif %}
+                    {% if request.user != order.user %}
+                        disabled
+                    {% endif %}>
+                    <input type="text" name="postcode"
+                    {% if initial_data.postcode %}
+                        value="{{ initial_data.postcode }}"
+                    {% else %}placeholder="Post Code"
+                    {% endif %}
+                    {% if request.user != order.user %}
+                        disabled
+                    {% endif %}>
+                    <input type="text" name="delivery_instructions"
+                    {% if initial_data.delivery_instructions %}
+                        value="{{ initial_data.delivery_instructions }}"
+                    {% else %}placeholder="Delivery notes..."
+                    {% endif %}
+                    {% if request.user != order.user %}
+                        disabled
+                    {% endif %}>
                     <div class="date-time">
-                        <input type="text" required placeholder="Select delivery date.." id="futureDate" autocomplete="off" {% if initial_data.delivery_date %}value="{{ initial_data.delivery_date|date:'d/m/Y' }}"{% endif %}>
+                        <input type="text" required placeholder="Select delivery date.." id="futureDate" autocomplete="off"
+                        {% if initial_data.delivery_date %}
+                            value="{{ initial_data.delivery_date|date:'d/m/Y' }}"
+                        {% endif %}
+                        {% if request.user != order.user %}
+                            disabled
+                        {% endif %}>
                         <input type="text" hidden name="delivery_date" id="futureDateFormatted" value="{{ initial_data.delivery_date|date:'Y-m-d' }}">
-                        <input type="text" required name="delivery_time" placeholder="Select delivery time.." id="timepicker" autocomplete="off" {% if initial_data.delivery_time %}value="{{ initial_data.delivery_time|time:'H:i' }}"{% endif %}>
+                        <input type="text" required name="delivery_time" placeholder="Select delivery time.." id="timepicker" autocomplete="off" 
+                        {% if initial_data.delivery_time %}
+                        value="{{ initial_data.delivery_time|time:'H:i' }}"
+                        {% endif %}
+                        {% if request.user != order.user %}
+                            disabled
+                        {% endif %}>
                     </div>
                 </div>
                 
             </div>
 
-            <button type="submit" class="submit-btn" onclick="formSubmit()">Submit</button>
+            <button type="submit" class="submit-btn" onclick="formSubmit()">Edit Order</button>
         </div>
     </form>
     <button id="prevBtn" type="button" onclick="prevStep()" class="prev-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
