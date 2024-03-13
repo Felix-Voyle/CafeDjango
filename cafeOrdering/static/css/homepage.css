@@ -29,11 +29,19 @@ body {
     margin: 0 auto;
 }
 
+.find-us-text {
+    color: black;
+    position: relative;
+    top: 72vh;
+    left: 28px;
+}
+
 .down-arrow {
     width: 40px;
     height: 40px;
     position: relative;
     top: 78vh;
+    left: -20px;
 }
 
 .hero-content {
@@ -68,6 +76,9 @@ body {
 @media screen and (max-width: 600px) {
     .landscape-hero {
         display: none; 
+    }
+    .find-us-text {
+        color: white;
     }
 }
 

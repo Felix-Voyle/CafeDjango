@@ -1,5 +1,17 @@
 @import 'root.css';
 
+.manage-menu {
+    display: inline-flex;
+    justify-content: space-between;
+    width: 95%;
+    margin: auto;
+}
+
+.manage-menu ul {
+    margin: 0;
+    padding: 0;
+}
+
 .ordered {
     background-color: var(--pastel-red);
 }

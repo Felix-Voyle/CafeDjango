@@ -9,10 +9,16 @@
 
 <html data-csrf="{{ csrf_token }}">
 
-
+    <div class="row col-12 no-gutters">
+        <li class="manage-menu">
+            <a href="{% url 'manage' %}"><ul>Orders</ul></a>
+            <ul>Create Invoice</ul>
+            <a href="{% url 'enquiries' %}"><ul>Enquiries</ul></a>
+        </li>
+    </div>
     <div class="row no-gutters">
         <!-- First div -->
-        <div class="col-lg-6 col-sm-12 mb-5">
+        <div class="col-12">
             <h3 class="text-center">Orders</h3>
             <section>
                 {% for order in orders reversed%}
@@ -101,32 +107,6 @@
                                 {% endif %}
                             </div>
                         </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </section>
-        </div>
-
-        <!-- Second div -->
-        <div class="col-lg-6 col-sm-12 mb-5">
-            <h3 class="text-center">Enquiries</h3>
-            <section>
-                {% for enquiry in enquiries %}
-                <div class="enquiry-card text-center">
-                    <div class="card">
-                        <div class="card-header" data-toggle="collapse" data-target="#collapseCard{{ forloop.counter }}">
-                            <h5 class="mb-0">{{ enquiry.name }} - {{ enquiry.email }}</h5>
-                        </div>
-                        <div id="collapseCard{{ forloop.counter }}" class="collapse">
-                            <div class="card-body">
-                                <p>{{ enquiry.message }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="arrow-box text-center">
-                        <span class="toggle-arrow" data-toggle="collapse" data-target="#collapseCard{{ forloop.counter }}">
-                            <i class="fas fa-chevron-down"></i>
-                        </span>
                     </div>
                 </div>
                 {% endfor %}
