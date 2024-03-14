@@ -33,6 +33,15 @@ def enquiries(request):
     return render(request, 'adminManage/enquiries.html', ctx)
 
 
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
+def create_invoice(request):
+    
+    ctx = {
+        'enquiries': enquiries,
+    }
+
+    return render(request, 'adminManage/create_invoice.html', ctx)
+
 
 @require_POST
 def update_order_status(request):
