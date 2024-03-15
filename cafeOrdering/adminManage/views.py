@@ -1,4 +1,5 @@
 import json
+import random
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
@@ -37,9 +38,60 @@ def enquiries(request):
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def create_invoice(request):
     products = InvoiceProduct.objects.all()
+    order_reference = ''.join(random.choices('0123456789', k=5))
+    invoice_items = []
+
     ctx = {
         'products': products,
     }
+
+    if request.method == 'POST':
+        product_ids = request.POST.getlist('products')
+        quantities = request.POST.getlist('quantities')
+        business_name = request.POST.get('business_name')
+        address_line1 = request.POST.get('address_line1')
+        address_line2 = request.POST.get('address_line2')
+        address_line3 = request.POST.get('address_line3')
+        postcode = request.POST.get('postcode')
+        invoice_date = request.POST.get('invoice_date')
+        order_detail = request.POST.get('order_detail')
+
+        recipient_info = [
+            business_name,
+            address_line1,
+            address_line2,
+            address_line3,
+            postcode,
+        ]
+
+        invoice_info = [
+            "Order Reference: " + order_reference,
+            "Invoice Date: " + invoice_date,
+            "Payment Terms: 30 days",
+            order_detail
+            ]
+
+        for product_id, quantity in zip(product_ids, quantities):
+            try:
+                product = InvoiceProduct.objects.get(pk=product_id)
+                price = product.price  # Assuming you have a price field in your Product model
+                subtotal = int(quantity) * price
+                # Format the product information
+                product_info = {
+                    "description": product.name,  # Assuming you have a name field in your Product model
+                    "quantity": int(quantity),
+                    "price": price,
+                    "subtotal": subtotal,
+                }
+                # Append the formatted product information to the list
+                invoice_items.append(product_info)
+            except InvoiceProduct.DoesNotExist:
+                messages.error(request, f"Product with ID {product_id} does not exist")
+                return redirect('create_invoice')
+            
+        print(invoice_items)
+
+        return HttpResponse('Form submitted successfully.')
 
     return render(request, 'adminManage/create_invoice.html', ctx)
 
