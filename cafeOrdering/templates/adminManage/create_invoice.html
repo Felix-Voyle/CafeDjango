@@ -29,13 +29,21 @@
             </div>
         </div>
     </form>
-    
-    <table id="added-products-table" class="invoice-table">
-        <tbody id="added-products"></tbody>
-    </table>
 
-    <form method="post" action="" id="invoice-products">
+    <form method="post" action="{% url 'create_invoice' %}" id="invoice-products">
         {% csrf_token %}
+        <table id="added-products-table" class="invoice-table">
+            <tbody id="added-products"></tbody>
+        </table>
+        <div id="invoice-detail" class="invoice-info d-none">
+            <input type="text" name="business_name" placeholder="Business Name" required><br>
+            <input type="text" name="address_line1" placeholder="Address Line 1" required><br>
+            <input type="text" name="address_line2" placeholder="Address Line 2"><br>
+            <input type="text" name="address_line3" placeholder="Address Line 3"><br>
+            <input type="text" name="postcode" placeholder="Postcode" required><br>
+            <input type="date" name="invoice_date" placeholder="Invoice Date" required><br>
+            <textarea name="order_detail" placeholder="Order Detail" required></textarea><br>
+        </div>
         <button type="submit" class="btn btn-success mt-3">Create Invoice</button>
     </form>
 </div>
@@ -49,6 +57,7 @@
         var quantityInput = document.getElementById("quantity");
         var addedProductsTable = document.getElementById("added-products-table");
         var invoiceForm = document.getElementById("invoice-products");
+        var invoiceDetail = document.getElementById("invoice-detail");
     
         addButton.addEventListener("click", function() {
             var productId = productSelect.value;
@@ -116,6 +125,8 @@
                 quantityInputHidden.name = "quantities";
                 quantityInputHidden.value = quantity;
                 quantityCell.appendChild(quantityInputHidden);
+
+                invoiceDetail.classList.remove("d-none");
     
                 // Create a delete button
                 var deleteButton = document.createElement("button");
@@ -126,6 +137,7 @@
                     if (addedProductsTable.rows.length === 1) {
                         // If there are no more rows, remove the table header
                         addedProductsTable.deleteTHead();
+                        invoiceDetail.classList.add("d-none");
                     }
                 };
                 deleteCell.appendChild(deleteButton);
