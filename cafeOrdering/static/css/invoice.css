@@ -1,0 +1,29 @@
+@import 'root.css';
+
+.no-pad {
+    padding: 0;
+}
+
+.invoice-table {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    width: 90%;
+    margin: auto;
+}
+
+.invoice-th {
+    background-color: var(--off-white);
+    border: 1px solid #ddd;
+}
+
+.invoice-row:nth-child(even) {
+    background-color: var(--off-white);
+}
+.invoice-row:nth-child(odd) {
+    background-color: var(--grey);
+}
+
+.invoice-row:hover {
+    background-color: var(--light-grey);
+}
