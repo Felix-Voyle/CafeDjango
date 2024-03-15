@@ -9,6 +9,7 @@ from .pdf_generator import generate_invoice
 from enquire.models import Enquiry
 from decimal import Decimal, ROUND_HALF_UP
 from order.models import Order
+from products.models import InvoiceProduct
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def manage(request):
@@ -35,9 +36,9 @@ def enquiries(request):
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def create_invoice(request):
-    
+    products = InvoiceProduct.objects.all()
     ctx = {
-        'enquiries': enquiries,
+        'products': products,
     }
 
     return render(request, 'adminManage/create_invoice.html', ctx)
