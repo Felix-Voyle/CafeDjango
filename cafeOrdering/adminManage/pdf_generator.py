@@ -58,8 +58,10 @@ def invoice_information(can, additional_info):
     for line in additional_info:
         can.drawString(info_x_coordinate, info_y_coordinate, line)
         info_y_coordinate -= 10
-    can.drawString(250, 660, "Catering @ Record Hall")
 
+
+def specify_order(can, order_detail):
+    can.drawString(250, 660, order_detail)
 
 def draw_table_header(can):
     # Draw pale grey rectangle as the background for the header
@@ -114,7 +116,7 @@ def invoice_totals(can, y_coordinate, totals):
         y_coordinate -= 10  # Adjust for spacing between lines
 
 
-def generate_invoice(recipient_info, order_info, cart, totals):
+def generate_invoice(recipient_info, order_info, cart, totals, order_detail=None):
     # Create a PdfWriter object to store the pages
     output_pdf = PdfWriter()
 
@@ -135,6 +137,8 @@ def generate_invoice(recipient_info, order_info, cart, totals):
         invoice_footer(can)
         recipient_information(can, recipient_info)
         invoice_information(can, order_info)
+        if order_detail is not None:
+            specify_order(can, order_detail)
         draw_table_header(can)
         y_coordinate = order_information(
             can, cart, start_index, end_index
