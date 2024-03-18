@@ -9,15 +9,16 @@
 {% block content %}
 
 <div class="row col-12 no-gutters">
-    <li class="manage-menu">
-        <a href="{% url 'manage' %}">
-            <ul>Orders</ul>
-        </a>
-        <ul>Create Invoice</ul>
-        <a href="{% url 'enquiries' %}">
-            <ul>Enquiries</ul>
-        </a>
-    </li>
+    <ul class="manage-menu">
+        <li><a href="{% url 'manage' %}">Orders</a></li>
+        <li><a href="{% url 'create_invoice' %}">Create Invoice</a></li>
+        <li>
+            {% if enquiries|filter_unread|length > 0 %}
+            <span>{{ enquiries|filter_unread|length }}</span>
+            {% endif %}
+            <a href="{% url 'enquiries' %}">Enquiries</a>
+        </li>
+    </ul>
 </div>
 <div class="row no-gutters">
     <div class="col-12 mb-5">
@@ -44,6 +45,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <a href="{% url 'enquiry' enquiry.id %}"><h5 class="mb-0">{{ enquiry.name }} - {{ enquiry.email }}</h5></a>
+                                <a href="{% url 'delete_enquiry' enquiry.id %}"><p>Delete</p></a>
                             </div>
                         </div>
                     </div>
@@ -58,5 +60,5 @@
 {% endblock %}
 
 {% block javascript %}
-<script src="{% static 'js/manage.js' %}"></script>
+<script src="{% static 'js/enquiries.js' %}"></script>
 {% endblock %}

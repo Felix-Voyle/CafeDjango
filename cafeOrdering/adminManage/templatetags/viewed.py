@@ -9,3 +9,7 @@ def viewed(enquiry):
 @register.filter(name='unread')
 def unread(enquiry):
     return not enquiry.viewed
+
+@register.filter(name='filter_unread')
+def filter_unread(enquiries):
+    return enquiries.filter(viewed=False)

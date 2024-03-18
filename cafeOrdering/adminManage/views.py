@@ -2,7 +2,8 @@ import json
 import random
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
@@ -24,6 +25,7 @@ def manage(request):
 
     return render(request, 'adminManage/manage.html', ctx)
 
+
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def enquiries(request):
     enquiries = Enquiry.objects.all()
@@ -34,16 +36,32 @@ def enquiries(request):
 
     return render(request, 'adminManage/enquiries.html', ctx)
 
+
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def enquiry(request, enquiry_id):
+    enquiries = Enquiry.objects.all()
     enquiry = get_object_or_404(Enquiry, pk=enquiry_id)
     enquiry.viewed = True
     enquiry.save()
     ctx = {
         'enquiry': enquiry,
+        'enquiries': enquiries,
     }
 
     return render(request, 'adminManage/enquiry.html', ctx)
+
+
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
+def delete_enquiry(request, enquiry_id):
+    enquiry = get_object_or_404(Enquiry, pk=enquiry_id)
+
+    try:
+        enquiry.delete()
+        messages.success(request, "Enquiry Deleted")
+    except Enquiry.DoesNotExist:
+        messages.error(request, f"Could not find enquiry {enquiry_id}")
+
+    return HttpResponseRedirect(reverse('enquiries'))
 
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
