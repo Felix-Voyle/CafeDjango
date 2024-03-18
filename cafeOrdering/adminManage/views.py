@@ -162,13 +162,17 @@ def update_order_status(request):
         
         try:
             order = Order.objects.get(id=order_id)
-            order.status = status
-            order.save()
+            if (status == 'sent' and order.sendable) or (status == 'invoiced' and order.invoiceable):
+                order.status = status
+                order.save()
+                messages.success(request, 'Order status updated!')
+                return JsonResponse({'message': 'Order status updated successfully'})
+            else:
+                messages.error(request, 'Order status cannot be updated at this time')
+                return JsonResponse({'error': 'Order status cannot be updated at this time'}, status=400)
             
-            messages.success(request, 'Order status updated!')
-            return JsonResponse({'message': 'Order status updated successfully'})
         except Order.DoesNotExist:
-            messages.error(request, 'Order not found')
+            messages.error(request, f'Order {order_id} not found')
             return JsonResponse({'error': 'Order not found'}, status=404)
         except Exception as e:
             messages.error(request, str(e))

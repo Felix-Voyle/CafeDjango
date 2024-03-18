@@ -100,6 +100,33 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order #{self.order_id} for {self.user.username}"
+    
+
+    def is_sendable(self):
+        current_date = timezone.localtime(timezone.now()).date()
+        return self.delivery_date <= current_date
+
+    @property
+    def sendable(self):
+        return self.is_sendable()
+    
+
+    def is_invoiceable(self):
+        current_datetime = timezone.localtime(timezone.now())
+        delivery_datetime = timezone.datetime.combine(self.delivery_date, self.delivery_time)
+        if timezone.is_naive(delivery_datetime):
+            delivery_datetime = timezone.make_aware(delivery_datetime)
+    
+        # Calculate 24 hours after delivery time
+        invoiceable_datetime = delivery_datetime + timezone.timedelta(hours=24)
+    
+        return not self.is_reportable() and current_datetime > invoiceable_datetime and not self.reported_problem and self.status != 'invoiced'
+
+
+    @property
+    def invoiceable(self):
+        return self.is_invoiceable()
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='order_items', on_delete=models.CASCADE)
