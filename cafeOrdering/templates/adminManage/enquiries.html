@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load viewed %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/manage.css' %}">
@@ -7,43 +8,53 @@
 
 {% block content %}
 
-    <div class="row col-12 no-gutters">
-        <li class="manage-menu">
-            <a href="{% url 'manage' %}"><ul>Orders</ul></a>
-            <ul>Create Invoice</ul>
-            <a href="{% url 'enquiries' %}"><ul>Enquiries</ul></a>
-        </li>
-    </div>
-    <div class="row no-gutters">
-        <div class="col-12 mb-5">
-            <h3 class="text-center">Enquiries</h3>
-            <section>
-                {% if enquiry in enquiries %}
-                {% for enquiry in enquiries %}
-                <div class="enquiry-card text-center">
-                    <div class="card">
-                        <div class="card-header" data-toggle="collapse" data-target="#collapseCard{{ forloop.counter }}">
-                            <h5 class="mb-0">{{ enquiry.name }} - {{ enquiry.email }}</h5>
-                        </div>
-                        <div id="collapseCard{{ forloop.counter }}" class="collapse">
-                            <div class="card-body">
-                                <p>{{ enquiry.message }}</p>
+<div class="row col-12 no-gutters">
+    <li class="manage-menu">
+        <a href="{% url 'manage' %}">
+            <ul>Orders</ul>
+        </a>
+        <ul>Create Invoice</ul>
+        <a href="{% url 'enquiries' %}">
+            <ul>Enquiries</ul>
+        </a>
+    </li>
+</div>
+<div class="row no-gutters">
+    <div class="col-12 mb-5">
+        <h3 class="text-center">Enquiries</h3>
+        <section>
+            {% if enquiries %}
+            <h4>Unread</h4>
+            {% for enquiry in enquiries %}
+                {% if enquiry|unread %}
+                    <div class="enquiry-card text-center">
+                        <div class="card">
+                            <div class="card-header">
+                                <a href="{% url 'enquiry' enquiry.id %}"><h5 class="mb-0">{{ enquiry.name }} - {{ enquiry.email }}</h5></a>
                             </div>
                         </div>
                     </div>
-                    <div class="arrow-box text-center">
-                        <span class="toggle-arrow" data-toggle="collapse" data-target="#collapseCard{{ forloop.counter }}">
-                            <i class="fas fa-chevron-down"></i>
-                        </span>
-                    </div>
-                </div>
-                {% endfor %}
-                {% else %}
-                <p>No enquiries to display....</p>
                 {% endif %}
-            </section>
-        </div>
+            {% endfor %}
+        
+            <h4>Viewed</h4>
+            {% for enquiry in enquiries %}
+                {% if enquiry|viewed %}
+                    <div class="enquiry-card text-center">
+                        <div class="card">
+                            <div class="card-header">
+                                <a href="{% url 'enquiry' enquiry.id %}"><h5 class="mb-0">{{ enquiry.name }} - {{ enquiry.email }}</h5></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>No enquiries to display....</p>
+        {% endif %}
+        </section>
     </div>
+</div>
 {% endblock %}
 
 {% block javascript %}
