@@ -102,7 +102,15 @@ class Order(models.Model):
         return f"Order #{self.order_id} for {self.user.username}"
     
 
+    def is_sendable(self):
+        current_date = timezone.localtime(timezone.now()).date()
+        return self.delivery_date <= current_date
+
     @property
+    def sendable(self):
+        return self.is_sendable()
+    
+
     def is_invoiceable(self):
         current_datetime = timezone.localtime(timezone.now())
         delivery_datetime = timezone.datetime.combine(self.delivery_date, self.delivery_time)
@@ -113,6 +121,11 @@ class Order(models.Model):
         invoiceable_datetime = delivery_datetime + timezone.timedelta(hours=24)
     
         return not self.is_reportable() and current_datetime > invoiceable_datetime and not self.reported_problem and self.status != 'invoiced'
+
+
+    @property
+    def invoiceable(self):
+        return self.is_invoiceable()
 
 
 class OrderItem(models.Model):
