@@ -37,7 +37,11 @@
                 {% endif %}
                 {% if order.reported_problem %}
                     disabled
-                {% endif %}>
+                {% endif %}
+                {% if not order.is_invoiceable %}
+                    disabled
+                {% endif %}
+                >
                 <a href="{% url 'send_invoice' order.order_id %}"><label for="invoiced-{{ order.id }}">Invoice</label></a>
             </div> 
         </div>
