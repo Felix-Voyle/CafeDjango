@@ -64,32 +64,41 @@ def create_invoice(request):
             postcode,
         ]
 
-        invoice_info = [
+        order_info = [
             "Order Reference: " + order_reference,
             "Invoice Date: " + invoice_date,
             "Payment Terms: 30 days",
-            order_detail
             ]
 
         for product_id, quantity in zip(product_ids, quantities):
             try:
                 product = InvoiceProduct.objects.get(pk=product_id)
-                price = product.price  # Assuming you have a price field in your Product model
+                price = product.price  
                 subtotal = int(quantity) * price
-                # Format the product information
                 product_info = {
-                    "description": product.name,  # Assuming you have a name field in your Product model
+                    "description": product.name,
                     "quantity": int(quantity),
                     "price": price,
                     "subtotal": subtotal,
                 }
-                # Append the formatted product information to the list
+
                 invoice_items.append(product_info)
             except InvoiceProduct.DoesNotExist:
-                messages.error(request, f"Product with ID {product_id} does not exist")
+                messages.error(request, f"Product {product.name} does not exist")
                 return redirect('create_invoice')
-            
-        print(invoice_items)
+        
+        order_total = sum(item['subtotal'] for item in invoice_items)
+        discount_rate = Decimal('0.20')
+        discount = (order_total * discount_rate).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+
+        totals = {
+        "Subtotal incl. VAT": '{:.2f}'.format(order_total)
+        }
+
+        totals["Total excl. VAT"] = '{:.2f}'.format(order_total - discount)
+        totals["Total amount due"] = '{:.2f}'.format(order_total)
+
+        generate_invoice(recipient_info, order_info, invoice_items, totals, order_detail)   
 
         return HttpResponse('Form submitted successfully.')
 
