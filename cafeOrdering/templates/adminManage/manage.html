@@ -22,119 +22,27 @@
         </li>
     </ul>
 </div>
-    <div class="row no-gutters">
-        <!-- First div -->
-        <div class="col-12">
-            <h3 class="text-center">Orders</h3>
-            <form method="GET" action="{% url 'filter_orders' %}">
-                {% csrf_token %}
-                <select name="status">
-                    <option value="ordered" {% if request.GET.status == "ordered" %}selected{% endif %}>Ordered</option>
-                    <option value="sent" {% if request.GET.status == "sent" %}selected{% endif %}>Sent</option>
-                    <option value="invoiced" {% if request.GET.status == "invoiced" %}selected{% endif %}>Invoiced</option>
-                </select>
-                
-                <button type="submit">Filter</button>
-            </form>
-            <section>
-                {% for order in orders reversed%}
-                <div class="order-card mb-2 {% if order.status == 'ordered' %} ordered {% endif %} {% if order.status == 'sent' %} sent {% endif %} {% if order.status == 'invoiced' %} invoiced {% endif %}">
-                    <form class="mb-1" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-                        <div class="row">
-                            <div class="col-12">
-                                {% if order.reported_problem %}
-                                    <div class="row mt-1">
-                                        <div class="col ml-2 text-left">
-                                            <span class="exclamation">!</span>
-                                        </div>
-                                        <div class="col mr-2 text-right">
-                                            <a href="{% url 'edit_order' order.order_id %}"><span>edit</span></a>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                <div class="row">
-                                    <div class="col text-center">
-                                        {{ order.delivery_date }} @ {{ order.delivery_time }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row checkboxes text-center">
-                            <div class="col-4">
-                                <input id="ordered-{{ order.id }}" name="ordered" type="checkbox" class="custom checkbox" checked disabled>
-                                <label for="ordered-{{ order.id }}">Ordered</label>
-                            </div>
-                            <div class="col-4">
-                                <input id="sent-{{ order.id }}" name="sent" type="checkbox" class="status-checkbox" data-order-id="{{ order.id }}" {% if order.status == 'sent' or order.status == 'invoiced' %}checked disabled {% endif %}>
-                                <label for="sent-{{ order.id }}">Sent</label>
-                            </div>
-                            <div class="col-4">
-                                <input id="invoiced-{{ order.id }}" name="invoiced" type="checkbox" class="status-checkbox" data-order-id="{{ order.id }}"
-                                {% if order.status == 'invoiced' %}
-                                    checked disabled 
-                                {% endif %}
-                                {% if order.reported_problem %}
-                                    disabled
-                                {% endif %}>
-                                <a href="{% url 'send_invoice' order.order_id %}"><label for="invoiced-{{ order.id }}">Invoice</label></a>
-                            </div> 
-                        </div>
-                    </form>
-
-                    <!-- Collapsible Card -->
-                    <div class="card mt-3">
-                        <div class="card-header text-center" data-toggle="collapse"
-                            data-target="#collapseCard2{{ forloop.counter }}">
-                            <h5 class="mb-0">Order - {{ order.order_id }}</h5>
-                        </div>
-                        <div id="collapseCard2{{ forloop.counter }}" class="collapse">
-                            <div class="card-body order-details">
-                                <h6 class="text-center">{{ order.user }}</h6>
-                                {% if order.reported_problem %}
-                                <p>{{ order.reported_problem }}</p>
-                                {% endif %}
-                                <ul>
-                                {% for item in order.order_items.all %}
-                                {% if item.quantity > 0 %}
-                                <li class="d-flex order-item text-center">
-                                    <span class="col-6 no-pad">{{ item.product.name }}</span>
-                                    <span class="col-2 no-pad">x {{ item.quantity }}</span>
-                                    <span class="col-4 no-pad">£ {{ item.get_total }}</span>
-                                </li>
-                                {% endif %}
-                                {% endfor %}
-                                <hr>
-                                <li class="d-flex text-center">
-                                    <span class="col-6 no-pad"><strong>Total</strong></span>
-                                    <span class="col-2 no-pad">-</span>
-                                    <span class="col-4 no-pad">£ {{ order.order_total }}</span>
-                                </li>
-                                </ul>
-                                <div class="col-12 text-left mb-2">
-                                    {{ order.address_line1 }}
-                                    {% if order.address_line2 %}
-                                        <br>{{ order.address_line2 }}
-                                    {% endif %}
-                                    {% if order.address_line3 %}
-                                        <br>{{ order.address_line3 }}
-                                    {% endif %}
-                                        <br>{{ order.postcode }}
-                                </div>
-                                {% if order.delivery_instructions %}
-                                <div class="col-12 text-left">
-                                    <p>Delivery Instructions - {{ order.delivery_instructions }}</p>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="row no-gutters">
+    <div class="col-12">
+        <h3 class="text-center">Orders</h3>
+        <form method="GET" action="{% url 'filter_orders' %}">
+            {% csrf_token %}
+            <select name="status">
+                <option value="" selected>Upcoming Orders</option>
+                <option value="all" {% if request.GET.status == "all" %}selected{% endif %}>All Orders</option>
+                <option value="ordered" {% if request.GET.status == "ordered" %}selected{% endif %}>Ordered</option>
+                <option value="sent" {% if request.GET.status == "sent" %}selected{% endif %}>Sent</option>
+                <option value="invoiced" {% if request.GET.status == "invoiced" %}selected{% endif %}>Invoiced</option>
+            </select>
+            <button type="submit">Filter</button>
+        </form>
+        <section>
+                {% for order in orders %}
+                    {% include 'adminManage/order_card.html' %}
                 {% endfor %}
-            </section>
-        </div>
+        </section>
     </div>
+</div>
 
 </html>
 {% endblock %}
@@ -142,3 +50,4 @@
 {% block javascript %}
 <script src="{% static 'js/manage.js' %}"></script>
 {% endblock %}
+
