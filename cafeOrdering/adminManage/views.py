@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
@@ -16,7 +17,7 @@ from products.models import InvoiceProduct
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def manage(request):
     enquiries = Enquiry.objects.all()
-    orders = Order.objects.all()
+    orders = Order.objects.filter(delivery_date__gte=timezone.now()).order_by('delivery_date')
     
     ctx = {
         'enquiries': enquiries,
@@ -30,9 +31,11 @@ def filter_orders(request):
     status = request.GET.get('status')
     enquiries = Enquiry.objects.all()
     if status in dict(Order.ORDER_STATUS):
-        orders = Order.objects.filter(status=status)
+        orders = Order.objects.filter(status=status).order_by('delivery_date')
+    elif status == "all":
+        orders = Order.objects.order_by('delivery_date')
     else:
-        orders = Order.objects.all()
+        orders = Order.objects.filter(delivery_date__gte=timezone.now()).order_by('delivery_date')
 
     ctx = {
         'orders': orders,
