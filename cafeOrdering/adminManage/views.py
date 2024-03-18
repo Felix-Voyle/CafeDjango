@@ -34,6 +34,17 @@ def enquiries(request):
 
     return render(request, 'adminManage/enquiries.html', ctx)
 
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
+def enquiry(request, enquiry_id):
+    enquiry = get_object_or_404(Enquiry, pk=enquiry_id)
+    enquiry.viewed = True
+    enquiry.save()
+    ctx = {
+        'enquiry': enquiry,
+    }
+
+    return render(request, 'adminManage/enquiry.html', ctx)
+
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def create_invoice(request):
