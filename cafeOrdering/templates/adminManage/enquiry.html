@@ -3,6 +3,7 @@
 {% load viewed %}
 
 {% block css %}
+<link rel="stylesheet" href="{% static 'css/enquiry.css' %}">
 <link rel="stylesheet" href="{% static 'css/manage.css' %}">
 {% endblock %}
 
@@ -22,14 +23,39 @@
 </div>
 <div class="row no-gutters">
     <div class="col-12 mb-5">
-        <h3 class="text-center">Enquiry - </h3>
-        <section>
-            {{ enquiry.viewed }}
+        <h3 class="text-center">Enquiry</h3>
+        <section class="enquiry-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="enquiry-info">
+                            <h3 class="section-title">Enquiry Details</h3>
+                            <ul class="list-unstyled">
+                                <li><strong>Date:</strong> {{ enquiry.date_created|date:"F d, Y" }}</li>
+                                <li><strong>Name:</strong> {{ enquiry.name }}</li>
+                                <li><strong>Email:</strong> {{ enquiry.email }}</li>
+                                <li><strong>Phone Number:</strong> {{ enquiry.phone_number }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="enquiry-message">
+                            <h3 class="section-title">Message</h3>
+                            <div class="mb-2">
+                                <span><strong>Subject: </strong></span><span>{{ enquiry.subject }}</span>
+                            </div>
+                            <div class="enquiry-text-box text-center">
+                                <p>{{ enquiry.message }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 </div>
 {% endblock %}
 
 {% block javascript %}
-<script src="{% static 'js/manage.js' %}"></script>
+
 {% endblock %}
