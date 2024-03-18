@@ -8,26 +8,26 @@
 
 {% block content %}
 
-<html data-csrf="{{ csrf_token }}">
+<html data-csrf="{{ csrf_token }}" class="csrf-html">
 
-<div class="row col-12 no-gutters">
+<div class="row col-12 no-gutters manage-menu-bar mb-2">
     <ul class="manage-menu">
-        <li><a href="{% url 'manage' %}">Orders</a></li>
-        <li><a href="{% url 'create_invoice' %}">Create Invoice</a></li>
-        <li>
-            {% if enquiries|filter_unread|length > 0 %}
-            <span>{{ enquiries|filter_unread|length }}</span>
-            {% endif %}
+        <li class="col-4 text-center active"><a href="{% url 'manage' %}">Orders</a></li>
+        <li class="col-4 text-center"><a href="{% url 'create_invoice' %}">Create Invoice</a></li>
+        <li class="col-4 text-center">
             <a href="{% url 'enquiries' %}">Enquiries</a>
+            {% if enquiries|filter_unread|length > 0 %}
+                <span class="badge badge-danger badge-notification">{{ enquiries|filter_unread|length }}</span>
+            {% endif %}
         </li>
     </ul>
 </div>
 <div class="row no-gutters">
     <div class="col-12">
         <h3 class="text-center">Orders</h3>
-        <form method="GET" action="{% url 'filter_orders' %}">
+        <form method="GET" action="{% url 'filter_orders' %}" class="filter-form mb-2">
             {% csrf_token %}
-            <select name="status">
+            <select name="status" class="filter-select">
                 <option value="" selected>Upcoming Orders</option>
                 <option value="all" {% if request.GET.status == "all" %}selected{% endif %}>All Orders</option>
                 <option value="ordered" {% if request.GET.status == "ordered" %}selected{% endif %}>Ordered</option>
