@@ -86,11 +86,13 @@ def delete_enquiry(request, enquiry_id):
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def create_invoice(request):
     products = InvoiceProduct.objects.all()
+    enquiries = Enquiry.objects.all()
     order_reference = ''.join(random.choices('0123456789', k=5))
     invoice_items = []
 
     ctx = {
         'products': products,
+        'enquiries': enquiries,
     }
 
     if request.method == 'POST':

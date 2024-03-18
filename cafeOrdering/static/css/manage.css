@@ -1,5 +1,21 @@
 @import 'root.css';
 
+.csrf-html {
+    position: fixed;
+    width: 100%;
+}
+
+.manage-menu-bar {
+    background-color: var(--off-black);
+    box-shadow: 0px 2px 2px 1px grey;
+    min-height: 38px;
+    height: fit-content;
+    position: relative;
+    top: 2px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
 .manage-menu {
     display: inline-flex;
     justify-content: space-between;
@@ -9,9 +25,38 @@
 }
 
 .manage-menu li {
+    font-size: 15px;
     margin: 0;
     padding: 0;
     list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.badge-notification {
+    position: relative;
+    top: -8px;
+    right: 4px;
+}
+
+.badge-danger {
+    color: #fff;
+    background-color: #dc3545;
+    width: 15px;
+    height: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+}
+
+.active a {
+    text-decoration: underline;
+}
+
+.manage-menu li a {
+    color: var(--off-white);
 }
 
 .ordered {
@@ -79,6 +124,15 @@ label {
     font-size: 20px; 
 }
 
+
+.filter-select {
+    height: 30px;
+}
+
+.filter-form{
+    width: 95%;
+    margin: auto;
+}
 
 @media screen and (min-width: 768px) {
     .checkboxes div {
