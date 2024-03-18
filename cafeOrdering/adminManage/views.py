@@ -26,6 +26,22 @@ def manage(request):
     return render(request, 'adminManage/manage.html', ctx)
 
 
+def filter_orders(request):
+    status = request.GET.get('status')
+    enquiries = Enquiry.objects.all()
+    if status in dict(Order.ORDER_STATUS):
+        orders = Order.objects.filter(status=status)
+    else:
+        orders = Order.objects.all()
+
+    ctx = {
+        'orders': orders,
+        'enquiries': enquiries,
+    }
+
+    return render(request, 'adminManage/manage.html', ctx)
+
+
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def enquiries(request):
     enquiries = Enquiry.objects.all()
