@@ -27,7 +27,7 @@
                 <label for="ordered-{{ order.id }}">Ordered</label>
             </div>
             <div class="col-4">
-                <input id="sent-{{ order.id }}" name="sent" type="checkbox" class="status-checkbox" data-order-id="{{ order.id }}" {% if order.status == 'sent' or order.status == 'invoiced' %}checked disabled {% endif %}>
+                <input id="sent-{{ order.id }}" name="sent" type="checkbox" class="status-checkbox sent-checkbox" data-order-id="{{ order.id }}" data-delivery-date="{{ order.delivery_date }}" {% if order.status == 'sent' or order.status == 'invoiced' %}checked disabled {% endif %}>
                 <label for="sent-{{ order.id }}">Sent</label>
             </div>
             <div class="col-4">

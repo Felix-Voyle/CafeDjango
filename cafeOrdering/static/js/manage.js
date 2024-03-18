@@ -39,3 +39,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+$(document).ready(function() {
+    $('.sent-checkbox').each(function() {
+        
+        var deliveryDate = new Date($(this).data('delivery-date'));
+        
+        var currentDate = new Date();
+        
+        if (deliveryDate.getTime() >= currentDate.getTime()) {
+            
+            $(this).prop('disabled', true);
+    
+            $(this).next('label').addClass('disabled');
+        }
+    });
+});
