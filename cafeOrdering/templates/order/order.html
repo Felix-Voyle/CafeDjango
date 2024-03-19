@@ -82,12 +82,23 @@
         
                 <!-- Second div -->
                 <div class="col-lg-6 col-sm-12 text-center form-card mb-5 address-inputs">
-                    <h3 class="mb-2 mt-2 white-title" >Address</h3>
+                    <h3 class="mb-2 mt-2 white-title">Address</h3>
                     <input type="text" name="address_line1" {% if initial_data.address_line1 %}value="{{ initial_data.address_line1 }}"{% else %}placeholder="Address Line 1"{% endif %}>
+                    {% if errors.address_line1 %}
+                    <span class="error">{{ errors.address_line1 }}</span>
+                    {% endif %}
                     <input type="text" name="address_line2" {% if initial_data.address_line2 %}value="{{ initial_data.address_line2 }}"{% else %}placeholder="Address Line 2"{% endif %}>
+                    {% if errors.address_line2 %}
+                    <span class="error">{{ errors.address_line2 }}</span>
+                    {% endif %}
                     <input type="text" name="address_line3" {% if initial_data.address_line3 %}value="{{ initial_data.address_line3 }}"{% else %}placeholder="Address Line 3"{% endif %}>
+                    {% if errors.address_line3 %}
+                    <span class="error">{{ errors.address_line3 }}</span>
+                    {% endif %}
                     <input type="text" name="postcode" {% if initial_data.postcode %}value="{{ initial_data.postcode }}"{% else %}placeholder="Post Code"{% endif %}>
-
+                    {% if errors.postcode %}
+                    <span class="error">{{ errors.postcode }}</span>
+                    {% endif %}
                     <input type="text" name="delivery_instructions" placeholder="Delivery notes...">
                     <div class="date-time">
                         <input type="text" required placeholder="Select delivery date.." id="futureDate" autocomplete="off">
@@ -97,23 +108,23 @@
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn" onclick="formSubmit()">Submit</button>
+            <button type="submit" class="submit-btn" onclick="">Submit</button>
         </div>
     </form>
     <button id="prevBtn" type="button" onclick="prevStep()" class="prev-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
     <button id="nextBtn" type="button" onclick="nextStep()" disabled class="next-btn">Next</button>
 </div>
 
+{% endblock %}
+
 {% block javascript %}
 <script src="{% static 'js/orderForm.js' %}"></script>
 <script>
     function reloadPage(selectedCategory) {
-        window.location.href = "{% url 'product_search' %}?category=" + selectedCategory;
-    }
-</script>
+    window.location.href = "{% url 'product_search' %}?category=" + selectedCategory;
+    };
+    </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
-{% endblock %}
-
 {% endblock %}

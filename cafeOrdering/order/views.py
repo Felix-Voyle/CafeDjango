@@ -7,6 +7,7 @@ import json
 from .models import Order, OrderItem
 from products.models import Product, Category
 from .utils.helpers import redirect_based_on_role
+from .forms import validate_order_form_data
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +35,11 @@ def order(request):
     }
 
     if request.method == 'POST':
+        errors = validate_order_form_data(request.POST)
+        if errors:
+            for field, error in errors.items():
+                messages.error(request, error)
+            return redirect('order')
         user = request.user
         address_line1 = request.POST['address_line1']
         address_line2 = request.POST.get('address_line2', '')
@@ -104,6 +110,7 @@ def product_search(request):
     ctx = {
         'products': products,
         'categories': categories,
+        'validation_errors': False
     }
 
     return render(request, 'order/order.html', ctx)
@@ -116,9 +123,14 @@ def edit_order(request, order_id):
     except Exception as e:
         messages.error(request, f"Could not find Order {order_id}")
         logger.error("Error finding Order %s: %s", order_id, e)
-        return redirect_based_on_role(request)
+        return redirect('order')
 
     if request.method == 'POST':
+        errors = validate_order_form_data(request.POST)
+        if errors:
+            for field, error in errors.items():
+                messages.error(request, error)
+            return redirect('edit_order', order_id=order_id)
         try:
             # Retrieve data from the form
             address_line1 = request.POST.get('address_line1', order.address_line1)
