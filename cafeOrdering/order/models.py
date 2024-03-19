@@ -28,6 +28,9 @@ class Order(models.Model):
     order_id = models.TextField(max_length=5, editable=False, unique=True)
     status = models.CharField(max_length=20, choices=ORDER_STATUS, default='ordered')
     reported_problem = models.TextField(max_length=200, blank=True, null=True)
+    problem_resolved = models.BooleanField(default=False)
+    resolution_message = models.TextField(max_length=200, blank=True, null=True)
+    
 
 
     def _generate_order_id(self):
@@ -126,6 +129,13 @@ class Order(models.Model):
     @property
     def invoiceable(self):
         return self.is_invoiceable()
+    
+
+    def resolve_problem(self, resolution_message=None):
+        self.reported_problem = None
+        self.problem_resolved = True
+        self.resolution_message = resolution_message
+        self.save()
 
 
 class OrderItem(models.Model):

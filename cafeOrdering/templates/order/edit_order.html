@@ -143,6 +143,10 @@
                             disabled
                         {% endif %}>
                     </div>
+                    {% if request.user.is_superuser or request.user.is_staff %}
+                            <label for="resolution_message"></label>
+                            <textarea class="resolution-message" id="resolution_message" name="resolution_message" placeholder="Resolution Massage.."></textarea required>
+                        {% endif %}
                 </div>
                 
             </div>
