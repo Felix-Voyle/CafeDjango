@@ -99,8 +99,7 @@ def product_search(request):
 
 def edit_order(request, order_id):
     order = get_object_or_404(Order, order_id=order_id)
-    print(order.delivery_date)
-    print(order.delivery_time)
+
     if request.method == 'POST':
         # Retrieve data from the form
         address_line1 = request.POST.get('address_line1', order.address_line1)
@@ -123,29 +122,23 @@ def edit_order(request, order_id):
         if request.user.is_superuser or request.user.is_staff:
             resolution_message = request.POST.get('resolution_message', '')
             order.resolve_problem(resolution_message=resolution_message)
-        
+
+        # Clear existing order items only if there are changes in the items
+        if set(order.order_items.values_list('id', flat=True)) != set(request.POST.getlist('confirmed-product')):
+            order.order_items.all().delete()
+
+            # Create new order items
+            for product_id, quantity in zip(request.POST.getlist('confirmed-product'), request.POST.getlist('confirmed-qty')):
+                if int(quantity) > 0:
+                    product = Product.objects.get(pk=product_id)
+                    quantity = int(quantity)
+                    OrderItem.objects.create(order=order, product=product, quantity=quantity)
+
+        order.update_total()
         order.save()
 
-        # Handle order items
-        product_ids = request.POST.getlist('confirmed-product')
-        quantities = request.POST.getlist('confirmed-qty')
-
-        # Clear existing order items
-        order.order_items.all().delete()
-
-        # Create new order items
-        for product_id, quantity in zip(product_ids, quantities):
-            if int(quantity) > 0:
-                product = Product.objects.get(pk=product_id)
-                quantity = int(quantity)
-                OrderItem.objects.create(order=order, product=product, quantity=quantity)
-
-        # Update total price
-        order.update_total()
-
-        # Optionally add success message or redirect
         messages.success(request, 'Order updated successfully!')
-        return redirect('/')  # Redirect to a relevant page after editing the order
+        return redirect('/')  
 
     # If it's a GET request, populate the context with necessary data
     products = Product.objects.all()
@@ -177,3 +170,21 @@ def edit_order(request, order_id):
     }
     
     return render(request, 'order/edit_order.html', ctx)
+
+
+def delete_order(request, order_id):
+    order = get_object_or_404(Order, order_id=order_id)
+
+    try:
+        order.delete()
+        messages.success(request, f"Order {order_id} cacncelled successfully")
+        if request.user.is_superuser or request.user.is_staff:
+            return redirect('manage')
+        else:
+            return redirect('view_profile')
+    except Exception as e:
+        messages.error(request, f"An error occurred while deleting order {order_id}")
+        if request.user.is_superuser or request.user.is_staff:
+            return redirect('manage')
+        else:
+            return redirect('view_profile')
