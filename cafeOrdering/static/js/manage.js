@@ -1,3 +1,4 @@
+//Ajax function to update order status on checkbox tick
 document.addEventListener('DOMContentLoaded', function() {
     const checkboxes = document.querySelectorAll('.status-checkbox');
 
@@ -40,18 +41,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-$(document).ready(function() {
-    $('.sent-checkbox').each(function() {
-        
-        var deliveryDate = new Date($(this).data('delivery-date'));
-        
-        var currentDate = new Date();
-        
-        if (deliveryDate.getTime() >= currentDate.getTime()) {
-            
-            $(this).prop('disabled', true);
+// Check if user wants to edit order as no reported problem
+$('#editLink').click(function() {
     
-            $(this).next('label').addClass('disabled');
-        }
-    });
+    var editUrl = $('#editLinkTrigger').attr('href');
+    
+    window.location.href = editUrl;
 });
+
