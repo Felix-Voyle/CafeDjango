@@ -1,5 +1,17 @@
+@import 'root.css';
+
 main {
     min-height: calc(100vh - 50px);
+    height: fit-content;
+    background-color: var(--off-white);
+    padding-bottom: 30px;
+}
+
+.orders-title {
+    position: relative;
+    top: 8px;
+    margin-bottom: 20px;
+    color: var(--off-black);
 }
 
 .card, .card-body {
@@ -7,27 +19,70 @@ main {
     margin: auto;
 }
 
+.card {
+    border: 1px solid var(--off-white);
+}
+
 .card-body {
-    background-color: rgb(154, 154, 154);
-    position: relative;
-    top: -8px;
+    background-color: rgb(204 204 204);
+    border-width: 2px 3px 3px 3px;
+    border-color: var(--off-black);
+    border-style: double;
 }
 
 .order-info {
     font-size: small;
+    color: #95a296;
 }
 
 .no-pad {
     padding: 0;
 }
 
-.accordion>.card .card-header {
-    margin-bottom: 0;
+.card-header {
+    background-color: #333537;
 }
 
-.btn-disabled {
+.btn-disabled, .report-col .btn-disabled {
     color: #fff;
-    background-color: #6c757d;
+    background-color: #969a9d;
     border-color: #6c757d;
     opacity: .65;
+}
+
+.btn-link {
+    color: var(--off-white);
+    cursor: pointer;
+}
+
+.button-content {
+    display: grid;
+    align-items: center;
+    color: var(--off-white);
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    text-decoration: none;
+}
+
+.fa-chevron-down {
+    transition: transform 0.3s ease;
+    font-size: 20px;
+}
+
+.btn[aria-expanded="true"] .fa-chevron-down {
+    transform: rotate(-180deg); /* Apply transformation when expanded */
+}
+
+.btn[aria-expanded="false"] .fa-chevron-down {
+    transform: rotate(0deg); /* Apply transformation when collapsed */
+}
+
+.collapsed .fa-chevron-down {
+    transform: rotate(-180deg); 
+}
+
+.accordion>.card {
+    border-bottom: 1px solid var(--off-white) !important;
 }
