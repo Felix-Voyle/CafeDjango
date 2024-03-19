@@ -54,13 +54,16 @@
             </div>
 
             <div class="user-container">
-                {% if not user.is_authenticated %}
-                    <i id="userIcon" class="fas fa-user fa-lg user-icon"></i>
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser or user.is_staff %}
+                        <a href="{% url 'manage' %}">
+                    {% else %}
+                        <a href="{% url 'view_profile' %}">
+                    {% endif %}
                 {% endif %}
-                {% if user.is_superuser %}
-                    <a href="{% url 'manage' %}"><i id="userIcon" class="fas fa-user fa-lg user-icon"></i></a>
-                {% else %}
-                    <a href="{% url 'view_profile' %}"><i id="userIcon" class="fas fa-user fa-lg user-icon"></i></a>
+                    <i id="userIcon" class="fas fa-user fa-lg user-icon"></i>
+                {% if user.is_authenticated %}
+                    </a>
                 {% endif %}
             </div>
             
