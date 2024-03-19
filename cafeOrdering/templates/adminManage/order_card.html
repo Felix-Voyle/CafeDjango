@@ -4,7 +4,7 @@
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
         <div class="row">
             <div class="col-12">
-                {% if order.reported_problem %}
+                {% if order.reported_problem and not order.problem_resolved %}
                     <div class="row mt-1">
                         <div class="col ml-2 text-left">
                             <span class="exclamation">!</span>
@@ -13,6 +13,13 @@
                             <a href="{% url 'edit_order' order.order_id %}"><span>edit</span></a>
                         </div>
                     </div>
+                {% endif %}
+                {% if not order.reported_problem and order.invoiceable %}
+                <div class="row mt-1">
+                    <div class="col mr-2 text-right">
+                        <a id="editLinkTrigger" href="{% url 'edit_order' order.order_id %}" data-toggle="modal" data-target="#editConfirmationModal"><span>edit</span></a>
+                    </div>
+                </div>
                 {% endif %}
                 <div class="row">
                     <div class="col text-center">
@@ -27,7 +34,14 @@
                 <label for="ordered-{{ order.id }}">Ordered</label>
             </div>
             <div class="col-4">
-                <input id="sent-{{ order.id }}" name="sent" type="checkbox" class="status-checkbox sent-checkbox" data-order-id="{{ order.id }}" data-delivery-date="{{ order.delivery_date }}" {% if order.status == 'sent' or order.status == 'invoiced' %}checked disabled {% endif %}>
+                <input id="sent-{{ order.id }}" name="sent" type="checkbox" class="status-checkbox sent-checkbox" data-order-id="{{ order.id }}" 
+                data-delivery-date="{{ order.delivery_date }}" 
+                {% if order.status == 'sent' or order.status == 'invoiced' %}
+                    checked disabled 
+                {% endif %}
+                {% if not order.sendable %}
+                    disabled
+                {% endif %}>
                 <label for="sent-{{ order.id }}">Sent</label>
             </div>
             <div class="col-4">
@@ -35,7 +49,7 @@
                 {% if order.status == 'invoiced' %}
                     checked disabled 
                 {% endif %}
-                {% if order.reported_problem %}
+                {% if order.reported_problem and not order.problem_resolved  %}
                     disabled
                 {% endif %}
                 {% if not order.invoiceable %}
@@ -94,3 +108,4 @@
         </div>
     </div>
 </div>
+
