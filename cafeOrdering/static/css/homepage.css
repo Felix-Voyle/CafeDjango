@@ -3,45 +3,78 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.landscape-hero {
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: auto;
+.hero {
+    position: relative;
     width: 100%;
+    height: 100vh; /* Set the height of the hero section to the viewport height */
+    overflow: hidden; /* Hide any overflow content */
+}
+
+.hero-content {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    color: #fff;
+    align-items: center;
 }
 
-.portrait-container, .landscape-container {
-    height: calc(100vh - 50px);
-    overflow: hidden;
-    position: absolute;
-    top: 52px;
-}
-
-.portrait-hero {
-    max-width: 100%;
+.hero .landscape-hero {
+    min-width: 100%;
+    min-height: 100%; 
+    max-height: 150%;
+    width: auto;
     height: auto;
-    display: block;
-    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the image within its container */
+}
+
+.hero .portrait-hero {
+    min-width: 100%;
+    min-height: 100%; 
+    max-width: 110%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the image within its container */
+}
+
+.find-us {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .find-us-text {
-    color: black;
-    position: relative;
-    top: 72vh;
-    left: 28px;
+    margin-bottom: -8px;
+    font-size: 22px;
+    color: white; 
+    text-shadow: -1px -1px 0 black,  
+                  1px -1px 0 black,
+                 -1px  1px 0 black,
+                  1px  1px 0 black; 
 }
 
-.down-arrow {
-    width: 40px;
-    height: 40px;
-    position: relative;
-    top: 78vh;
-    left: -20px;
+.find-us-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.find-us-arrow {
+    font-size: 55px;
+    text-shadow: -1px -1px 0 black,  
+                  1px -1px 0 black,
+                 -1px  1px 0 black,
+                  1px  1px 0 black; 
+    color: white;
 }
 
 .hero-content {
@@ -52,11 +85,6 @@ body {
 .hero-content h1 {
     font-size: 3em;
     margin-bottom: 20px;
-}
-
-.hero-content a {
-    display: block;
-    margin-top: 20px;
 }
 
 #address-section {
