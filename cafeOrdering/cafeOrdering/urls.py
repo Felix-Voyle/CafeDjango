@@ -27,9 +27,9 @@ urlpatterns = [
     path('accounts/', include('users.urls')),
     path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
-    path('enquire', include('enquire.urls')),
+    path('enquire/', include('enquire.urls')),
     path('manage/', include('adminManage.urls')),
-    path('order', include('order.urls')),
+    path('order/', include('order.urls')),
 ]
 
 if settings.DEBUG:

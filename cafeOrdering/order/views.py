@@ -170,3 +170,21 @@ def edit_order(request, order_id):
     }
     
     return render(request, 'order/edit_order.html', ctx)
+
+
+def delete_order(request, order_id):
+    order = get_object_or_404(Order, order_id=order_id)
+
+    try:
+        order.delete()
+        messages.success(request, f"Order {order_id} cacncelled successfully")
+        if request.user.is_superuser or request.user.is_staff:
+            return redirect('manage')
+        else:
+            return redirect('view_profile')
+    except Exception as e:
+        messages.error(request, f"An error occurred while deleting order {order_id}")
+        if request.user.is_superuser or request.user.is_staff:
+            return redirect('manage')
+        else:
+            return redirect('view_profile')
