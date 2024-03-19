@@ -54,23 +54,21 @@
             </div>
 
             <div class="user-container">
-                <i id="userIcon" class="fas fa-user fa-lg user-icon"></i>
+                {% if not user.is_authenticated %}
+                    <i id="userIcon" class="fas fa-user fa-lg user-icon"></i>
+                {% endif %}
+                {% if user.is_superuser %}
+                    <a href="{% url 'manage' %}"><i id="userIcon" class="fas fa-user fa-lg user-icon"></i></a>
+                {% else %}
+                    <a href="{% url 'view_profile' %}"><i id="userIcon" class="fas fa-user fa-lg user-icon"></i></a>
+                {% endif %}
             </div>
             
             <ul class="user-options">
                 {% if user.is_authenticated %}
-                    <li class="text-center">
+                    <li class="text-center sign-in">
                         <a href="{% url 'account_logout' %}">Logout</a>
                     </li>
-                    {% if user.is_superuser %}
-                        <li class="text-center">
-                            <a href="{% url 'manage' %}">Manage</a>
-                        </li>
-                    {% else %}
-                        <li class="text-center">
-                            <a href="{% url 'view_profile' %}">Account</a>
-                        </li>
-                    {% endif %}
                 {% else %}
                     <li class="text-center sign-in">
                         <a href="{% url 'account_login' %}">Sign In</a>
@@ -105,6 +103,9 @@
                     {% if user.is_authenticated and not user.is_superuser %}
                     <a href="{% url 'order' %}">
                         <li class="text-center">Order</li>
+                    </a>
+                    <a href="{% url 'view_profile' %}">
+                        <li class="text-center">Manage Orders</i>
                     </a>
                     {% endif %}
                     {% if user.is_authenticated and user.is_superuser %}
