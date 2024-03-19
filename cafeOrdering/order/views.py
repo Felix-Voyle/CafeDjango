@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 import json
 from .models import Order, OrderItem
 from products.models import Product, Category
+from .utils.helpers import redirect_based_on_role
 
 
 def order(request):
@@ -133,12 +134,14 @@ def edit_order(request, order_id):
                     product = Product.objects.get(pk=product_id)
                     quantity = int(quantity)
                     OrderItem.objects.create(order=order, product=product, quantity=quantity)
-
-        order.update_total()
-        order.save()
-
-        messages.success(request, 'Order updated successfully!')
-        return redirect('/')  
+        try:
+            order.update_total()
+            order.save()
+            messages.success(request, 'Order updated successfully!')
+            return redirect_based_on_role(request)
+        except Exception as e:
+            messages.error(request, 'Failed to update order')
+            return redirect_based_on_role(request)
 
     # If it's a GET request, populate the context with necessary data
     products = Product.objects.all()
@@ -178,13 +181,7 @@ def delete_order(request, order_id):
     try:
         order.delete()
         messages.success(request, f"Order {order_id} cacncelled successfully")
-        if request.user.is_superuser or request.user.is_staff:
-            return redirect('manage')
-        else:
-            return redirect('view_profile')
+        return redirect_based_on_role(request)
     except Exception as e:
         messages.error(request, f"An error occurred while deleting order {order_id}")
-        if request.user.is_superuser or request.user.is_staff:
-            return redirect('manage')
-        else:
-            return redirect('view_profile')
+        return redirect_based_on_role(request)
