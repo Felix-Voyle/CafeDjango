@@ -177,6 +177,11 @@ table {
     margin-right: auto;
 }
 
+.resolution-message {
+    width: 90%;
+    margin: auto;
+}
+
 .date-time {
     display: grid;
     grid-template-columns: 1fr 1fr;

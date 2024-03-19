@@ -10,7 +10,7 @@
 <div class="accordion mb-2" id="ordersAccordion">
     {% if orders %}
     {% for order in orders reversed %}
-    <div class="card mb-2">
+    <div class="card mt-3">
         <div class="card-header" id="order{{ order.id }}">
             <div class="row">
                 <span class="col-12 order-info">{{ order.delivery_date }} @ {{ order.delivery_time }}</span>
@@ -24,26 +24,37 @@
                     </button>
                 </div>
             </div>
+            {% if order.problem_resolved %}
+                <div class="row text-center">
+                    <span class="col-12">{{ order.resolution_message }}</span>
+                </div>
+                {% endif %}
             <div class="row text-center">
                 <div class="col-4 m-auto">
                     {% if order.can_edit %}
-                    <a href="{% url 'edit_order' order.order_id %}">Edit</a>
+                    <a href="{% url 'edit_order' order.order_id %}"><button class="btn btn-sm btn-success ml-auto" disabled>Edit</button></a>
                     {% else %}
-                    <span onclick="showEditModal()">Edit</span>
+                    <button class="btn btn-sm btn-secondary btn-disabled ml-auto" onclick="showEditModal()">Edit</button>
                     {% endif %}
                 </div>
                 <div class="col-4 m-auto">
                     {% if order.can_edit %}
                     <a href="">Cancel</a>
                     {% else %}
-                    <span onclick="showEditModal()">Cancel</span>
+                    <button class="btn btn-sm btn-secondary btn-disabled ml-auto" onclick="showEditModal()">Cancel</button>
                     {% endif %}
                 </div>
-                <div class="col-4">{% if order.reportable and not order.reported_problem %}
-                    <button class="btn btn-sm btn-danger ml-auto" onclick="reportProblem('{{ order.id }}')">Report
-                        Issue</button>
+                <div class="col-4">
+                    {% if order.reported_problem %}
+                        <button class="btn btn-sm btn-warning ml-auto" disabled>Reported</button>
+                    {% elif order.problem_resolved %}
+                        <button class="btn btn-sm btn-success ml-auto" disabled>Resolved</button>
                     {% else %}
-                    <span>report</span>
+                        {% if order.reportable %}
+                            <button class="btn btn-sm btn-danger ml-auto" onclick="reportProblem('{{ order.id }}')">Report Issue</button>
+                        {% else %}
+                            <button class="btn btn-sm btn-secondary ml-auto" disabled>Report</button>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
@@ -81,44 +92,9 @@
 {% include 'users/edit_cancel_modal.html' %}
 
 {% include 'users/report_issue_modal.html' %}
-
+<script src="{% static 'js/users.js' %}"></script>
 <script>
-    function showEditModal() {
-    $('#editCancelModal').modal('show');
-    }
-    function reportProblem(orderId) {
-        // Set the hidden input value to the orderId
-        $('#orderIdInput').val(orderId);
-        // Show the modal
-        $('#reportProblemModal').modal('show');
-    }
-
-    function submitProblem() {
-        // Get the problem description from the textarea
-        var problemDescription = $('#problemDescription').val();
-        // Get the orderId from the hidden input
-        var orderId = $('#orderIdInput').val();
-
-        // AJAX call to submit the problem
-        $.ajax({
-            type: 'POST',
-            url: '{% url "report_problem" %}', // Update to use the correct URL pattern name
-            data: {
-                'order_id': orderId,
-                'problem_description': problemDescription,
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
-            success: function (response) {
-                // Close the modal
-                $('#reportProblemModal').modal('hide');
-                // Reload page to display Django messages
-                location.reload();
-            },
-            error: function (xhr, errmsg, err) {
-                // Handle errors
-                alert('Error reporting problem: ' + errmsg);
-            }
-        });
-    }
+    var reportProblemUrl = "{% url 'report_problem' %}";
+    var csrfToken = "{{ csrf_token }}";
 </script>
 {% endblock %}

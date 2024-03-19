@@ -20,3 +20,14 @@ main {
 .no-pad {
     padding: 0;
 }
+
+.accordion>.card .card-header {
+    margin-bottom: 0;
+}
+
+.btn-disabled {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    opacity: .65;
+}

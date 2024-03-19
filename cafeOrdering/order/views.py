@@ -121,7 +121,8 @@ def edit_order(request, order_id):
         order.delivery_time = delivery_time
 
         if request.user.is_superuser or request.user.is_staff:
-            order.reported_problem = None
+            resolution_message = request.POST.get('resolution_message', '')
+            order.resolve_problem(resolution_message=resolution_message)
         
         order.save()
 
