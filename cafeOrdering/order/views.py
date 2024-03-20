@@ -152,6 +152,8 @@ def edit_order(request, order_id):
 
             if request.user.is_superuser or request.user.is_staff:
                 resolution_message = request.POST.get('resolution_message', '')
+                if resolution_message and len(resolution_message) > 200:
+                    errors['resolution_message'] = "Resolution message can't be longer than 200 characters."
                 order.resolve_problem(resolution_message=resolution_message)
 
             # Update or delete existing order items
