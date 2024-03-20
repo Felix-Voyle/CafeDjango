@@ -10,7 +10,7 @@ def sign_up(request):
     return render(request, 'users/signup.html') 
 
 @login_required
-def view_profile(request):
+def my_orders(request):
 
     # Check if the user is staff or superuser
     if request.user.is_staff or request.user.is_superuser:
@@ -25,7 +25,13 @@ def view_profile(request):
         'user_profile': user_profile,
     }
 
-    return render(request, 'users/profile.html', ctx)
+    return render(request, 'users/my_orders.html', ctx)
+
+
+def profile_filter_orders(request):
+    
+    return render(request, 'users/my_orders.html', ctx)
+
 
 @require_POST
 def report_problem(request):

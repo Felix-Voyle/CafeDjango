@@ -58,7 +58,7 @@
                     {% if user.is_superuser or user.is_staff %}
                         <a href="{% url 'manage' %}">
                     {% else %}
-                        <a href="{% url 'view_profile' %}">
+                        <a href="{% url 'my_orders' %}">
                     {% endif %}
                 {% endif %}
                     <i id="userIcon" class="fas fa-user fa-lg user-icon"></i>
@@ -107,7 +107,7 @@
                     <a href="{% url 'order' %}">
                         <li class="text-center">Order</li>
                     </a>
-                    <a href="{% url 'view_profile' %}">
+                    <a href="{% url 'my_orders' %}">
                         <li class="text-center">Manage Orders</i>
                     </a>
                     {% endif %}
