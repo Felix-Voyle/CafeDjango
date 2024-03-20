@@ -35,7 +35,7 @@
         <span class="d-none d-sm-block text-center d col-sm-4"><strong>Price</strong></span>
         <span class="d-none d-sm-block text-center d col-sm-4"><strong>Quantity</strong></span>
     </div>
-    <form method="post" onsubmit="clearCart()">
+    <form method="post" onsubmit="clearCart()" id="orderForm">
         {% csrf_token %}
         <div id="order" class="form-card order product-cards-container">
             {% for product in products %}
@@ -83,22 +83,13 @@
                 <!-- Second div -->
                 <div class="col-lg-6 col-sm-12 text-center form-card mb-5 address-inputs">
                     <h3 class="mb-2 mt-2 white-title">Address</h3>
-                    <input type="text" name="address_line1" {% if initial_data.address_line1 %}value="{{ initial_data.address_line1 }}"{% else %}placeholder="Address Line 1"{% endif %}>
-                    {% if errors.address_line1 %}
-                    <span class="error">{{ errors.address_line1 }}</span>
-                    {% endif %}
+                
+                    <input type="text" name="address_line1" id="address_line1"{% if initial_data.address_line1 %}value="{{ initial_data.address_line1 }}"{% else %}placeholder="Address Line 1"{% endif %}>
+                    <span id="address_line1_error" class="error"></span>
                     <input type="text" name="address_line2" {% if initial_data.address_line2 %}value="{{ initial_data.address_line2 }}"{% else %}placeholder="Address Line 2"{% endif %}>
-                    {% if errors.address_line2 %}
-                    <span class="error">{{ errors.address_line2 }}</span>
-                    {% endif %}
                     <input type="text" name="address_line3" {% if initial_data.address_line3 %}value="{{ initial_data.address_line3 }}"{% else %}placeholder="Address Line 3"{% endif %}>
-                    {% if errors.address_line3 %}
-                    <span class="error">{{ errors.address_line3 }}</span>
-                    {% endif %}
-                    <input type="text" name="postcode" {% if initial_data.postcode %}value="{{ initial_data.postcode }}"{% else %}placeholder="Post Code"{% endif %}>
-                    {% if errors.postcode %}
-                    <span class="error">{{ errors.postcode }}</span>
-                    {% endif %}
+                    <input type="text" name="postcode" id="postcode"{% if initial_data.postcode %}value="{{ initial_data.postcode }}"{% else %}placeholder="Post Code"{% endif %}>
+                    <span id="postcode_error" class="error"></span>
                     <input type="text" name="delivery_instructions" placeholder="Delivery notes...">
                     <div class="date-time">
                         <input type="text" required placeholder="Select delivery date.." id="futureDate" autocomplete="off">
@@ -119,6 +110,7 @@
 
 {% block javascript %}
 <script src="{% static 'js/orderForm.js' %}"></script>
+<script src="{% static 'js/orderValidateInputs.js' %}"></script>
 <script>
     function reloadPage(selectedCategory) {
     window.location.href = "{% url 'product_search' %}?category=" + selectedCategory;
