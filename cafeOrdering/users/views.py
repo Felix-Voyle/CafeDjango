@@ -2,9 +2,11 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect
+from django.urls import reverse
+from django.db.models import Q
 from order.models import Order
 from django.utils import timezone
 from datetime import timedelta
@@ -47,7 +49,7 @@ def my_orders(request):
 
     return render(request, 'users/my_orders.html', ctx)
 
-
+@login_required
 def filter_my_orders(request):
     status = request.GET.get('status')
 
@@ -58,7 +60,7 @@ def filter_my_orders(request):
     elif status == "past":
         orders = Order.objects.filter(delivery_date__lt=today).order_by('-delivery_date')
     elif status == 'reported':
-        orders = Order.objects.filter(reported_problem=True)
+        orders = Order.objects.filter(Q(reported_problem=True) | Q(problem_resolved=True))
     else:
         orders = Order.objects.order_by('delivery_date')
 
@@ -82,23 +84,23 @@ def filter_my_orders(request):
 
 @require_POST
 def report_problem(request):
-    # Extract data from the POST request
+    # Extract data from the AJAX Post request
     order_id = request.POST.get('order_id')
     problem_description = request.POST.get('problem_description')
 
-    # Fetch the order
     try:
         order = Order.objects.get(id=order_id)
     except Order.DoesNotExist:
-        return JsonResponse({'success': False, 'message': 'Order not found'}, status=404)
+        messages.error(request, f"Order {order_id} not found")
+        return HttpResponseRedirect(reverse('my_orders'))
     
     # Update the order with the reported problem
     order.reported_problem = problem_description
     order.save()
 
-    # Check if the reported problem was updated successfully
     if order.reported_problem == problem_description:
         messages.success(request, 'Problem reported successfully!')
         return JsonResponse({'success': True, 'message': 'Problem reported successfully'})
     else:
+        messages.error(request, "Failed to report problem.")
         return JsonResponse({'success': False, 'message': 'Failed to report problem'}, status=500)
