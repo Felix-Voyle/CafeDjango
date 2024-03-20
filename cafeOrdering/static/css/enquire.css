@@ -6,12 +6,13 @@ main {
 
 .main-container-centered {
     min-height: calc(100vh - 50px);
+    background-color: #efefd8;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    background-image: url('/media/photos/Print.jpg');
     background-size: cover;
+    padding-bottom: 20px;
 }
 
 .enquire-form p label {
@@ -23,18 +24,23 @@ main {
 }
 
 .form-card {
-    background-color: #bfbfbf;
+    background-color: var(--main-green);
     border: 2px solid var(--off-black);
     border-radius: 8px;
     box-shadow: 3px 3px 1px var(--off-black);
 }
 
+.what-we-do-text {
+    margin-bottom: 0;
+}
+
+.what-we-do-main-text {
+    font-size: 20px;
+    text-shadow: -3px 2px #ccc8c8ba;
+}
+
 .info-card {
-    background-color: var(--off-black);
-    border: 2px solid #d0d0d0;
-    border-radius: 8px;
-    box-shadow: 3px 3px 1px #adadad;
-    color: white;
+    color: var(--off-black);
 }
 
 .form-card, .info-card {
@@ -46,13 +52,73 @@ main {
     max-width: 95%;
 }
 
+.what-we-do {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.what-we-do-img {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    max-height: 220px;
+    box-shadow: -5px 7px 6px #00000099;
+    border: 5px solid #272626;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+.what-we-do-container {
+    display: flex;
+    flex-wrap: wrap; /* Ensure items wrap to new line when not enough space */
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.what-we-do {
+    flex: 1;
+    margin: 4px;
+}
+
+.enquire-h {
+    letter-spacing: 5px;
+    text-shadow: -2px 0px #efefd885;
+}
+
+@media (min-width: 449px) {
+    .what-we-do {
+        flex-basis: calc((100% - 20px) / 3);
+    }
+}
+
+@media (max-width: 450px) {
+    .what-we-do {
+        flex-basis: calc(100% - 20px); 
+    }
+}
+
+@media (min-width: 782px) {
+    .what-we-do-img {
+    min-width: 300px;
+    max-height: none;
+    }
+}
+
+
 @media screen and (min-width: 355px) {
     .form-card, .info-card {
         min-width: 350px;
-        width: 90%;
+        width: 95%;
     }
     .main-container-centered {
         padding: 10px;
+        padding-bottom: 20px;
     }
 }
 

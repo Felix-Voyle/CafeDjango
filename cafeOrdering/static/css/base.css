@@ -4,6 +4,17 @@ html {
     background-color: var(--off-white);
 }
 
+.title-txt {
+    font-family: 'Abril Fatface', cursive;
+    letter-spacing: 3px;
+}
+
+.main-txt {
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+    font-weight: 400;
+}
+
 .navbar {
     background-color: var(--main-green);
     width: 100%;
