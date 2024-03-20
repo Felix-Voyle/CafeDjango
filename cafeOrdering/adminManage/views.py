@@ -52,7 +52,7 @@ def filter_orders(request):
         orders = Order.objects.filter(delivery_date__gte=timezone.now()).order_by('delivery_date')
     
 
-    items_per_page = 2
+    items_per_page = 15
     paginator = Paginator(orders, items_per_page)
     page_number = request.GET.get('page')
 

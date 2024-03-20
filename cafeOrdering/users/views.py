@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -26,7 +27,18 @@ def my_orders(request):
         return redirect('manage')  # Adjust the URL name as per your project setup
 
     user_profile = request.user.userprofile
-    orders = Order.objects.filter(user=request.user) 
+    orders = Order.objects.filter(user=request.user)
+
+    items_per_page = 15
+    paginator = Paginator(orders, items_per_page)
+    page_number = request.GET.get('page')
+
+    try:
+        orders = paginator.page(page_number)
+    except PageNotAnInteger:
+        orders = paginator.page(1)
+    except EmptyPage:
+        orders = paginator.page(paginator.num_pages)
     
     ctx = {
         "orders": orders,
@@ -49,6 +61,17 @@ def filter_my_orders(request):
         orders = Order.objects.filter(reported_problem=True)
     else:
         orders = Order.objects.order_by('delivery_date')
+
+    items_per_page = 15
+    paginator = Paginator(orders, items_per_page)
+    page_number = request.GET.get('page')
+
+    try:
+        orders = paginator.page(page_number)
+    except PageNotAnInteger:
+        orders = paginator.page(1)
+    except EmptyPage:
+        orders = paginator.page(paginator.num_pages)
 
     ctx = {
         'orders': orders,
