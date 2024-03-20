@@ -7,9 +7,19 @@
 
 {% block content %}
 <h2 class="text-center orders-title">Orders</h2>
+<form method="GET" action="{% url 'filter_my_orders' %}" class="filter-form mb-2">
+    {% csrf_token %}
+    <select name="status" class="filter-select">
+        <option value="" selected>All Orders</option>
+        <option value="upcoming" {% if request.GET.status == "upcoming" %}selected{% endif %}>Upcoming Orders</option>
+        <option value="past" {% if request.GET.status == "past" %}selected{% endif %}>Past Orders</option>
+        <option value="reported" {% if request.GET.status == "reported" %}selected{% endif %}>Reported Orders</option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
 <div class="accordion mb-2" id="ordersAccordion">
     {% if orders %}
-    {% for order in orders reversed %}
+    {% for order in orders %}
     <div class="card mt-3">
         <div class="card-header" id="order{{ order.id }}">
             <div class="row">
