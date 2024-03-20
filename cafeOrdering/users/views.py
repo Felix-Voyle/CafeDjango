@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect
 from order.models import Order
+from django.utils import timezone
+from datetime import timedelta
 
 def sign_up(request):
     return render(request, 'users/signup.html') 
@@ -28,8 +30,24 @@ def my_orders(request):
     return render(request, 'users/my_orders.html', ctx)
 
 
-def profile_filter_orders(request):
-    
+def filter_my_orders(request):
+    status = request.GET.get('status')
+
+    today = timezone.now().date()
+
+    if status == 'upcoming':
+        orders = Order.objects.filter(delivery_date__gte=timezone.now()).order_by('delivery_date')
+    elif status == "past":
+        orders = Order.objects.filter(delivery_date__lt=today).order_by('-delivery_date')
+    elif status == 'reported':
+        orders = Order.objects.filter(reported_problem=True)
+    else:
+        orders = Order.objects.order_by('delivery_date')
+
+    ctx = {
+        'orders': orders,
+    }
+
     return render(request, 'users/my_orders.html', ctx)
 
 
