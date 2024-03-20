@@ -1,0 +1,61 @@
+<!-- Second div -->
+<div class="col-lg-6 col-sm-12 text-center form-card mb-5 address-inputs">
+    <h3 class="mb-2 mt-2 white-title">Address</h3>
+    <!-- Address Line 1 -->
+    {% if request.user == order.user %}
+        <input type="text" name="address_line1" value="{{ initial_data.address_line1 }}" placeholder="Address Line 1">
+    {% else %}
+        <input type="hidden" name="address_line1" value="{{ initial_data.address_line1 }}">
+        <input type="text" disabled value="{{ initial_data.address_line1 }}" placeholder="Address Line 1 (Disabled)">
+    {% endif %}
+    <!-- Address Line 2 -->
+    {% if request.user == order.user %}
+        <input type="text" name="address_line2" value="{% if initial_data.address_line2  %}{{ initial_data.address_line2 }}{% endif %}" placeholder="Address Line 2">
+    {% else %}
+        <input type="hidden" name="address_line2" value="{% if initial_data.address_line2  %}{{ initial_data.address_line2 }}{% endif %}">
+        <input type="text" disabled value="{{ initial_data.address_line2 }}" placeholder="Address Line 2 (Disabled)">
+    {% endif %}
+    <!-- Address Line 3 -->
+    {% if request.user == order.user %}
+        <input type="text" name="address_line3" value="{% if initial_data.address_line3 %}{{ initial_data.address_line3 }}{% endif %}" placeholder="Address Line 3">
+    {% else %}
+        <input type="hidden" name="address_line3" value="{% if initial_data.address_line3 %}{{ initial_data.address_line3 }}{% endif %}">
+        <input type="text" disabled value="{{ initial_data.address_line3 }}" placeholder="Address Line 3 (Disabled)">
+    {% endif %}
+    <!-- Postcode -->
+    {% if request.user == order.user %}
+        <input type="text" name="postcode" value="{{ initial_data.postcode }}" placeholder="Post Code">
+    {% else %}
+        <input type="hidden" name="postcode" value="{{ initial_data.postcode }}">
+        <input type="text" disabled value="{{ initial_data.postcode }}" placeholder="Post Code (Disabled)">
+    {% endif %}
+    <!-- Delivery Instructions -->
+    {% if request.user == order.user %}
+        <input type="text" name="delivery_instructions" value="{% if initial_data.delivery_instructions %}{{ initial_data.delivery_instructions }}{% endif %}" placeholder="Delivery notes...">
+    {% else %}
+        <input type="hidden" name="delivery_instructions" value="{% if initial_data.delivery_instructions %}{{ initial_data.delivery_instructions }}{% endif %}">
+        <input type="text" disabled value="{{ initial_data.delivery_instructions }}" placeholder="Delivery notes... (Disabled)">
+    {% endif %}
+    <!-- Date and Time -->
+    <div class="date-time">
+        <!-- Delivery Date -->
+        {% if request.user == order.user %}
+            <input type="text" value="{{ initial_data.delivery_date|date:'d/m/Y' }}" placeholder="Select delivery date.." required placeholder="Select delivery date.." id="futureDate" autocomplete="off">
+            <input type="text" hidden name="delivery_date" id="futureDateFormatted" value="{{ initial_data.delivery_date|date:'Y-m-d' }}">
+        {% else %}
+            <input type="text" disabled value="{{ initial_data.delivery_date|date:'d/m/Y' }}" placeholder="Select delivery date.." required placeholder="Select delivery date.." id="futureDate" autocomplete="off">
+            <input type="text" hidden name="delivery_date" id="futureDateFormatted" value="{{ initial_data.delivery_date|date:'Y-m-d' }}">
+        {% endif %}
+        <!-- Delivery Time -->
+        {% if request.user == order.user %}
+            <input type="text" name="delivery_time" value="{{ initial_data.delivery_time|time:'H:i' }}" placeholder="Select delivery time.." id="timepicker" autocomplete="off">
+        {% else %}
+            <input type="hidden" name="delivery_time" value="{{ initial_data.delivery_time|time:'H:i' }}">
+            <input type="text" disabled value="{{ initial_data.delivery_time|time:'H:i' }}" placeholder="Select delivery time.. (Disabled)">
+        {% endif %}
+    </div>
+    {% if request.user.is_superuser or request.user.is_staff %}
+            <label for="resolution_message"></label>
+            <textarea class="resolution-message" id="resolution_message" name="resolution_message" placeholder="Resolution Massage.."></textarea required>
+        {% endif %}
+</div>

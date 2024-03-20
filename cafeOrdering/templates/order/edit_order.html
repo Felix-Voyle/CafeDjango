@@ -82,72 +82,7 @@
                 </div>
         
                 <!-- Second div -->
-                <div class="col-lg-6 col-sm-12 text-center form-card mb-5 address-inputs">
-                    <h3 class="mb-2 mt-2 white-title">Address</h3>
-                    <input type="text" name="address_line1"
-                    {% if initial_data.address_line1 %}
-                        value="{{ initial_data.address_line1 }}"
-                    {% else %}
-                        placeholder="Address Line 1"
-                    {% endif %}
-                    {% if request.user != order.user %}
-                        disabled
-                    {% endif %}>
-                    <input type="text" name="address_line2" 
-                    {% if initial_data.address_line2 %}
-                        value="{{ initial_data.address_line2 }}"
-                    {% else %}
-                        placeholder="Address Line 2"
-                    {% endif %} 
-                    {% if request.user != order.user %}
-                        disabled
-                    {% endif %}>
-                    <input type="text" name="address_line3" 
-                    {% if initial_data.address_line3 %}
-                        value="{{ initial_data.address_line3 }}"
-                    {% else %}placeholder="Address Line 3"
-                    {% endif %}
-                    {% if request.user != order.user %}
-                        disabled
-                    {% endif %}>
-                    <input type="text" name="postcode"
-                    {% if initial_data.postcode %}
-                        value="{{ initial_data.postcode }}"
-                    {% else %}placeholder="Post Code"
-                    {% endif %}
-                    {% if request.user != order.user %}
-                        disabled
-                    {% endif %}>
-                    <input type="text" name="delivery_instructions"
-                    {% if initial_data.delivery_instructions %}
-                        value="{{ initial_data.delivery_instructions }}"
-                    {% else %}placeholder="Delivery notes..."
-                    {% endif %}
-                    {% if request.user != order.user %}
-                        disabled
-                    {% endif %}>
-                    <div class="date-time">
-                        <input type="text" required placeholder="Select delivery date.." id="futureDate" autocomplete="off"
-                        {% if initial_data.delivery_date %}
-                            value="{{ initial_data.delivery_date|date:'d/m/Y' }}"
-                        {% endif %}
-                        {% if request.user != order.user %}
-                            disabled
-                        {% endif %}>
-                        <input type="text" hidden name="delivery_date" id="futureDateFormatted" value="{{ initial_data.delivery_date|date:'Y-m-d' }}">
-                        <input type="text" required name="delivery_time" placeholder="Select delivery time.." id="timepicker" autocomplete="off" 
-                        {% if initial_data.delivery_time %}
-                        value="{{ initial_data.delivery_time|time:'H:i' }}"
-                        {% endif %}
-                        {% if request.user != order.user %}
-                            disabled
-                        {% endif %}>
-                    </div>
-                    {% if request.user.is_superuser or request.user.is_staff %}
-                            <label for="resolution_message"></label>
-                            <textarea class="resolution-message" id="resolution_message" name="resolution_message" placeholder="Resolution Massage.."></textarea required>
-                        {% endif %}
-                </div>
+                {% include 'order/confirm_order_inputs.html' %}
                 
             </div>
 
