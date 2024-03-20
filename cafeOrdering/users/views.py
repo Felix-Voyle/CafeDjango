@@ -88,6 +88,10 @@ def report_problem(request):
     order_id = request.POST.get('order_id')
     problem_description = request.POST.get('problem_description')
 
+    if len(problem_description) > 200:
+        messages.error(request, "Problem description can't be more than 200 characters")
+        return HttpResponseRedirect(reverse('my_orders'))
+
     try:
         order = Order.objects.get(id=order_id)
     except Order.DoesNotExist:
@@ -104,4 +108,4 @@ def report_problem(request):
         return JsonResponse({'success': True, 'message': 'Problem reported successfully'})
     else:
         messages.error(request, "Failed to report problem.")
-        return JsonResponse({'success': False, 'message': 'Failed to report problem'}, status=500)
+        return HttpResponseRedirect(reverse('my_orders'))

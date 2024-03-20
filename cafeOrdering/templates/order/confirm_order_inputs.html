@@ -54,8 +54,10 @@
             <input type="text" disabled value="{{ initial_data.delivery_time|time:'H:i' }}" placeholder="Select delivery time.. (Disabled)">
         {% endif %}
     </div>
-    {% if request.user.is_superuser or request.user.is_staff %}
+        {% if request.user.is_superuser or request.user.is_staff %}
+            {% if order.reported_problem %}
             <label for="resolution_message"></label>
             <textarea class="resolution-message" id="resolution_message" name="resolution_message" placeholder="Resolution Massage.."></textarea required>
+            {% endif %}
         {% endif %}
 </div>
