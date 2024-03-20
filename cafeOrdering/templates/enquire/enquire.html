@@ -7,23 +7,27 @@
 {% endblock %}
 
 {% block content %}
-<div class="row no-gutters">
+<div class="row mt-3 no-gutters">
     <!-- First div -->
-    <div class="col-lg-6 col-sm-12">
+    <div class="col-12">
         <section>
             <div class="info-card text-center">
-                <h3>What we do</h3>
-                <p>We cater from office lunches to evening events</p>
-                <p>Our ordering system is currently under construction</p>
-                <p>Get in touch to see what we can do for you</p>
+                <div class="what-we-do-container">
+                <div class="what-we-do"><img class="what-we-do-img" src="{% static 'images/example1.jpg' %}" alt="what we do image"></div>
+                <div class="what-we-do"><img class="what-we-do-img" src="{% static 'images/example2.jpg' %}" alt="what we do image"></div>
+                <div class="what-we-do"><img class="what-we-do-img" src="{% static 'images/example3.jpg' %}" alt="what we do image"></div>
+                </div>
+                <p class="what-we-do-main-text title-txt"><strong>We cater from office lunches to evening events</strong></p>
+                <p class="what-we-do-text main-txt">Our ordering system is currently under construction</p>
+                <p class="what-we-do-text main-txt">Get in touch to see what we can do for you</p>
             </div>
         </section>
     </div>
 
     <!-- Second div -->
-    <div class="col-lg-6 col-sm-12">
+    <div class="offset-lg-2 col-lg-8 col-sm-12">
         <div class="form-card text-center">
-            <h3 class="mb-2 mt-2">Enquiry Form</h3>
+            <h3 class="mb-2 mt-2 enquire-h title-txt">Enquire</h3>
             <form class="enquire-form" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
