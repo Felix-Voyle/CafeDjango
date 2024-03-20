@@ -1,7 +1,12 @@
+# Standard library imports
+import logging
+
+# Third-party library imports
 from django.contrib import messages
 from django.shortcuts import render, redirect
+
+# Local application imports
 from .forms import EnquiryForm
-import logging
 
 logger = logging.getLogger(__name__)
 

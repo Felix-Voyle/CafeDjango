@@ -1,19 +1,24 @@
+# Standard library imports
 import json
+from decimal import Decimal, ROUND_HALF_UP
 import random
-from django.shortcuts import render, redirect, get_object_or_404
+
+# Third-party library imports
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
-from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
+
+# Local application imports
 from .pdf_generator import generate_invoice
 from enquire.models import Enquiry
-from decimal import Decimal, ROUND_HALF_UP
 from order.models import Order
 from products.models import InvoiceProduct
+
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def manage(request):
