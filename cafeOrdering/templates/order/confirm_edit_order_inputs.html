@@ -6,21 +6,21 @@
         <input type="text" name="address_line1" value="{{ initial_data.address_line1 }}" placeholder="Address Line 1">
     {% else %}
         <input type="hidden" name="address_line1" value="{{ initial_data.address_line1 }}">
-        <input type="text" disabled value="{{ initial_data.address_line1 }}" placeholder="Address Line 1 (Disabled)">
+        <input type="text" disabled value="{{ initial_data.address_line1 }}" placeholder="Address Line 1...">
     {% endif %}
     <!-- Address Line 2 -->
     {% if request.user == order.user %}
         <input type="text" name="address_line2" value="{% if initial_data.address_line2  %}{{ initial_data.address_line2 }}{% endif %}" placeholder="Address Line 2">
     {% else %}
         <input type="hidden" name="address_line2" value="{% if initial_data.address_line2  %}{{ initial_data.address_line2 }}{% endif %}">
-        <input type="text" disabled value="{{ initial_data.address_line2 }}" placeholder="Address Line 2 (Disabled)">
+        <input type="text" disabled value="{% if initial_data.address_line2  %}{{ initial_data.address_line2 }}{% endif %}" placeholder="Address Line 2...">
     {% endif %}
     <!-- Address Line 3 -->
     {% if request.user == order.user %}
         <input type="text" name="address_line3" value="{% if initial_data.address_line3 %}{{ initial_data.address_line3 }}{% endif %}" placeholder="Address Line 3">
     {% else %}
         <input type="hidden" name="address_line3" value="{% if initial_data.address_line3 %}{{ initial_data.address_line3 }}{% endif %}">
-        <input type="text" disabled value="{{ initial_data.address_line3 }}" placeholder="Address Line 3 (Disabled)">
+        <input type="text" disabled value="{% if initial_data.address_line3 %}{{ initial_data.address_line3 }}{% endif %}" placeholder="Address Line 3...">
     {% endif %}
     <!-- Postcode -->
     {% if request.user == order.user %}
@@ -34,7 +34,7 @@
         <input type="text" name="delivery_instructions" value="{% if initial_data.delivery_instructions %}{{ initial_data.delivery_instructions }}{% endif %}" placeholder="Delivery notes...">
     {% else %}
         <input type="hidden" name="delivery_instructions" value="{% if initial_data.delivery_instructions %}{{ initial_data.delivery_instructions }}{% endif %}">
-        <input type="text" disabled value="{{ initial_data.delivery_instructions }}" placeholder="Delivery notes... (Disabled)">
+        <input type="text" disabled value="{{ initial_data.delivery_instructions }}" placeholder="Delivery notes...">
     {% endif %}
     <!-- Date and Time -->
     <div class="date-time">
@@ -58,6 +58,7 @@
             {% if order.reported_problem %}
             <label for="resolution_message"></label>
             <textarea class="resolution-message" id="resolution_message" name="resolution_message" placeholder="Resolution Massage.."></textarea required>
+            <span id="resolution_message_error"></span>
             {% endif %}
         {% endif %}
 </div>
