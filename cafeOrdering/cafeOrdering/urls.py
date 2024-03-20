@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from users.views import sign_up, my_orders
+from users.views import sign_up, my_orders, redirect_from_profile
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', include('homepage.urls')),
     path('accounts/signup/', sign_up, name='account_signup'),
+    path('accounts/profile/', redirect_from_profile, name='redirect_from_profile'),
     path('accounts/', include('users.urls')),
     path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),

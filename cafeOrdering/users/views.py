@@ -7,9 +7,15 @@ from django.shortcuts import redirect
 from order.models import Order
 from django.utils import timezone
 from datetime import timedelta
+from order.utils.helpers import redirect_based_on_role 
 
 def sign_up(request):
-    return render(request, 'users/signup.html') 
+    return render(request, 'users/signup.html')
+
+
+def redirect_from_profile(request):
+    return redirect_based_on_role(request)
+
 
 @login_required
 def my_orders(request):
