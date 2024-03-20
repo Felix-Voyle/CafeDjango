@@ -7,3 +7,5 @@ sessionStorage.setItem('cart', JSON.stringify(cartData));
 window.addEventListener('beforeunload', function (event) {
     sessionStorage.removeItem('cart');
 });
+
+
