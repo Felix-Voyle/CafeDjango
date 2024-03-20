@@ -164,7 +164,8 @@ def edit_order(request, order_id):
                     product = Product.objects.get(pk=product_id)
                     quantity = int(quantity)
                     OrderItem.objects.create(order=order, product=product, quantity=quantity)
-
+            
+            order.full_clean()
             order.update_total()
             order.save()
             messages.success(request, 'Order updated successfully!')
