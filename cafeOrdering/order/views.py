@@ -1,13 +1,18 @@
+# Standard library imports
+import json
+import logging
+
+# Third-party library imports
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.db import transaction, IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404
-from django.core.exceptions import ValidationError
-import logging
-import json
+
+# Local application imports
+from .forms import validate_order_form_data
 from .models import Order, OrderItem
 from products.models import Product, Category
 from .utils.helpers import redirect_based_on_role
-from .forms import validate_order_form_data
 
 logger = logging.getLogger(__name__)
 
