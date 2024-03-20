@@ -29,7 +29,7 @@ def my_orders(request):
         return redirect('manage')  # Adjust the URL name as per your project setup
 
     user_profile = request.user.userprofile
-    orders = Order.objects.filter(user=request.user)
+    orders = Order.objects.filter(user=request.user).order_by('delivery_date')
 
     items_per_page = 15
     paginator = Paginator(orders, items_per_page)
@@ -60,7 +60,7 @@ def filter_my_orders(request):
     elif status == "past":
         orders = Order.objects.filter(delivery_date__lt=today).order_by('-delivery_date')
     elif status == 'reported':
-        orders = Order.objects.filter(Q(reported_problem=True) | Q(problem_resolved=True))
+        orders = Order.objects.filter(problem_order=True).order_by('delivery_date')
     else:
         orders = Order.objects.order_by('delivery_date')
 
@@ -96,6 +96,7 @@ def report_problem(request):
     
     # Update the order with the reported problem
     order.reported_problem = problem_description
+    order.problem_order = True
     order.save()
 
     if order.reported_problem == problem_description:
