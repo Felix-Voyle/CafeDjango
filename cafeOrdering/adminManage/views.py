@@ -2,6 +2,7 @@ import json
 import random
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
@@ -18,7 +19,20 @@ from products.models import InvoiceProduct
 def manage(request):
     enquiries = Enquiry.objects.all()
     orders = Order.objects.filter(delivery_date__gte=timezone.now()).order_by('delivery_date')
+
+    items_per_page = 15
+
+    paginator = Paginator(orders, items_per_page)
+
+    page_number = request.GET.get('page')
     
+    try:
+        orders = paginator.page(page_number)
+    except PageNotAnInteger:
+        orders = paginator.page(1)
+    except EmptyPage:
+        orders = paginator.page(paginator.num_pages)
+
     ctx = {
         'enquiries': enquiries,
         'orders': orders,
@@ -36,6 +50,18 @@ def filter_orders(request):
         orders = Order.objects.order_by('delivery_date')
     else:
         orders = Order.objects.filter(delivery_date__gte=timezone.now()).order_by('delivery_date')
+    
+
+    items_per_page = 2
+    paginator = Paginator(orders, items_per_page)
+    page_number = request.GET.get('page')
+
+    try:
+        orders = paginator.page(page_number)
+    except PageNotAnInteger:
+        orders = paginator.page(1)
+    except EmptyPage:
+        orders = paginator.page(paginator.num_pages)
 
     ctx = {
         'orders': orders,
