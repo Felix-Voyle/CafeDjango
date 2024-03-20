@@ -28,6 +28,7 @@ class Order(models.Model):
     order_id = models.TextField(max_length=5, editable=False, unique=True)
     status = models.CharField(max_length=20, choices=ORDER_STATUS, default='ordered')
     reported_problem = models.TextField(max_length=200, blank=True, null=True)
+    problem_order = models.BooleanField(default=False)
     problem_resolved = models.BooleanField(default=False)
     resolution_message = models.TextField(max_length=200, blank=True, null=True)
     
