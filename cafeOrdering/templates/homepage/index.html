@@ -35,33 +35,72 @@
     </div>
 </section>
 
-<section id="address-section">
+<section id="address-section" class="address-section">
     <div class="container">
         <div class="row no-gutters">
-            <div class="col-lg-6 col-sm-12 text-center mb-5">
-                <div class="col-lg-4 text-left mb-2">
-                    <strong>FIND US:</strong>
-                </div>
-                <div class="col-12 text-left">
-                    The Leather Market,
-                </div>
-                <div class="col-12 text-left">
-                    Weston St,
-                </div>
-                <div class="col-12 text-left">
-                    London
-                </div>
-                <div class="col-12 text-left">
-                    SE1 3ER
-                </div>
-                <div class="col-12 text-left">
-                    <strong>Open</strong> <p>Mon - Fri, 7:30 - 4:30</p>
+            <div class="col-lg-6 col-sm-12 mb-5 find-us-row">
+                <div class="row justify-content-center">
+                    <div class="find-us-container">
+                        <div class="col-12 text-left mb-2 title-txt">
+                            <strong>FIND US:</strong>
+                        </div>
+                        <div class="col-12 text-left main-txt">
+                            The Leather Market,
+                        </div>
+                        <div class="col-12 text-left main-txt">
+                            Weston St,
+                        </div>
+                        <div class="col-12 text-left main-txt">
+                            London
+                        </div>
+                        <div class="col-12 text-left main-txt">
+                            SE1 3ER
+                        </div>
+                        <div class="col-12 text-left">
+                            <strong class="title-txt">Open:</strong>
+                            <p class="main-txt">Mon - Fri, 7:30 - 4:30</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-6 col-sm-12 text-center mb-5">
-                Map of location here
+                <div id="google-map-container" class="google-map-container">
+                    <iframe width="100%" height="100%" style="border:0" loading="lazy" allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key={{ google_maps_api_key }}
+                        &q=place_id:ChIJB8crMLcDdkgRF9etiV8e_Qo">
+                    </iframe>
+                </div>
             </div>
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block javascript %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const findUsContainer = document.querySelector('.find-us-container');
+    const googleMapContainer = document.querySelector('.google-map-container');
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 1, // Trigger when the entire element is visible
+    };
+
+    const observer = new IntersectionObserver(fadeInCallback, observerOptions);
+
+    observer.observe(findUsContainer);
+    observer.observe(googleMapContainer);
+
+    function fadeInCallback(entries, observer) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
