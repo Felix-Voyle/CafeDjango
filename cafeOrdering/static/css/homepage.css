@@ -24,25 +24,67 @@ body {
 .hero .landscape-hero {
     min-width: 100%;
     min-height: 100%; 
-    max-height: 150%;
+    max-height: 120%;
     width: auto;
     height: auto;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Center the image within its container */
+    transform: translate(-50%, -50%);
+    animation: zoomAnimation 5s forwards;
+}
+
+@keyframes zoomAnimation {
+    from {
+        max-height: 120%;
+    }
+    to {
+        max-height: 150%;
+    }
+}
+
+.fade-in-gradient-landscape, .fade-in-gradient-portrait {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 0%);
+    animation: fadeOutGradient 4s forwards;
+    z-index: 1;
+}
+
+@keyframes fadeOutGradient {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.2;
+    }
 }
 
 .hero .portrait-hero {
     min-width: 100%;
     min-height: 100%; 
-    max-width: 110%;
+    max-width: 100%;
     width: auto;
     height: auto;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Center the image within its container */
+    transform: translate(-50%, -50%);
+    animation: zoomPortraitAnimation 5s forwards;
+}
+
+@keyframes zoomPortraitAnimation {
+    from {
+        width: 100%;
+        height: auto;
+    }
+    to {
+        width: 120%;
+        height: auto;
+    }
 }
 
 .find-us {
@@ -66,6 +108,7 @@ body {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 2;
 }
 
 .find-us-arrow {
@@ -105,6 +148,9 @@ body {
     .landscape-hero {
         display: none; 
     }
+    .fade-in-gradient-landscape {
+        display: none;
+    }
     .find-us-text {
         color: white;
     }
@@ -114,5 +160,8 @@ body {
 @media screen and (min-width: 601px) {
     .portrait-hero {
         display: none; 
+    }
+    .fade-in-gradient-portrait {
+        display: none;
     }
 }
