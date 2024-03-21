@@ -156,16 +156,44 @@ body {
     margin-bottom: 20px;
 }
 
-#address-section {
-    background-color: #f4f4f4;
+.address-section {
+    background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 70%, #e2d1c3 100%);
     height: 100vh;
     padding: 50px 0;
     text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.title-txt {
+    font-size: 22px;
+}
+
+.main-txt {
+    font-size: 18px;
 }
 
 .container {
     max-width: 800px;
     margin: 0 auto;
+}
+
+.google-map-container {
+    width: 90%;
+    height: 275px;
+    margin: auto;
+    border: 5px solid var(--off-black);
+    border-radius: 3px;
+}
+
+.find-us-container,
+.google-map-container {
+    opacity: 0;
+}
+
+.fade-in {
+    opacity: 1;
+    transition: opacity 1s ease-in-out; /* Adjust duration and easing as needed */
 }
 
 
@@ -195,5 +223,27 @@ body {
     }
     .find-us-wrapper-portrait {
         display: none;
+    }
+    .google-map-container {
+        width: 80%;
+        height: 300px;
+    }
+}
+
+@media screen and (min-width: 991px) {
+    .find-us-row {
+        display: flex;
+        align-items: center;
+    }
+    .title-txt {
+        font-size: 25px;
+    }
+    .main-txt {
+        font-size: 19px;
+    }
+    .google-map-container {
+        height: 320px;
+        width: 120%;
+        height: 350px;
     }
 }
