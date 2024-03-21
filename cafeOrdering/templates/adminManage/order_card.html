@@ -63,8 +63,11 @@
 
     <!-- Collapsible Card -->
     <div class="card mt-3">
-        <div class="card-header text-center" data-toggle="collapse" data-target="#collapseCard2{{ forloop.counter }}">
-            <h5 class="mb-0">Order - {{ order.order_id }}</h5>
+        <div class="card-header text-center" data-toggle="collapse" data-target="#collapseCard2{{ forloop.counter }}" aria-controls="collapseCard2{{ order.id }}" aria-expanded="false">
+            <div class="button-content">
+                <span class="mb-0">Order - {{ order.order_id }}</span>
+                <i class="fa fa-chevron-down mt-1"></i>
+            </div>
         </div>
         <div id="collapseCard2{{ forloop.counter }}" class="collapse">
             <div class="card-body order-details">
