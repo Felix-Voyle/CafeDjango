@@ -22,9 +22,8 @@
         </li>
     </ul>
 </div>
-<div class="row no-gutters">
+<div class="row no-gutters orders-container">
     <div class="col-12">
-        <h3 class="text-center">Orders</h3>
         <form method="GET" action="{% url 'filter_orders' %}" class="filter-form mb-2">
             {% csrf_token %}
             <select name="status" class="filter-select">
