@@ -47,9 +47,5 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(changeSlide2, 2000); 
         setTimeout(changeSlide3, 4000); 
     }, 6000); 
-
-    changeSlide1();
-        setTimeout(changeSlide2, 2000); 
-        setTimeout(changeSlide3, 4000);
     
 });

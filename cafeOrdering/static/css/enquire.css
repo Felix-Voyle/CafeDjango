@@ -93,26 +93,59 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: -5px 7px 6px #00000099;
+    box-shadow: 0;
     border: 5px solid #272626;
     padding: 5px;
     overflow: hidden;
     position: relative;
+    opacity: 0;
 }
 
 .slides1 {
     height: 220px;
     max-width: 550px;
+    animation: fadeInSlide1 2s forwards;
+}
+@keyframes fadeInSlide1 {
+    50% {
+        box-shadow: -2px 2px 6px #00000099;
+    }
+    100% {
+        opacity: 1;
+        box-shadow: -4px 4px 6px #00000099;
+    }
 }
 
 .slides2 {
     max-height: 180px;
     max-width: 550px;
+    animation: fadeInSlide2 4s forwards;
+}
+@keyframes fadeInSlide2 {
+    50% {
+        opacity: 0;
+        box-shadow: -2px 2px 6px #00000099;
+    }
+    100% {
+        opacity: 1;
+        box-shadow: -4px 4px 6px #00000099;
+    }
 }
 
 .slides3 {
     max-height: 250px;
     max-width: 630px;
+    animation: fadeInSlide2 6s forwards;
+}
+@keyframes fadeInSlide3 {
+    66.67% {
+        opacity: 0;
+        box-shadow: -2px 2px 6px #00000099;
+    }
+    100% {
+        opacity: 1;
+        box-shadow: -4px 4px 6px #00000099;
+    }
 }
 
 .coffee, .event, .food {
