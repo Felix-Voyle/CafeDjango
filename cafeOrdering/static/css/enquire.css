@@ -2,9 +2,6 @@
 
 main {
     width: 100%;
-}
-
-.main-container-centered {
     min-height: calc(100vh - 50px);
     background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 70%, #e2d1c3 100%);
     background-size: 200% 200%;
@@ -13,7 +10,8 @@ main {
     flex-direction: column;
     justify-content: center;
     background-size: cover;
-    padding-bottom: 20px;
+    padding-top: 60px;
+    padding-bottom: 30px;
 }
 
 .enquire-form p label {
@@ -29,6 +27,7 @@ main {
     border: 2px solid var(--off-black);
     border-radius: 8px;
     box-shadow: 3px 3px 1px var(--off-black);
+    max-width: 640px;
 }
 
 .what-we-do-text {
@@ -103,10 +102,12 @@ section {
 
 .slides1 {
     height: 220px;
+    max-width: 550px;
 }
 
 .slides2 {
     max-height: 180px;
+    max-width: 550px;
 }
 
 .slides3 {
@@ -149,6 +150,9 @@ section {
     .what-we-do, .slides1, .slides2, .slides3 {
         flex-basis: calc((100% - 20px) / 3);
     }
+    main {
+        padding-top: 70px;
+    }
 }
 
 @media (max-width: 450px) {
@@ -170,8 +174,7 @@ section {
         min-width: 350px;
         width: 95%;
     }
-    .main-container-centered {
-        padding: 10px;
+    main {
         padding-bottom: 20px;
     }
 }

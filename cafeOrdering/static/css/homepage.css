@@ -6,7 +6,6 @@ body {
 .hero {
     position: relative;
     width: 100%;
-    height: 100vh; 
     overflow: hidden; 
 }
 
@@ -51,7 +50,7 @@ body {
     height: 100%;
     background: radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 0%);
     animation: fadeOutGradient 4s forwards;
-    z-index: 1;
+    z-index: 5;
 }
 
 @keyframes fadeOutGradient {
@@ -103,12 +102,18 @@ body {
                   1px  1px 0 black; 
 }
 
+a:hover {
+    color: white;
+    text-decoration: none;
+}
+
 .find-us-wrapper-landscape, .find-us-wrapper-portrait {
     position: absolute;
+    cursor: pointer;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 2;
+    z-index: 6;
     opacity: 0;
     animation: fadeInFindUs 4s forwards;
 }
