@@ -1,11 +1,30 @@
+@import 'root.css';
+
+html {
+    background-color: var(--off-white);
+}
+
+.title-txt {
+    font-family: 'Abril Fatface', cursive;
+    letter-spacing: 3px;
+}
+
+.main-txt {
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+    font-weight: 400;
+}
+
 .navbar {
-    background-color: rgb(87 127 106);
+    background-color: var(--main-green);
     width: 100%;
     height: 50px;
-    position: relative;
+    position: fixed;
     display: flex;
     align-items: center;
     padding: 0;
+    box-shadow: 0px 2px 4px var(--off-black);
+    z-index: 9;
 }
 
 .burger-container {
@@ -19,7 +38,12 @@
     display: flex;
     height: 50px;
     width: 50px;
-    z-index: 3;
+    z-index: 11;
+}
+
+.burger-btn svg {
+    margin: auto;
+    z-index: 11;
 }
 
 .burger-btn:focus {
@@ -74,62 +98,88 @@
 
 .dropdwn-mnu {
     display: none;
-    position: absolute;
-    top: 50px; 
+    position: fixed;
+    top: 0; 
     left: 0;
     width: 100%;
-    height: calc(100vh - 50px); 
+    height: 100%; 
     justify-content: center;
     align-items: center; 
-    background-color: #2a2d2f;
+    background-color: var(--off-black);
+    z-index: 10;
+}
+
+.dropdwn-mnu ul {
+    padding-left: 0;
 }
 
 .dropdwn-mnu ul li {
     list-style-type: none;
+    text-shadow: -2px 2px #577F6A;
+    font-size: 25px;
+}
+
+.dropdwn-mnu ul li:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--off-white);
 }
 
 .dropdwn-mnu ul a {
     padding: 5px 0; 
     text-decoration: none;
-    color: white;
+    color: var(--off-white);
     font-size: 18px;
 }
 
-.userIcon {
-    color: white;
-    text-shadow: 0 0 2px #000;
-    margin-right: 20px;
-    cursor: pointer;
-}
-
-.toggleCard {
-    display: none;
-    width: 140px;
-    height: fit-content;
-    background-color: #d8cfc6;
-    border-radius: 5px;
-    border: 2px solid #686c6a;
+.user-container {
+    text-align: center;
     position: absolute;
-    right: 19px;
-    top: 37px;
-    box-shadow: 2px 3px 3px #2e2e2e;
-    padding-top: 5px;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-.toggleCard ul a li {
-    list-style-type: none;
-    margin-bottom: 5px;
-    color: #2a2d2f;
+
+.user-icon {
+    color: white;
+    text-shadow: 1px 1px black;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
-.toggleCard ul li:hover {
+.userIcon {
+    display: flex;
+    margin-right: 0;
+}
+
+.user-options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100px;
+    position: relative;
+    top: 18px;
+}
+
+.user-options li {
+    display: flex;
+    align-items: end;
+}
+
+.user-options li:hover {
     text-decoration: underline;
 }
 
-.toggleCard ul {
-    padding: 0;
+.user-options a {
+    text-decoration: none;
+    font-size: 12px
 }
 
-.toggleCard ul a {
-    text-decoration: none;
+.sign-in {
+    position: relative;
+    left: 25px;
 }
