@@ -45,6 +45,16 @@ main {
     margin-top: 25px;
 }
 
+.product-card {
+    background-color: #ccc1b88c;
+    width: 95%;
+    margin: auto;
+    padding: 5px;
+    border-radius: 3px;
+    box-shadow: 1px 2px 2px black;
+    border: 3px solid #1b3527;
+}
+
 .form-titles {
     position: absolute;
     width: 95%;
@@ -63,6 +73,9 @@ main {
 
 .details {
     display: none;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .qty-input {
@@ -97,13 +110,6 @@ input[type=number] {
     transform: translateX(-50%);
 }
 
-.summary-section {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-
-}
-
 .prev-btn {
     height: 50px;
     position: absolute;
@@ -118,22 +124,26 @@ input[type=number] {
     font-size: x-large;
 }
 
-.submit-btn {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-
-table {
-    width: 50%;
-}
-
-.order-table {
-    border-collapse: collapse;
+.table {
     width: 90%;
     table-layout: fixed;
     margin: 0 auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: fit-content;
+    width: 90%;
+    max-width: 560px;
+    table-layout: fixed;
+    margin: 0 auto;
+}
+
+.table-container {
+    border: 2px solid var(--off-black);
+    border-radius: 5px;
+    width: fit-content;
+    margin: auto;
 }
 
 .order-table th,
@@ -148,6 +158,22 @@ table {
     background-color: var(--off-white);
 }
 
+.order-table th:nth-child(1),
+.order-table td:nth-child(1) {
+    width: 40%; 
+}
+
+.order-table th:nth-child(2),
+.order-table td:nth-child(2) {
+    width: 30%; 
+}
+
+.order-table th:nth-child(3),
+.order-table td:nth-child(3) {
+    width: 30%;
+    width: 30px; 
+}
+
 .order-table tbody tr:nth-child(even) {
     background-color: var(--off-white);
 }
@@ -159,24 +185,22 @@ table {
     background-color: var(--light-grey);
 }
 
-
-.product-card {
-    background-color: var(--light-grey);
-    width: 98%;
+.total-hr, .totals-txt {
+    width: 90%;
     margin: auto;
-    padding: 5px;
-    border-radius: 3px;
-    box-shadow: 1px 2px 2px black;
+    max-width: 560px;
 }
 
 .address-inputs {
-    display: grid;
     width: 90%;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
+
 }
 
 .address-inputs input {
     margin-bottom: 5px;
+    height: 25px;
     width: 90%;
     margin-left: auto;
     margin-right: auto;
@@ -195,6 +219,11 @@ table {
     width: 95%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.submit-btn {
+    position: relative;
+    margin-top: 20px;
 }
 
 @media screen and (max-width: 575px) {
