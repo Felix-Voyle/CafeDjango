@@ -8,7 +8,7 @@ fi
 
 # Activate virtual environment if applicable
 # Replace '/path/to/venv/bin/activate' with the path to your virtual environment activation script
-source cafeOrdering/venv/bin/activate
+source ../env/bin/activate
 
 # Install dependencies from requirements.txt
 pip install -r requirements.txt
@@ -21,4 +21,4 @@ python manage.py makemigrations
 python manage.py migrate
 
 # Create superuser if not exists
-python manage.py createsuperuser --no-input
+python manage.py createsuperuser --username with --noinput
