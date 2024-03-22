@@ -13,13 +13,22 @@ main {
     background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 70%, #e2d1c3 100%);
 }
 
+.title-txt {
+    font-size: 18px;
+}
+
+.orders-container {
+    position: relative;
+    top: 55px;
+}
+
 .manage-menu-bar {
     background-color: var(--off-black);
     box-shadow: 0px 2px 2px 1px grey;
     min-height: 38px;
     height: fit-content;
     position: relative;
-    top: 2px;
+    top: 52px;
     padding-left: 0;
     padding-right: 0;
 }
@@ -40,6 +49,11 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.manage-menu li a:hover {
+    color: var(--off-white);
+    text-decoration: underline;
 }
 
 .badge-notification {
@@ -67,8 +81,13 @@ main {
     color: var(--off-white);
 }
 
+.manage-menu li a:hover {
+    color: var(--off-white);
+    text-decoration: underline;
+}
+
 .ordered {
-    background-color: var(--pastel-red);
+    background-color: var(--orange);
 }
 
 .sent {
@@ -79,16 +98,33 @@ main {
     background-color: var(--pastel-green);
 }
 
+.status-bar {
+    border-bottom: 1px solid var(--off-black);
+    min-height: 10px;
+}
+
+.status-form {
+    background-color:#9b9b9b5c;
+    border-bottom: 1px solid var(--off-black);
+}
+
 
 .order-card {
     border: 1px solid black;
     box-shadow: 1px 2px 2px black;
     width: 95%;
     margin: auto;
+    overflow: hidden;
+}
+
+.delivery-date-time {
+    font-size: 17px;
+    margin-bottom: 5px;
 }
 
 .card-header {
     cursor: pointer;
+    color: var(--off-white);
 }
 
 .card-header[aria-expanded="true"] .fa-chevron-down {
@@ -113,7 +149,13 @@ main {
 .order-item {
     border-bottom: 1px solid rgba(27, 27, 27, 0.928);
     font-size: 14px;
+    margin-bottom: 5px;
 }
+
+.order-details {
+    background-color: var(--off-white);
+}
+
 
 .no-pad {
     padding: 0;
@@ -163,7 +205,7 @@ label {
 
 .pagination {
     width: 95%;
-    width: auto;
+    margin: auto;
 }
 
 @media screen and (min-width: 768px) {
@@ -171,4 +213,20 @@ label {
         display: flex;
         justify-content: center;
     }
+}
+
+
+/* Enquiries section */
+
+.enquiries-container, .enquiry-container {
+    position: relative;
+    top: 50px;
+    min-height: 100vh;
+}
+
+.enquiry-card {
+    border: 1px solid black;
+    box-shadow: 1px 2px 2px black;
+    width: 95%;
+    margin: auto;
 }
