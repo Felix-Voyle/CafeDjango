@@ -98,21 +98,55 @@ section {
     padding: 5px;
     overflow: hidden;
     position: relative;
+    opacity: 0;
 }
 
 .slides1 {
     height: 220px;
     max-width: 550px;
+    animation: fadeInSlide1 2s forwards;
+}
+@keyframes fadeInSlide1 {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .slides2 {
     max-height: 180px;
     max-width: 550px;
+    animation: fadeInSlide2 4s forwards;
+}
+@keyframes fadeInSlide2 {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .slides3 {
     max-height: 250px;
     max-width: 630px;
+    animation: fadeInSlide2 6s forwards;
+}
+@keyframes fadeInSlide3 {
+    0% {
+        opacity: 0;
+    }
+    66.67% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .coffee, .event, .food {
