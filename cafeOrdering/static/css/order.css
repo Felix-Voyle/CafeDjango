@@ -9,34 +9,35 @@
     box-sizing: border-box;
 }
 
-.main-container-centered {
+main {
     min-height: calc(100vh - 50px);
-    background-image: url('/media/photos/Print.jpg');
+    background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 70%, #e2d1c3 100%);
     background-size: cover;
+    top: 50px;
+    position: relative;
 }
 
-.product-cards-container {
-    overflow-y: auto; 
-    max-height: calc(100vh - 180px);  
+.product-cards-container { 
     position: relative; 
   }
 
 .search-and-categories {
-    background-color: grey;
+    background-color: #444444;;
     align-items: center;
     padding: 5px;
     display: grid;
     justify-content: center;
-    box-shadow: inset 0px -2px 3px 0px black;
+    box-shadow: 1px 2px 4px 0px black;
 }
 
 .order-container {
     width: 100%;
-    height: calc(100vh - 80px);
-    background-color: rgba(0, 0, 0, 0.755);
+    min-height: calc(100vh - 90px);
+    background-color: rgba(0, 0, 0, 13%);
     display: flex;
     justify-content: center;
     margin: auto;
+    padding-bottom: 55px;
 }
 
 .order-container form {
@@ -48,11 +49,7 @@
     position: absolute;
     width: 95%;
     display: flex;
-    color: var(--off-white);
-}
-
-.white-title {
-    color: var(--off-white);
+    color: var(--off-black);
 }
 
 .form-titles span {
@@ -95,9 +92,16 @@ input[type=number] {
 .next-btn {
     height: 50px;
     position: absolute;
-    bottom: -20px; 
+    bottom: 5px; 
     left: 50%;
     transform: translateX(-50%);
+}
+
+.summary-section {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+
 }
 
 .prev-btn {
@@ -119,6 +123,7 @@ input[type=number] {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
 
 table {
     width: 50%;
@@ -192,6 +197,16 @@ table {
     margin-right: auto;
 }
 
+@media screen and (max-width: 575px) {
+    .order-container form {
+        margin-top: 10px;
+    }
+    .product-label {
+        position: relative;
+        top: 15px;
+    }
+}
+
 @media screen and (min-width: 576px) {
     .custom-hr hr {
         display: none;
@@ -205,11 +220,5 @@ table {
     }
     .text-center-sm {
         text-align: center !important;
-    }
-    .product-cards-container {
-        max-height: calc(100vh - 80px);
-    }
-    .order-container {
-        height: calc(100vh - 50px);
     }
 }
