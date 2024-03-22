@@ -115,6 +115,13 @@ html {
 
 .dropdwn-mnu ul li {
     list-style-type: none;
+    text-shadow: -2px 2px #577F6A;
+    font-size: 25px;
+}
+
+.dropdwn-mnu ul li:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--off-white);
 }
 
 .dropdwn-mnu ul a {
