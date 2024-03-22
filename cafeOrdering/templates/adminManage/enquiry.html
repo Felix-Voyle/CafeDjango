@@ -21,9 +21,8 @@
         </li>
     </ul>
 </div>
-<div class="row no-gutters">
-    <div class="col-12 mb-5">
-        <h3 class="text-center">Enquiry</h3>
+<div class="row no-gutters enquiry-container">
+    <div class="col-12">
         <section class="enquiry-section">
             <div class="container">
                 <div class="row">
@@ -40,12 +39,12 @@
                     </div>
                     <div class="col-md-6">
                         <div class="enquiry-message">
-                            <h3 class="section-title">Message</h3>
                             <div class="mb-2">
                                 <span><strong>Subject: </strong></span><span>{{ enquiry.subject }}</span>
                             </div>
+                            <span><strong>Message: </strong></span>
                             <div class="enquiry-text-box text-center">
-                                <p>{{ enquiry.message }}</p>
+                                </span><p>{{ enquiry.message }}</p>
                             </div>
                         </div>
                     </div>

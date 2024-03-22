@@ -9,7 +9,7 @@
 {% block content %}
 
 <div class="row col-12 no-gutters manage-menu-bar mb-2">
-    <ul class="manage-menu">
+    <ul class="manage-menu title-txt">
         <li class="col-4 text-center"><a href="{% url 'manage' %}">Orders</a></li>
         <li class="col-4 text-center"><a href="{% url 'create_invoice' %}">Create Invoice</a></li>
         <li class="col-4 text-center active">
@@ -20,12 +20,11 @@
         </li>
     </ul>
 </div>
-<div class="row no-gutters">
-    <div class="col-12 mb-5">
-        <h3 class="text-center">Enquiries</h3>
+<div class="row no-gutters enquiries-container">
+    <div class="col-12 col-md-6 mb-5">
         <section>
             {% if enquiries %}
-            <h4>Unread</h4>
+            <h4 class="text-center title-txt">Unread</h4>
             {% for enquiry in enquiries %}
                 {% if enquiry|unread %}
                     <div class="enquiry-card text-center">
@@ -35,10 +34,15 @@
                             </div>
                         </div>
                     </div>
+                    {% else %}
+                    <p class="text-center main-txt">No enquiries to display....</p>
                 {% endif %}
             {% endfor %}
-        
-            <h4>Viewed</h4>
+        </section>
+    </div>
+    <div class="col-12 col-md-6 mb-5">
+        <section>
+            <h4 class="text-center title-txt">Viewed</h4>
             {% for enquiry in enquiries %}
                 {% if enquiry|viewed %}
                     <div class="enquiry-card text-center">
@@ -49,10 +53,12 @@
                             </div>
                         </div>
                     </div>
+                    {% else %}
+                    <p class="text-center main-txt">No enquiries to display....</p>
                 {% endif %}
             {% endfor %}
         {% else %}
-            <p>No enquiries to display....</p>
+        <p class="text-center main-txt">No enquiries to display....</p>
         {% endif %}
         </section>
     </div>
