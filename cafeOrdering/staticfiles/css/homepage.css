@@ -1,13 +1,254 @@
-.home-container {
-    height: calc(100vh -50px);
-    width: 100%;
-    background-color: aliceblue;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
 
-.picture-container, .find-us {
-    flex-grow: 1;
+.hero {
+    position: relative;
     width: 100%;
+    top: 50px;
+    overflow: hidden; 
+}
+
+.hero-content {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero .landscape-hero {
+    min-width: 100%;
+    min-height: 100%; 
+    max-height: 120%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: zoomAnimation 4.5s forwards;
+}
+
+@keyframes zoomAnimation {
+    from {
+        max-height: 120%;
+    }
+    to {
+        max-height: 150%;
+    }
+}
+
+.fade-in-gradient-landscape, .fade-in-gradient-portrait {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 0%);
+    animation: fadeOutGradient 4s forwards;
+    z-index: 5;
+}
+
+@keyframes fadeOutGradient {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.2;
+    }
+}
+
+.hero .portrait-hero {
+    min-width: 100%;
+    min-height: 110%; 
+    max-width: 110%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 54%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: zoomPortraitAnimation 4.5s forwards;
+}
+
+@keyframes zoomPortraitAnimation {
+    from {
+        min-width: 110%;
+        min-height: 110%;
+    }
+    to {
+        min-width: 120%;
+        min-height: 120%;
+    }
+}
+
+.find-us {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.find-us-text {
+    margin-bottom: -8px;
+    font-size: 22px;
+    color: white; 
+    text-shadow: -1px -1px 0 black,  
+                  1px -1px 0 black,
+                 -1px  1px 0 black,
+                  1px  1px 0 black; 
+}
+
+a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.find-us-wrapper-landscape, .find-us-wrapper-portrait {
+    position: absolute;
+    cursor: pointer;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
+    opacity: 0;
+    animation: fadeInFindUs 4s forwards;
+}
+
+@keyframes fadeInFindUs {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+        bottom: 20px;
+    }
+    100% {
+        opacity: 1;
+        bottom: 0;
+    }
+}
+
+.find-us-arrow {
+    font-size: 55px;
+    text-shadow: 0px 0px 0px white;
+    color: white;
+    animation: fadeInFindUsArrow 4s forwards;
+}
+
+@keyframes fadeInFindUsArrow {
+    0% {
+        text-shadow: 0px 0px 0px white;
+    }
+    50% {
+        text-shadow: 0px 0px 0px white;
+    }
+    100% {
+        text-shadow: 0px 4px 1px black;
+    }
+}
+
+.hero-content {
+    text-align: center;
+    height: calc(100vh - 50px);
+}
+
+.hero-content h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.address-section {
+    background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 70%, #e2d1c3 100%);
+    height: 100vh;
+    padding: 80px 0;
+    text-align: center;
+    align-items: center;
+}
+
+.title-txt {
+    font-size: 22px;
+}
+
+.main-txt {
+    font-size: 18px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.google-map-container {
+    width: 90%;
+    height: 275px;
+    margin: auto;
+    border: 5px solid var(--off-black);
+    border-radius: 3px;
+}
+
+.find-us-container,
+.google-map-container {
+    opacity: 0;
+}
+
+.fade-in {
+    opacity: 1;
+    transition: opacity 1s ease-in-out; /* Adjust duration and easing as needed */
+}
+
+
+/* For smaller screens (mobile) */
+@media screen and (max-width: 600px) {
+    .landscape-hero {
+        display: none; 
+    }
+    .fade-in-gradient-landscape {
+        display: none;
+    }
+    .find-us-text {
+        color: white;
+    }
+    .find-us-wrapper-landscape {
+        display: none;
+    }
+}
+
+/* For larger screens (desktop) */
+@media screen and (min-width: 601px) {
+    .portrait-hero {
+        display: none; 
+    }
+    .fade-in-gradient-portrait {
+        display: none;
+    }
+    .find-us-wrapper-portrait {
+        display: none;
+    }
+    .google-map-container {
+        width: 80%;
+        height: 300px;
+    }
+}
+
+@media screen and (min-width: 991px) {
+    .find-us-row {
+        display: flex;
+        align-items: center;
+    }
+    .title-txt {
+        font-size: 25px;
+    }
+    .main-txt {
+        font-size: 19px;
+    }
+    .google-map-container {
+        height: 320px;
+        width: 120%;
+        height: 350px;
+    }
 }

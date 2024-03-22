@@ -217,6 +217,7 @@ $(document).ready(function () {
       $("#futureDateFormatted").val(selectedDate);
     },
   });
+
   // Timepicker configuration
   $("#timepicker").timepicker({
     timeFormat: "HH:mm",
