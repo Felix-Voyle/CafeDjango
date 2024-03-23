@@ -23,11 +23,16 @@ main {
 }
 
 .form-card {
-    background-color: var(--main-green);
-    border: 2px solid var(--off-black);
-    border-radius: 8px;
-    box-shadow: 3px 3px 1px var(--off-black);
+    background-color: var(--off-black);
+    border: 2px solid var(--main-green);
+    border-radius: 5px;
+    box-shadow: -3px 4px 5px var(--off-black);
     max-width: 640px;
+    color: var(--off-white);
+}
+
+.form-card h3 {
+    text-shadow: -2px 2px var(--main-green);
 }
 
 .what-we-do-text {
@@ -103,7 +108,7 @@ section {
 
 .slides1 {
     height: 220px;
-    max-width: 550px;
+    max-width: 330px;
     animation: fadeInSlide1 2s forwards;
 }
 @keyframes fadeInSlide1 {
@@ -118,7 +123,7 @@ section {
 
 .slides2 {
     max-height: 180px;
-    max-width: 550px;
+    max-width: 330px;
     animation: fadeInSlide2 4s forwards;
 }
 @keyframes fadeInSlide2 {
