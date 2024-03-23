@@ -27,10 +27,9 @@ class EnquiryForm(forms.ModelForm):
         subject = self.fields['subject'].widget
         message = self.fields['message'].widget
         
-        name.attrs.update(input_attrs('text', 'name-input', 'Name', 'off'))
-        phone_number.attrs.update(input_attrs('tel', 'number-input', 'Phone Number', 'on'))
-        email.attrs.update(input_attrs('email', 'email-input', 'Email', 'on'))
-        subject.attrs.update(input_attrs('text', 'subject-input', 'Subject', 'off'))
-        message.attrs.update(input_attrs('text', 'msg-input', 'Message', 'off'))
-        
+        name.attrs.update(input_attrs('text', 'name-input main-txt', 'Name', 'off'))
+        phone_number.attrs.update(input_attrs('tel', 'number-input main-txt', 'Phone Number', 'on'))
+        email.attrs.update(input_attrs('email', 'email-input main-txt', 'Email', 'on'))
+        subject.attrs.update(input_attrs('text', 'subject-input main-txt', 'Subject', 'off'))
+        message.attrs.update(input_attrs('text', 'msg-input main-txt', 'Message', 'off'))
 
