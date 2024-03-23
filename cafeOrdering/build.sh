@@ -4,11 +4,11 @@ set -o errexit
 pip install -r requirements.txt
 
 # Collect static files
-python manage.py collectstatic --noinput
+python manage.py collectstatic --no-input
 
 # Make migrations and migrate database
 python manage.py makemigrations
 python manage.py migrate
 
 # Create superuser if not exists
-python manage.py createsuperuser --username with admin
+python manage.py createsuperuser --no-input
