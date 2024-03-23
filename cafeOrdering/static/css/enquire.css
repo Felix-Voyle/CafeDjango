@@ -1,6 +1,7 @@
 @import 'root.css';
 
 main {
+    min-width: fit-content;
     width: 100%;
     min-height: calc(100vh - 50px);
     background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 70%, #e2d1c3 100%);
@@ -14,18 +15,22 @@ main {
     padding-bottom: 30px;
 }
 
+.enquire-form {
+    padding: 1rem;
+}
+
 .enquire-form p label {
     display: none;
 }
 
 .enquire-form p {
-    margin-bottom: 5px;
+    margin-bottom: 1rem;
 }
 
 .form-card {
     background-color: var(--off-black);
     border: 2px solid var(--main-green);
-    border-radius: 5px;
+    border-radius: 2px;
     box-shadow: -3px 4px 5px var(--off-black);
     max-width: 640px;
     color: var(--off-white);
@@ -44,24 +49,13 @@ main {
     text-shadow: -3px 2px #ccc8c8ba;
 }
 
-.info-card {
-    color: var(--off-black);
-}
-
-.form-card, .info-card {
-    width: 280px;
+.form-card, .what-we-do {
+    width: 95%;
     margin: auto;
 }
 
 .msg-input {
     max-width: 95%;
-}
-
-.what-we-do {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
 }
 
 .what-we-do-img {
@@ -87,19 +81,15 @@ section {
     align-items: center;
 }
 
-.what-we-do {
-    flex: 1;
-    margin: 4px;
-}
-
 .slides1, .slides2, .slides3 {
     flex: 1;
     margin: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0;
+    box-shadow: 0 0;
     border: 5px solid #272626;
+    border-radius: 2px;
     padding: 5px;
     overflow: hidden;
     position: relative;
@@ -184,8 +174,18 @@ section {
     text-shadow: -2px 0px #efefd885;
 }
 
+.submit-btn {
+    background-color: var(--main-green);
+    border: 1px solid var(--off-white);
+    border-radius: 2px;
+    color: var(--off-white);
+    padding: 5px;
+    margin: 10px;
+    box-shadow: -2px 2px #56a37d;
+}
+
 @media (min-width: 449px) {
-    .what-we-do, .slides1, .slides2, .slides3 {
+    .slides1, .slides2, .slides3 {
         flex-basis: calc((100% - 20px) / 3);
     }
     main {
@@ -194,22 +194,13 @@ section {
 }
 
 @media (max-width: 450px) {
-    .what-we-do, .slides1, .slides2, .slides3 {
+    .slides1, .slides2, .slides3 {
         flex-basis: calc(100% - 20px); 
     }
 }
 
-@media (min-width: 782px) {
-    .what-we-do-img {
-    min-width: 300px;
-    max-height: none;
-    }
-}
-
-
 @media screen and (min-width: 355px) {
-    .form-card, .info-card {
-        min-width: 350px;
+    .form-card, .what-we-do {
         width: 95%;
     }
     main {
@@ -217,9 +208,17 @@ section {
     }
 }
 
-@media screen and (min-width: 992px) {
-    .form-card, .info-card {
-        min-height: 415px;
-        min-width: 450px;
+@media screen and (max-width: 450px) {
+    .slides3 {
+        max-width: 330px;
+    }
+    .what-we-do-container {
+        min-height: 674px;
+    }
+}
+
+@media screen and (min-width: 1069px) {
+    .slides3 {
+        min-width: 50%;
     }
 }

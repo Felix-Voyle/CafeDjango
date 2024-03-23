@@ -28,7 +28,7 @@ def enquire(request):
             except Exception as e:
                 logger.error("Error processing enquiry form: %s", str(e))
                 messages.error(request, 'An error occurred while processing your enquiry. Please try again later.')
-                return redirect('/')
+                return redirect('enquire/enquire.html')
 
         else:
             messages.error(request, 'The form you submitted was invalid')
