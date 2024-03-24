@@ -117,22 +117,19 @@ def invoice_totals(can, y_coordinate, totals):
 
 
 def generate_invoice(recipient_info, order_info, cart, totals, order_detail=None):
-    # Create a PdfWriter object to store the pages
-    output_pdf = PdfWriter()
-
+    # Create a BytesIO object to store the PDF content
+    pdf_buffer = io.BytesIO()
+    
     # Create a canvas object for each page and add content to it
-    num_items = len(cart)  # Example: Total number of items
+    can = canvas.Canvas(pdf_buffer, pagesize=letter)
+    num_items = len(cart)
     items_per_page = 25
 
-    for page_num in range(
-        (num_items + items_per_page - 1) // items_per_page
-    ):  # Calculate the number of pages
+    for page_num in range((num_items + items_per_page - 1) // items_per_page):
         start_index = page_num * items_per_page
-        end_index = min(
-            (page_num + 1) * items_per_page, num_items
-        )  # Ensure not to exceed total number of items
-        packet = io.BytesIO()
-        can = canvas.Canvas(packet, pagesize=letter)
+        end_index = min((page_num + 1) * items_per_page, num_items)
+        
+        # Add content to the canvas for each page
         invoice_header(can)
         invoice_footer(can)
         recipient_information(can, recipient_info)
@@ -140,18 +137,17 @@ def generate_invoice(recipient_info, order_info, cart, totals, order_detail=None
         if order_detail is not None:
             specify_order(can, order_detail)
         draw_table_header(can)
-        y_coordinate = order_information(
-            can, cart, start_index, end_index
-        )  # Add numbers specific to each page
+        y_coordinate = order_information(can, cart, start_index, end_index)
         if page_num == (num_items + items_per_page - 1) // items_per_page - 1:
             invoice_totals(can, y_coordinate, totals)
-        can.save()
+        
+        # Save the canvas content for each page
+        can.showPage()
 
-        packet.seek(0)
-        new_pdf = PdfReader(packet)
+    # Save the canvas content to the PDF buffer
+    can.save()
 
-        output_pdf.add_page(new_pdf.pages[0])  # Add the page to the output PDF
+    # Reset the buffer position to the beginning
+    pdf_buffer.seek(0)
 
-    # Write the output PDF to a file
-    with open("output.pdf", "wb") as output_stream:
-        output_pdf.write(output_stream)
+    return pdf_buffer
