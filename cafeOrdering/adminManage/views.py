@@ -4,6 +4,7 @@ from decimal import Decimal, ROUND_HALF_UP
 import random
 import tempfile
 import os
+import logging
 
 # Third-party library imports
 from django.contrib import messages
@@ -23,6 +24,8 @@ from .pdf_generator import generate_invoice
 from enquire.models import Enquiry
 from order.models import Order
 from products.models import InvoiceProduct
+
+logger = logging.getLogger(__name__)
 
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
@@ -302,7 +305,7 @@ def send_invoice(request, order_id):
         messages.success(request, f"Invoice sent for order {order_id}")
         return redirect('manage')
     except Exception as e:
-        print(f"Failed to send email: {str(e)}")
+        logger.exception("Failed to send email: %s", e)
         os.remove(tmp_file.name)
         messages.error(request, f"Failed to invoice order {order_id}, {str(e)}")
         return redirect('manage')
