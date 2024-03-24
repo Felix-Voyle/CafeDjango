@@ -1,7 +1,13 @@
 import io
-from PyPDF2 import PdfWriter, PdfReader
+import os
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
+
+IBAN = os.environ.get('IBAN')
+BANK = os.environ.get('BANK')
+SORT_CODE = os.environ.get('SORT_CODE')
+ACCOUNT_HOLDER = os.environ.get('ACCOUNT_HOLDER')
+BANK_ACCOUNT = os.environ.get('BANK_ACCOUNT')
 
 
 def invoice_header(can):
@@ -35,11 +41,11 @@ def invoice_footer(can):
     can.drawString(240, 70, "Javajavacoffee@hotmail.com")
 
     # Draw payment details
-    can.drawString(410, 100, "IBAN: GB03HBUK40361611552082")
-    can.drawString(410, 85, "Bank: HSBC")
-    can.drawString(410, 70, "Sort code: 403616")
-    can.drawString(410, 55, "Account holder: Java Java London Limited")
-    can.drawString(410, 40, "Bank account: 11552082")
+    can.drawString(410, 100, f"IBAN: {IBAN}")
+    can.drawString(410, 85, f"Bank: {BANK}")
+    can.drawString(410, 70, f"Sort code: {SORT_CODE}")
+    can.drawString(410, 55, f"Account holder: {ACCOUNT_HOLDER}")
+    can.drawString(410, 40, f"Bank account: {BANK_ACCOUNT}")
 
 
 def recipient_information(can, recipient_info):
