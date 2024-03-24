@@ -7,7 +7,8 @@ body {
     position: relative;
     width: 100%;
     top: 50px;
-    overflow: hidden; 
+    overflow: hidden;
+    box-shadow: 0px 0px 15px var(--off-black); 
 }
 
 .hero-content {
@@ -111,7 +112,7 @@ a:hover {
 .find-us-wrapper-landscape, .find-us-wrapper-portrait {
     position: absolute;
     cursor: pointer;
-    bottom: 20px;
+    bottom: 80px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 6;
@@ -125,11 +126,11 @@ a:hover {
     }
     50% {
         opacity: 0;
-        bottom: 20px;
+        bottom: 50px;
     }
     100% {
         opacity: 1;
-        bottom: 0;
+        bottom: 30px;
     }
 }
 
@@ -166,6 +167,7 @@ a:hover {
     background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 70%, #e2d1c3 100%);
     min-height: 100vh;
     padding: 80px 0;
+    display: flex;
     text-align: center;
     align-items: center;
 }
@@ -236,10 +238,6 @@ a:hover {
 }
 
 @media screen and (min-width: 991px) {
-    .find-us-row {
-        display: flex;
-        align-items: center;
-    }
     .title-txt {
         font-size: 25px;
     }
