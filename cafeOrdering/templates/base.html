@@ -57,8 +57,9 @@
                     </svg>
                 </button>
             </div>
-
+            
             <div class="user-container">
+            <div class="user-icon-container">
                 {% if user.is_authenticated %}
                     {% if user.is_superuser or user.is_staff %}
                         <a href="{% url 'manage' %}">
@@ -72,17 +73,14 @@
                 {% endif %}
             </div>
             
-            <ul class="user-options">
+            <div class="sign-in-out">
                 {% if user.is_authenticated %}
-                    <li class="text-center sign-in">
-                        <a href="{% url 'account_logout' %}">Logout</a>
-                    </li>
+                        <a href="{% url 'account_logout' %}"><span>Sign Out</span></a>
                 {% else %}
-                    <li class="text-center sign-in">
-                        <a href="{% url 'account_login' %}">Sign In</a>
-                    </li>
+                        <a href="{% url 'account_login' %}"><span>Sign In</span></a>
                 {% endif %}
-            </ul>
+                </div>
+        </div>
                     
 
                     {% if messages %}
