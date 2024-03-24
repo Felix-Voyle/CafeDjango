@@ -2,6 +2,8 @@
 import json
 from decimal import Decimal, ROUND_HALF_UP
 import random
+import tempfile
+import os
 
 # Third-party library imports
 from django.contrib import messages
@@ -12,6 +14,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
+from django.http import FileResponse
 
 # Local application imports
 from .pdf_generator import generate_invoice
@@ -179,10 +182,17 @@ def create_invoice(request):
         totals["Total excl. VAT"] = '{:.2f}'.format(order_total - discount)
         totals["Total amount due"] = '{:.2f}'.format(order_total)
 
-        generate_invoice(recipient_info, order_info, invoice_items, totals, order_detail)   
 
-        return HttpResponse('Form submitted successfully.')
+        try:
+            pdf_buffer = generate_invoice(recipient_info, order_info, invoice_items, totals, order_detail)
+            response = FileResponse(pdf_buffer, as_attachment=True, filename=f'Invoice #{order_reference}')
+            messages.success(request, "Invoice Downloaded Successfully")
+            return response
 
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+            return redirect('manage')
+    
     return render(request, 'adminManage/create_invoice.html', ctx)
 
 
@@ -265,4 +275,3 @@ def send_invoice(request, order_id):
     generate_invoice(recipient_info, order_info, invoice_items, totals)
 
     return HttpResponse("Invoice sent successfully")
-    
