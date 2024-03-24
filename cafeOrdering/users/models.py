@@ -13,6 +13,7 @@ class UserProfile(models.Model):
     invoice_address_line2 = models.CharField('Invoice Address Line 2', max_length=100, blank=True, null=True)
     invoice_address_line3 = models.CharField('Invoice Address Line 3', max_length=100, blank=True, null=True)
     invoice_postcode = models.CharField('Invoice Postcode', max_length=100)
+    invoice_email = models.EmailField()
 
 
     def __str__(self):

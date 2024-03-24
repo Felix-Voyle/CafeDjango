@@ -1,8 +1,8 @@
 //Ajax function to update order status on checkbox tick
 document.addEventListener('DOMContentLoaded', function() {
-    const checkboxes = document.querySelectorAll('.status-checkbox');
+    const sentCheckboxes = document.querySelectorAll('.sent-checkbox');
 
-    checkboxes.forEach(checkbox => {
+    sentCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             const orderId = this.getAttribute('data-order-id');
             const status = this.getAttribute('name');
@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
 
 // Check if user wants to edit order as no reported problem
 $('#editLink').click(function() {

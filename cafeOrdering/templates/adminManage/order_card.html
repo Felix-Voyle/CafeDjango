@@ -55,8 +55,8 @@
                 {% endif %}>
                 <label for="sent-{{ order.id }}">Sent</label>
             </div>
-            <div class="col-4">
-                <input id="invoiced-{{ order.id }}" name="invoiced" type="checkbox" class="status-checkbox" data-order-id="{{ order.id }}"
+            <div class="col-4 invoiced-checkbox">
+                <input id="invoiced-{{ order.id }}" name="invoiced" type="checkbox" class="status-checkbox" data-order-id="{{ order.order_id }}"
                 {% if order.status == 'invoiced' %}
                     checked disabled 
                 {% endif %}
@@ -67,7 +67,13 @@
                     disabled
                 {% endif %}
                 >
-                <a href="{% url 'send_invoice' order.order_id %}"><label for="invoiced-{{ order.id }}">Invoice</label></a>
+                <label for="invoiced-{{ order.id }}">
+                    {% if order.status == 'invoiced' %}
+                        Invoiced
+                    {% else %}
+                        Invoice
+                    {% endif %}
+                </label>
             </div> 
         </div>
     </form>
