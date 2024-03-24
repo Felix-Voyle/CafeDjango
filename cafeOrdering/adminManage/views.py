@@ -9,6 +9,8 @@ import os
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -205,7 +207,7 @@ def update_order_status(request):
         
         try:
             order = Order.objects.get(id=order_id)
-            if (status == 'sent' and order.sendable) or (status == 'invoiced' and order.invoiceable):
+            if (status == 'sent' and order.sendable):
                 order.status = status
                 order.save()
                 messages.success(request, 'Order status updated!')
@@ -270,8 +272,37 @@ def send_invoice(request, order_id):
         totals["Total excl. VAT"] = '{:.2f}'.format(order.order_total - discount)
         totals["Total amount due"] = '{:.2f}'.format(order.order_total)
 
-    print(totals)
+    try:
+        invoice_buffer = generate_invoice(recipient_info, order_info, invoice_items, totals)
+        with  open("Invoice.pdf", 'wb') as tmp_file:
+            tmp_file.write(invoice_buffer.getbuffer())
+    except Exception as e:
+        messages.error(request, "Failed to generate Invoice")
+        return redirect('manage')
 
-    generate_invoice(recipient_info, order_info, invoice_items, totals)
+    
+    email_content = render_to_string('email/email_body.html', {
+        'order_id': order_id,
+        'customer_name': user_profile.invoice_business,
+    })
 
-    return HttpResponse("Invoice sent successfully")
+    subject = f"Invoice for Order #{order_id}"
+    from_email = os.environ.get('DEFAULT_FROM_EMAIL')
+    to_email = [user_profile.invoice_email]
+
+
+    email = EmailMessage(subject, email_content, from_email, to_email)
+    email.attach(f"Invoice#{order_id}.pdf", invoice_buffer.getvalue(), 'application/pdf')
+
+
+    try:
+        email.send()
+        order.status = 'invoiced'
+        order.save()
+        os.remove(tmp_file.name)  # Delete the temporary file after sending
+        messages.success(request, f"Invoice sent for order {order_id}")
+        return redirect('manage')
+    except Exception as e:
+        os.remove(tmp_file.name)
+        messages.error(request, f"Failed to invoice order {order_id}")
+        return redirect('manage')

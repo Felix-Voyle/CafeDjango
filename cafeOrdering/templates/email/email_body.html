@@ -1,0 +1,12 @@
+{% extends 'email/email_base.html' %}
+
+{% block content %}
+    <h1 style="text-align: center;">Invoice for Order #{{ order_id }}</h1>
+    <p>Dear {{ customer_name }},</p>
+    <p>Please find attached the invoice for your recent order:</p>
+    <p>Order Reference: {{ order_id }}</p>
+    <hr>
+    <p>Thank you for your business!</p>
+    <p>Best regards,<br>Your Company Name</p>
+{% endblock %}
+

@@ -86,5 +86,22 @@
 
 {% block javascript %}
 <script src="{% static 'js/manage.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const invoicedCheckboxes = document.querySelectorAll('.invoiced-checkbox input[type="checkbox"]');
+    
+    invoicedCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('click', function(event) {
+            event.preventDefault();
+            const orderId = this.getAttribute('data-order-id');
+            sendInvoice(orderId);
+        });
+    });
+});
+
+function sendInvoice(orderId) {
+    window.location.href = `/manage/${orderId}/send_invoice/`;
+}
+</script>
 {% endblock %}
 
