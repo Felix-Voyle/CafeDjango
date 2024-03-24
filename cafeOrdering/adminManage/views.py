@@ -261,7 +261,6 @@ def send_invoice(request, order_id):
     # Calculate the discount
     discount_rate = Decimal('0.20')
     discount = (order.order_total * discount_rate).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
-    print(discount)
 
     # Check if the user's profile is workspace
     if user_profile == "workspace":
@@ -303,6 +302,7 @@ def send_invoice(request, order_id):
         messages.success(request, f"Invoice sent for order {order_id}")
         return redirect('manage')
     except Exception as e:
+        print(f"Failed to send email: {str(e)}")
         os.remove(tmp_file.name)
-        messages.error(request, f"Failed to invoice order {order_id}")
+        messages.error(request, f"Failed to invoice order {order_id}, {str(e)}")
         return redirect('manage')
