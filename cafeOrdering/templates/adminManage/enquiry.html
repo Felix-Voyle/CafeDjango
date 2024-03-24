@@ -21,6 +21,7 @@
         </li>
     </ul>
 </div>
+<h3 class="section-title title-txt text-center">Enquiry Details</h3>
 <div class="row no-gutters enquiry-container">
     <div class="col-12">
         <section class="enquiry-section">
@@ -28,23 +29,22 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="enquiry-info">
-                            <h3 class="section-title">Enquiry Details</h3>
                             <ul class="list-unstyled">
-                                <li><strong>Date:</strong> {{ enquiry.date_created|date:"F d, Y" }}</li>
-                                <li><strong>Name:</strong> {{ enquiry.name }}</li>
-                                <li><strong>Email:</strong> {{ enquiry.email }}</li>
-                                <li><strong>Phone Number:</strong> {{ enquiry.phone_number }}</li>
+                                <li><span class="title-txt"><strong>Date:</strong></span> {{ enquiry.date_created|date:"F d, Y" }}</li>
+                                <li> <span class="title-txt"><strong>Name:</strong></span> {{ enquiry.name }}</li>
+                                <li> <span class="title-txt"><strong>Email:</strong></span> {{ enquiry.email }}</li>
+                                <li> <span class="title-txt"><strong>Phone Number:</strong></span> {{ enquiry.phone_number }}</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="enquiry-message">
                             <div class="mb-2">
-                                <span><strong>Subject: </strong></span><span>{{ enquiry.subject }}</span>
+                                <span class="title-txt"><strong>Subject: </strong></span><span class="main-txt">{{ enquiry.subject }}</span>
                             </div>
-                            <span><strong>Message: </strong></span>
-                            <div class="enquiry-text-box text-center">
-                                </span><p>{{ enquiry.message }}</p>
+                            <span class="title-txt"><strong>Message: </strong></span>
+                            <div class="enquiry-text-box">
+                                </span><p class="main-txt">{{ enquiry.message }}</p>
                             </div>
                         </div>
                     </div>
