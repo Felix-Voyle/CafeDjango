@@ -4,12 +4,12 @@ from decimal import Decimal, ROUND_HALF_UP
 import random
 import tempfile
 import os
+import base64
 
 # Third-party library imports
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -17,6 +17,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.http import FileResponse
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
 
 # Local application imports
 from .pdf_generator import generate_invoice
@@ -261,7 +263,6 @@ def send_invoice(request, order_id):
     # Calculate the discount
     discount_rate = Decimal('0.20')
     discount = (order.order_total * discount_rate).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
-    print(discount)
 
     # Check if the user's profile is workspace
     if user_profile == "workspace":
@@ -274,35 +275,63 @@ def send_invoice(request, order_id):
 
     try:
         invoice_buffer = generate_invoice(recipient_info, order_info, invoice_items, totals)
-        with  open("Invoice.pdf", 'wb') as tmp_file:
+        pdf_filename = f"Invoice_{order_id}.pdf"
+        with open(pdf_filename, 'wb') as tmp_file:
             tmp_file.write(invoice_buffer.getbuffer())
     except Exception as e:
         messages.error(request, "Failed to generate Invoice")
         return redirect('manage')
 
-    
     email_content = render_to_string('email/email_body.html', {
-        'order_id': order_id,
-        'customer_name': user_profile.invoice_business,
+    'order_id': order_id,
+    'customer_name': user_profile.invoice_business,
     })
 
     subject = f"Invoice for Order #{order_id}"
-    from_email = os.environ.get('DEFAULT_FROM_EMAIL')
+    from_email = os.environ.get('SENDGRID_FROM_EMAIL')
     to_email = [user_profile.invoice_email]
 
-
-    email = EmailMessage(subject, email_content, from_email, to_email)
-    email.attach(f"Invoice#{order_id}.pdf", invoice_buffer.getvalue(), 'application/pdf')
-
-
     try:
-        email.send()
-        order.status = 'invoiced'
-        order.save()
-        os.remove(tmp_file.name)  # Delete the temporary file after sending
-        messages.success(request, f"Invoice sent for order {order_id}")
-        return redirect('manage')
+        # Initialize SendGrid message
+        message = Mail(
+            from_email=from_email,
+            to_emails=to_email,
+            subject=subject,
+            html_content=email_content
+            )
+
+        # Load PDF file
+        with open(pdf_filename, 'rb') as f:
+            attachment_data = f.read()
+        encoded_attachment_data = base64.b64encode(attachment_data).decode()
+        # Create attachment object
+        attachment = Attachment(
+            FileContent(encoded_attachment_data),
+            FileName(pdf_filename),
+            FileType('application/pdf'),
+            Disposition('attachment')
+        )
+
+        # Add attachment to email message
+        message.attachment = attachment
+
+        # Initialize SendGrid client with API key
+        sg = SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+
+        if response.status_code == 202:
+            print("Response status code:", response.status_code)
+            order.status = 'invoiced'
+            order.save()
+            os.remove(pdf_filename)  # Delete the temporary file after sending
+            messages.success(request, f"Invoice sent for order {order_id}")
+            return redirect('manage')
+        else:
+            os.remove(pdf_filename)
+            messages.error(request, f"Failed to invoice order {order_id}")
+            return redirect('manage')
+
     except Exception as e:
-        os.remove(tmp_file.name)
+        os.remove(pdf_filename)
         messages.error(request, f"Failed to invoice order {order_id}")
         return redirect('manage')
