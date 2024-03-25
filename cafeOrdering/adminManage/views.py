@@ -27,8 +27,6 @@ from enquire.models import Enquiry
 from order.models import Order
 from products.models import InvoiceProduct
 
-logger = logging.getLogger(__name__)
-
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def manage(request):
