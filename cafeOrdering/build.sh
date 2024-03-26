@@ -11,4 +11,4 @@ python manage.py makemigrations
 python manage.py migrate
 
 
-#echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'felix.voyle@icloud.com', 'run12345')" | python manage.py shell
+echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'felix.voyle@icloud.com', 'run12345')" | python manage.py shell
