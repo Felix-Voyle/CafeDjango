@@ -146,6 +146,14 @@ class OrderItem(models.Model):
 
     def get_total(self):
         return self.product.price * self.quantity
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.order.update_total()
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        self.order.update_total()
 
     def __str__(self):
         return f"{self.order} - {self.product.name} x {self.quantity}"
