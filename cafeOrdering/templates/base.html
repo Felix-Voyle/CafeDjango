@@ -57,70 +57,61 @@
                     </svg>
                 </button>
             </div>
-            
-            <div class="user-container">
-            <div class="user-icon-container">
-                {% if user.is_authenticated %}
-                    {% if user.is_superuser or user.is_staff %}
-                        <a href="{% url 'manage' %}">
-                    {% else %}
-                        <a href="{% url 'my_orders' %}">
-                    {% endif %}
-                {% endif %}
-                    <i id="userIcon" class="fas fa-user fa-lg user-icon"></i>
-                {% if user.is_authenticated %}
-                    </a>
-                {% endif %}
-            </div>
-            
-            <div class="sign-in-out">
-                {% if user.is_authenticated %}
-                        <a href="{% url 'account_logout' %}"><span>Sign Out</span></a>
-                {% else %}
-                        <a href="{% url 'account_login' %}"><span>Sign In</span></a>
-                {% endif %}
-                </div>
-        </div>
-                    
 
-                    {% if messages %}
-                    <div class="messages">
-                        {% for message in messages %}
-                        <div class="message-card {{ message.tags }}">
-                            <div class="message-line"></div>
-                            <div class="message-content">{{ message }}</div>
-                        </div>
-                        {% endfor %}
-                    </div>
+            <div class="user-container">
+                <div class="user-icon-container">
+                    {% if user.is_authenticated %}
+                    {% if user.is_superuser or user.is_staff %}
+                    <a href="{% url 'manage' %}">
+                        {% else %}
+                        <a href="{% url 'my_orders' %}">
+                            {% endif %}
+                            {% endif %}
+                            <i id="userIcon" class="fas fa-user fa-lg user-icon"></i>
+                            {% if user.is_authenticated %}
+                        </a>
+                        {% endif %}
+                </div>
+
+                <div class="sign-in-out">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'account_logout' %}"><span>Sign Out</span></a>
+                    {% else %}
+                    <a href="{% url 'account_login' %}"><span>Sign In</span></a>
                     {% endif %}
+                </div>
+            </div>
+
+
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="message-card {{ message.tags }}">
+                    <div class="message-line"></div>
+                    <div class="message-content">{{ message }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
 
 
 
             <div id="navLinks" class="dropdwn-mnu title-txt">
                 <ul>
-                    <a href="/">
-                        <li class="text-center">Home</li>
-                    </a>
+                    <li class="text-center"><a href="/">Home</a></li>
                     {% if not user.is_authenticated %}
-                    <a href="{% url 'enquire' %}">
-                        <li class="text-center">Enquire</li>
-                    </a>
+                    <li class="text-center"><a href="{% url 'enquire' %}">Enquire</a></li>
                     {% endif %}
                     {% if user.is_authenticated and not user.is_superuser %}
-                    <a href="{% url 'order' %}">
-                        <li class="text-center">Order</li>
-                    </a>
-                    <a href="{% url 'my_orders' %}">
-                        <li class="text-center">Manage Orders</i>
-                    </a>
+                    <li class="text-center"><a href="{% url 'order' %}">Order</a></li>
+                    <li class="text-center"><a href="{% url 'my_orders' %}">Manage Orders</a></li>
                     {% endif %}
                     {% if user.is_authenticated and user.is_superuser %}
-                    <a href="{% url 'manage' %}">
-                        <li class="text-center">Manage</li>
-                    </a>
+                    <li class="text-center"><a href="{% url 'manage' %}">Manage</a></li>
                     {% endif %}
                 </ul>
             </div>
+
 
 
         </nav>

@@ -115,8 +115,7 @@ html {
 
 .dropdwn-mnu ul li {
     list-style-type: none;
-    text-shadow: -2px 2px #577F6A;
-    font-size: 25px;
+    padding: 8px;
 }
 
 .dropdwn-mnu ul li:hover {
@@ -124,11 +123,12 @@ html {
     text-decoration-color: var(--off-white);
 }
 
-.dropdwn-mnu ul a {
+.dropdwn-mnu ul li a {
     padding: 5px 0; 
     text-decoration: none;
     color: var(--off-white);
-    font-size: 18px;
+    font-size: 25px;
+    text-shadow: -2px 2px #577F6A;
 }
 
 .user-container {
