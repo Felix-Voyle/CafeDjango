@@ -95,3 +95,14 @@ main {
 .accordion>.card {
     border-bottom: 1px solid var(--off-white) !important;
 }
+
+.address-line {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pagination {
+    width: 90%;
+    margin: auto;
+}
