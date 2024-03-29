@@ -3,7 +3,7 @@
 main {
     min-height: calc(100vh - 50px);
     height: fit-content;
-    background-color: var(--off-white);
+    background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 70%, #e2d1c3 100%);
     padding-bottom: 30px;
 }
 
@@ -33,15 +33,24 @@ main {
 }
 
 .card-body {
-    background-color: rgb(204 204 204);
+    background-color: var(--off-white);
     border-width: 2px 3px 3px 3px;
     border-color: var(--off-black);
     border-style: double;
+    padding: 1rem;
 }
 
 .order-info {
     font-size: small;
     color: #95a296;
+}
+
+.order-item {
+    border-bottom: 1px solid var(--off-black);
+}
+
+.order-total {
+    margin-top: 10px;
 }
 
 .no-pad {
@@ -86,6 +95,10 @@ main {
 
 .btn[aria-expanded="false"] .fa-chevron-down {
     transform: rotate(0deg); /* Apply transformation when collapsed */
+}
+
+.btn:focus {
+    text-decoration: none;
 }
 
 .btn-danger {
