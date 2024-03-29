@@ -4,6 +4,7 @@ import logging
 
 # Third-party library imports
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.exceptions import ValidationError
 from django.db import transaction, IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404
@@ -16,7 +17,8 @@ from .utils.helpers import redirect_based_on_role
 
 logger = logging.getLogger(__name__)
 
-
+@user_passes_test(lambda user: not user.is_superuser or not user.is_staff)
+@login_required
 @transaction.atomic
 def order(request):
     products = Product.objects.all()
@@ -40,6 +42,13 @@ def order(request):
     }
 
     if request.method == 'POST':
+        try:
+            order = Order()
+            order_id = order.generate_order_id()
+        except ValueError as e:
+            messages.error(request, "Failed to generate order ID. Please try again later.")
+            logger.error("Error generating order ID: %s", e)
+            return redirect_based_on_role(request)
         errors = validate_order_form_data(request.POST)
         if errors:
             for field, error in errors.items():
@@ -55,6 +64,7 @@ def order(request):
         delivery_time = request.POST.get('delivery_time')
 
         order = Order(
+            order_id = order_id,
             user=user,
             address_line1=address_line1,
             address_line2=address_line2,
@@ -97,7 +107,8 @@ def order(request):
 
     return render(request, 'order/order.html', ctx)
 
-
+@user_passes_test(lambda user: not user.is_superuser or not user.is_staff)
+@login_required
 def product_search(request):
     keywords = request.GET.get('keywords', '')
     category_name = request.GET.get('category', '')
@@ -121,6 +132,7 @@ def product_search(request):
     return render(request, 'order/order.html', ctx)
 
 
+@login_required
 @transaction.atomic
 def edit_order(request, order_id):
     try:
@@ -214,6 +226,7 @@ def edit_order(request, order_id):
     return render(request, 'order/edit_order.html', ctx)
 
 
+@login_required
 def delete_order(request, order_id):
     try:
         order = get_object_or_404(Order, order_id=order_id)
