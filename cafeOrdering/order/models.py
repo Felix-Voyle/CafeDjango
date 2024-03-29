@@ -37,7 +37,7 @@ class Order(models.Model):
     def _generate_order_id(self):
         retry_limit = 5
         for _ in range(retry_limit):
-            order_id = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
+            order_id = ''.join(random.choices(string.ascii_uppercase, k=5))
             if not Order.objects.filter(order_id=order_id).exists():
                 return order_id
         raise ValueError("Failed to generate a unique order ID after {} retries.".format(retry_limit))
@@ -133,9 +133,14 @@ class Order(models.Model):
     
 
     def resolve_problem(self, resolution_message=None):
-        self.reported_problem = None
         self.problem_resolved = True
         self.resolution_message = resolution_message
+        self.save()
+
+
+    def report_problem(self, problem_description=None):
+        self.reported_problem = problem_description
+        self.problem_order = True
         self.save()
 
 
