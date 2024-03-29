@@ -88,6 +88,18 @@ main {
     transform: rotate(0deg); /* Apply transformation when collapsed */
 }
 
+.btn-danger {
+    box-shadow: -2px 2px #8b2e2e;
+}
+
+.btn-success {
+    box-shadow: -2px 2px #265c21;
+}
+
+.btn-warning {
+    box-shadow: -2px 2px #9e7704;
+}
+
 .collapsed .fa-chevron-down {
     transform: rotate(-180deg); 
 }

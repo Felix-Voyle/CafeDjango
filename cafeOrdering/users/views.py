@@ -88,20 +88,17 @@ def report_problem(request):
     order_id = request.POST.get('order_id')
     problem_description = request.POST.get('problem_description')
 
-    if len(problem_description) > 200:
-        messages.error(request, "Problem description can't be more than 200 characters")
-        return HttpResponseRedirect(reverse('my_orders'))
-
     try:
         order = Order.objects.get(id=order_id)
     except Order.DoesNotExist:
         messages.error(request, f"Order {order_id} not found")
         return HttpResponseRedirect(reverse('my_orders'))
     
-    # Update the order with the reported problem
-    order.reported_problem = problem_description
-    order.problem_order = True
-    order.save()
+    if len(problem_description) > 200:
+        messages.error(request, "Problem description can't be more than 200 characters")
+        return HttpResponseRedirect(reverse('my_orders'))
+
+    order.report_problem(problem_description)
 
     if order.reported_problem == problem_description:
         messages.success(request, 'Problem reported successfully!')
