@@ -182,17 +182,10 @@ label {
 }
 
 .exclamation {
-    display: inline-block;
-    width: 25px; 
-    height: 25px;
-    border: 2px solid black;
-    background-color: orangered; 
-    border-radius: 50%; 
-    text-align: center; 
-    line-height: 20px; 
-    font-size: 20px; 
+    color: #c22f00;
+    text-shadow: -1px 0px #561500;
+    font-size: 20px;
 }
-
 
 .filter-select {
     height: 30px;
