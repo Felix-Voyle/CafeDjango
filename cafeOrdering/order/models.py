@@ -32,8 +32,8 @@ class Order(models.Model):
     problem_resolved = models.BooleanField(default=False)
     resolution_message = models.TextField(max_length=200, blank=True, null=True)
     
-
-    def generate_order_id(self):
+    @staticmethod
+    def generate_order_id():
         retry_limit = 5
         for _ in range(retry_limit):
             order_id = ''.join(random.choices(string.ascii_uppercase, k=5))
