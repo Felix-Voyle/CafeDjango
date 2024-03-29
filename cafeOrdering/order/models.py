@@ -33,8 +33,7 @@ class Order(models.Model):
     resolution_message = models.TextField(max_length=200, blank=True, null=True)
     
 
-
-    def _generate_order_id(self):
+    def generate_order_id(self):
         retry_limit = 5
         for _ in range(retry_limit):
             order_id = ''.join(random.choices(string.ascii_uppercase, k=5))
@@ -42,6 +41,7 @@ class Order(models.Model):
                 return order_id
         raise ValueError("Failed to generate a unique order ID after {} retries.".format(retry_limit))
     
+
     def save(self, *args, **kwargs):
         if not self.order_id:
             self.order_id = self._generate_order_id()

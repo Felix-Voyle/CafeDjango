@@ -6,7 +6,6 @@ import tempfile
 import os
 import base64
 
-
 # Third-party library imports
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
@@ -54,6 +53,7 @@ def manage(request):
     return render(request, 'adminManage/manage.html', ctx)
 
 
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def filter_orders(request):
     status = request.GET.get('status')
     enquiries = Enquiry.objects.all()
@@ -201,6 +201,8 @@ def create_invoice(request):
     return render(request, 'adminManage/create_invoice.html', ctx)
 
 
+
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
 @require_POST
 def update_order_status(request):
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -229,6 +231,7 @@ def update_order_status(request):
         return JsonResponse({'error': 'Invalid request'}, status=400)
     
 
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def send_invoice(request, order_id):
     order = get_object_or_404(Order, order_id=order_id)
     cart = order.order_items.all()
