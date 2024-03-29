@@ -18,10 +18,10 @@
                 {% if order.reported_problem and not order.problem_resolved %}
                     <div class="row mt-1">
                         <div class="col ml-2 text-left">
-                            <span class="exclamation">!</span>
+                            <span class="exclamation"><i class="fas fa-exclamation-triangle"></i></span>
                         </div>
                         <div class="col mr-2 text-right">
-                            <a href="{% url 'edit_order' order.order_id %}"><span>edit</span></a>
+                            <a href="{% url 'edit_order' order.order_id %}"><span>resolve</span></a>
                         </div>
                     </div>
                 {% endif %}
@@ -88,40 +88,57 @@
         </div>
         <div id="collapseCard2{{ forloop.counter }}" class="collapse">
             <div class="card-body order-details">
-                <h6 class="text-center">{{ order.user }}</h6>
-                {% if order.reported_problem %}
-                    <p>{{ order.reported_problem }}</p>
-                {% endif %}
+                <div class="row">
+                    <div class="col-12 text-center">
+                        {{ order.user }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-left mb-2">
+                        {{ order.address_line1 }}
+                        {% if order.address_line2 %}
+                        <br>{{ order.address_line2 }}
+                        {% endif %}
+                        {% if order.address_line3 %}
+                        <br>{{ order.address_line3 }}
+                        {% endif %}
+                        <br>{{ order.postcode }}
+                    </div>
+                </div>
+                <hr>
                 <ul>
                     {% for item in order.order_items.all %}
-                        {% if item.quantity > 0 %}
-                            <li class="d-flex order-item text-center">
-                                <span class="col-6 no-pad">{{ item.product.name }}</span>
-                                <span class="col-2 no-pad">x {{ item.quantity }}</span>
-                                <span class="col-4 no-pad">£ {{ item.get_total }}</span>
-                            </li>
-                        {% endif %}
+                    {% if item.quantity > 0 %}
+                    <li class="d-flex order-item text-center">
+                        <span class="col-6 no-pad">{{ item.product.name }}</span>
+                        <span class="col-2 no-pad">x {{ item.quantity }}</span>
+                        <span class="col-4 no-pad">£ {{ item.get_total }}</span>
+                    </li>
+                    {% endif %}
                     {% endfor %}
                     <li class="d-flex text-center">
                         <span class="col-6 no-pad"><strong>Total</strong></span>
                         <span class="col-2 no-pad">-</span>
                         <span class="col-4 no-pad">£ {{ order.order_total }}</span>
                     </li>
+                    <hr>
                 </ul>
-                <div class="col-12 text-left mb-2">
-                    {{ order.address_line1 }}
-                    {% if order.address_line2 %}
-                        <br>{{ order.address_line2 }}
-                    {% endif %}
-                    {% if order.address_line3 %}
-                        <br>{{ order.address_line3 }}
-                    {% endif %}
-                        <br>{{ order.postcode }}
-                </div>
                 {% if order.delivery_instructions %}
-                    <div class="col-12 text-left">
-                        <p>Delivery Instructions - {{ order.delivery_instructions }}</p>
+                <div class="col-12 text-left">
+                    <p>Delivery Instructions - {{ order.delivery_instructions }}</p>
+                </div>
+                {% endif %}
+                {% if order.reported_problem and not order.problem_resolved %}
+                <div class="row text-left">
+                    <div class="col-12">
+                        <span>Reported Problem:</span>
                     </div>
+                </div>
+                <div class="row mb-2 text-center reported_problem">
+                    <div class="col-12">
+                        <span>{{ order.reported_problem }}</span>
+                    </div>
+                </div>
                 {% endif %}
             </div>
         </div>
