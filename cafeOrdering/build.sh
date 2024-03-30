@@ -6,6 +6,9 @@ pip install -r requirements.txt
 # Collect static files
 echo "yes" | python manage.py collectstatic
 
+python manage.py migrate adminManage zero
+python manage.py migrate
+
 # Make migrations and migrate database
 python manage.py makemigrations
 python manage.py migrate --run-syncdb
