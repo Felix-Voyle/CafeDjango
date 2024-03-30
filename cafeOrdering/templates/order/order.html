@@ -60,13 +60,13 @@
             </div>
             {% endfor %}
         </div>
-        <button id="nextBtn" type="button" onclick="nextStep()" disabled class="next-btn">Next</button>
+        <button id="nextBtn" type="button" onclick="nextStep()" disabled class="next-btn main-txt">Next</button>
         <div id="details" class="summary-section details">
             <div class="row no-gutters">
                 <!-- First div -->
                 <div class="col-lg-6 col-sm-12 text-center mb-5">
-                    <h3 class="mb-2 mt-2 white-title">Order Summary</h3>
-                        <table id="orderTable" class="order-table">
+                    <h3 class="mb-2 mt-2 title-txt">Order Summary</h3>
+                        <table id="orderTable" class="order-table main-txt">
                             <thead>
                                 <tr>
                                     <th class="text-center col-4">Product</th>
@@ -85,13 +85,15 @@
         
                 <!-- Second div -->
                 <div class="col-lg-6 col-sm-12 text-center form-card mb-5 address-inputs">
-                    <h3 class="mb-2 mt-2 white-title">Address</h3>
+                    <h3 class="mb-2 mt-2 title-txt">Address</h3>
                 
-                    <input type="text" name="address_line1" id="address_line1"{% if initial_data.address_line1 %}value="{{ initial_data.address_line1 }}"{% else %}placeholder="Address Line 1"{% endif %}>
+                    <input type="text" name="address_line1" id="address_line1" autocomplete="on" {% if initial_data.address_line1 %}value="{{ initial_data.address_line1 }}"{% else %}placeholder="Address Line 1"{% endif %}>
+                    <br>
                     <span id="address_line1_error" class="error"></span>
-                    <input type="text" name="address_line2" {% if initial_data.address_line2 %}value="{{ initial_data.address_line2 }}"{% else %}placeholder="Address Line 2"{% endif %}>
-                    <input type="text" name="address_line3" {% if initial_data.address_line3 %}value="{{ initial_data.address_line3 }}"{% else %}placeholder="Address Line 3"{% endif %}>
-                    <input type="text" name="postcode" id="postcode"{% if initial_data.postcode %}value="{{ initial_data.postcode }}"{% else %}placeholder="Post Code"{% endif %}>
+                    <input type="text" name="address_line2" autocomplete="on" {% if initial_data.address_line2 %}value="{{ initial_data.address_line2 }}"{% else %}placeholder="Address Line 2"{% endif %}>
+                    <input type="text" name="address_line3" autocomplete="on" {% if initial_data.address_line3 %}value="{{ initial_data.address_line3 }}"{% else %}placeholder="Address Line 3"{% endif %}>
+                    <input type="text" name="postcode" id="postcode" autocomplete="on"{% if initial_data.postcode %}value="{{ initial_data.postcode }}"{% else %}placeholder="Post Code"{% endif %}>
+                    <br>
                     <span id="postcode_error" class="error"></span>
                     <input type="text" name="delivery_instructions" placeholder="Delivery notes...">
                     <div class="date-time">
@@ -99,7 +101,7 @@
                         <input type="text" hidden name="delivery_date" id="futureDateFormatted">
                         <input type="text" required name="delivery_time" placeholder="Select delivery time.." id="timepicker" autocomplete="off">
                     </div>
-                    <button type="submit" class="submit-btn" onclick="">Order</button>
+                    <button type="submit" class="submit-btn main-txt" onclick="">Order</button>
                 </div>
             </div>
         </div>

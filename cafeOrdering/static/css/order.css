@@ -108,6 +108,13 @@ input[type=number] {
     bottom: 5px; 
     left: 50%;
     transform: translateX(-50%);
+    background-color: var(--main-green);
+    color: var(--off-white);
+    border: 1px solid var(--off-black);
+}
+
+.next-btn:disabled {
+    opacity: 0.5; 
 }
 
 .prev-btn {
@@ -170,8 +177,7 @@ table {
 
 .order-table th:nth-child(3),
 .order-table td:nth-child(3) {
-    width: 30%;
-    width: 30px; 
+    width: 30%; 
 }
 
 .order-table tbody tr:nth-child(even) {
@@ -224,6 +230,9 @@ table {
 .submit-btn {
     position: relative;
     margin-top: 20px;
+    background-color: var(--main-green);
+    border: 1px solid var(--off-black);
+    color: var(--off-white);
 }
 
 @media screen and (max-width: 575px) {
