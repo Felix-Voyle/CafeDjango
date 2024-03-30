@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 {% endif %}
-                {% if not order.reported_problem and order.invoiceable %}
+                {% if order.invoiceable and not order.status == 'invoiced' %}
                 <div class="row mt-1">
                     <div class="col mr-2 text-right">
                         <a id="editLinkTrigger" href="{% url 'edit_order' order.order_id %}" data-toggle="modal" data-target="#editConfirmationModal"><span>edit</span></a>
