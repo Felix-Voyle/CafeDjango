@@ -71,11 +71,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                No reported problems with this order. Are you sure you want to edit it?
+                <!-- Placeholder for dynamic content -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                <a id="editLink" class="btn btn-primary" href="#">Yes</a>
+                <button type="button" class="btn btn-primary" id="confirmEditBtn">Yes</button>
             </div>
         </div>
     </div>
@@ -102,6 +102,19 @@ document.addEventListener('DOMContentLoaded', function() {
 function sendInvoice(orderId) {
     window.location.href = `/manage/${orderId}/send_invoice/`;
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    $('#editConfirmationModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var hasProblem = button.data('has-problem');
+        var modal = $(this);
+        if (hasProblem === 'true') {
+            modal.find('.modal-body').text("No reported problems with this order. Are you sure you want to edit it?");
+        } else {
+            modal.find('.modal-body').text("You've already resolved the reported problem. Are you sure you want to edit it?");
+        }
+    });
+});
 </script>
 {% endblock %}
 

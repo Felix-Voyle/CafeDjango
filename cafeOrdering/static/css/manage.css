@@ -13,6 +13,11 @@ main {
     background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 70%, #e2d1c3 100%);
 }
 
+hr {
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
 .title-txt {
     font-size: 18px;
 }
@@ -125,6 +130,7 @@ main {
 .card-header {
     cursor: pointer;
     color: var(--off-white);
+    padding: .3rem .6rem;
 }
 
 .card-header[aria-expanded="true"] .fa-chevron-down {
@@ -139,6 +145,10 @@ main {
     transform: rotate(-180deg); 
 }
 
+.card-body {
+    padding: .7rem;
+}
+
 .button-content {
     display: grid;
     align-items: center;
@@ -150,6 +160,15 @@ main {
     border-bottom: 1px solid rgba(27, 27, 27, 0.928);
     font-size: 14px;
     margin-bottom: 5px;
+}
+
+.address {
+    font-size: 15px;
+}
+
+.user {
+    font-size: 15px;
+    letter-spacing: 1px;
 }
 
 .order-details {
@@ -185,6 +204,21 @@ label {
     color: #c22f00;
     text-shadow: -1px 0px #561500;
     font-size: 20px;
+}
+
+.resolution-title, .problem-title, .del-instructions-title {
+    font-size: 15px;
+    letter-spacing: 1px;
+    text-decoration: underline;
+}
+
+.total-txt {
+    font-size: 15px;
+    letter-spacing: 1px;
+}
+
+.total strong {
+    font-size: 15px;
 }
 
 .filter-select {
