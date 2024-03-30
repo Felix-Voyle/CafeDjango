@@ -11,3 +11,15 @@
     --pastel-yellow: #F4D885;
     --pastel-green: #C1E1C1;
 }
+
+@font-face {
+    font-family: 'Abril Fatface';
+    src: url("../fonts/AbrilFatface-Regular.woff") format('woff');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url("../fonts/roboto-regular.woff") format('woff');
+    src: url("../fonts/roboto-italic.woff") format('woff');
+}
+

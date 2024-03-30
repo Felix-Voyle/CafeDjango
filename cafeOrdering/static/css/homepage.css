@@ -24,8 +24,8 @@ body {
 
 .hero .landscape-hero {
     min-width: 100%;
-    min-height: 100%; 
-    max-height: 120%;
+    min-height: 100%;
+    max-height: 120%; 
     width: auto;
     height: auto;
     position: absolute;
@@ -38,9 +38,11 @@ body {
 @keyframes zoomAnimation {
     from {
         max-height: 120%;
+        min-width: 100%;
     }
     to {
         max-height: 150%;
+        min-width: 125%;
     }
 }
 
@@ -166,9 +168,16 @@ a:hover {
 .address-section {
     background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 70%, #e2d1c3 100%);
     min-height: 100vh;
-    padding: 80px 0;
+    padding: 50px 0;
     display: flex;
-    text-align: center;
+    align-items: center;
+    position: relative;
+    top: 50px;
+}
+
+.find-us-col {
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
