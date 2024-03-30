@@ -49,7 +49,7 @@ function showOrderSummary(total, tableBody) {
       // Create a label element
       const productNameLabel = document.createElement('label');
       productNameLabel.textContent = name; // Set the label text to the product name
-      productNameLabel.classList.add('text-center');
+      productNameLabel.classList.add('text-center', 'main-txt');
       productNameCell.appendChild(productNameLabel);
 
       // Create a hidden input element
@@ -64,7 +64,7 @@ function showOrderSummary(total, tableBody) {
 
       const priceCell = document.createElement('td');
       priceCell.textContent = `£${price}`;
-      priceCell.classList.add('text-center');
+      priceCell.classList.add('text-center', 'main-txt');
       row.appendChild(priceCell);
 
       const quantityCell = document.createElement('td');
@@ -73,7 +73,7 @@ function showOrderSummary(total, tableBody) {
       quantityInput.type = 'number';
       quantityInput.name = `confirmed-qty`;
       quantityInput.value = quantity;
-      quantityInput.classList.add('text-center', 'plain-input');
+      quantityInput.classList.add('text-center', 'plain-input', 'main-txt');
       quantityInput.readOnly = true;
       quantityCell.appendChild(quantityInput);
       row.appendChild(quantityCell);
