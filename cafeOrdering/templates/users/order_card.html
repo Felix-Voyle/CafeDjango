@@ -95,21 +95,30 @@
                 <span class="col-2 m-auto no-pad">x {{ item.quantity }}</span>
                 <span class="col-4 m-auto no-pad">£ {{ item.get_total }}</span>
             </li>
-            </ul>
             {% endfor %}
+        </ul>
             <div class="d-flex order-total">
                 <span class="col-md-2 offset-md-6 col-8 no-pad text-right text-md-center title-txt"><strong>Total:</strong></span>
                 <span class="col-4 no-pad text-center"><strong>£ {{ order.order_total }}</strong></span>
             </div>
-        {% if order.reported_problem %}
-        <hr>
+            {% if order.delivery_instructions %}
+            <hr>
+            <div class="row text-left">
+                <div class="col-12 title-txt del-instructions-title">
+                    <span>Delivery Instructions:</span>
+                </div>
+                <div class="col-12 text-left main-txt">
+                    <span>{{ order.delivery_instructions }}</span>
+                </div>
+            </div>
+            {% endif %}
+            {% if order.reported_problem %}
+            <hr>
         <div class="row text-left">
             <div class="col-12">
-                <span>Reported Problem:</span>
+                <span class="title-txt problem-title">Reported Problem:</span>
             </div>
-        </div>
-        <div class="row mb-2 text-center reported_problem">
-            <div class="col-12">
+            <div class="col-12 mb-2 main-txt">
                 <span>{{ order.reported_problem }}</span>
             </div>
         </div>
@@ -117,11 +126,9 @@
         {% if order.resolution_message %}
         <div class="row text-left">
             <div class="col-12">
-                <span>Resolution:</span>
+                <span class="title-txt resolution-title">Resolution:</span>
             </div>
-        </div>
-        <div class="row mb-2 text-center resolution">
-            <div class="col-12">
+            <div class="col-12 mb-2 main-txt">
                 <span>{{ order.resolution_message }}</span>
             </div>
         </div>
