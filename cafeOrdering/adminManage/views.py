@@ -25,7 +25,7 @@ from .pdf_generator import generate_invoice
 from enquire.models import Enquiry
 from order.models import Order
 from products.models import InvoiceProduct
-from .models import manageInvoice
+from .models import ManageInvoice
 
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
@@ -329,8 +329,8 @@ def send_invoice(request, order_id):
             order.save()
             os.remove(pdf_filename)
             try:
-                manageInvoice.objects.create(
-                invoice_id=manageInvoice.generate_invoice_id(),
+                ManageInvoice.objects.create(
+                invoice_reference=order.order_id,
                 invoice_date=order.delivery_date,
                 invoice_sent_date=timezone.now().date(),
                 invoice_total=order.order_total
@@ -338,6 +338,7 @@ def send_invoice(request, order_id):
                 messages.success(request, f"Invoice sent for order {order_id}")
                 return redirect('manage')
             except Exception as e:
+                print(f"error, {e}")
                 messages.error(request, "Invoice sent but failed to create manage invoice instance")
                 return redirect('manage')
         else:

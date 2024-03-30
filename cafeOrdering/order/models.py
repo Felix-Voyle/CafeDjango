@@ -123,9 +123,16 @@ class Order(models.Model):
     
         # Calculate 24 hours after delivery time
         invoiceable_datetime = delivery_datetime + timezone.timedelta(hours=24)
-    
-        return not self.is_reportable() and current_datetime > invoiceable_datetime and not self.reported_problem and self.status != 'invoiced'
+        
 
+        if current_datetime > invoiceable_datetime and self.problem_resolved:
+            return True
+        elif current_datetime > invoiceable_datetime and not self.problem_order:
+            return True
+        elif self.problem_resolved:
+            return True 
+        else:
+            return False
 
     @property
     def invoiceable(self):
