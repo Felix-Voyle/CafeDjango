@@ -1,8 +1,13 @@
 main {
-    min-height: calc(100vh - 50px);
+    min-height: calc(100vh - 90px);
     background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 70%, #e2d1c3 100%);
     position: relative;
-    top: 50px;
+}
+
+.filter-form{
+    width: 95%;
+    margin: auto;
+    padding-top: 10px;
 }
 
 table {

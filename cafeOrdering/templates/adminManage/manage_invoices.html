@@ -1,14 +1,50 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load viewed %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/manage_invoices.css' %}">
+<link rel="stylesheet" href="{% static 'css/manage.css' %}">
 {% endblock %}
 
 {% block content %}
 
+<div class="row col-12 no-gutters manage-menu-bar mb-2">
+    <ul class="manage-menu">
+        <li class="col-3 text-center"><a href="{% url 'manage' %}">Orders</a></li>
+        <li class="col-3 text-center"><a href="{% url 'create_invoice' %}">Create Invoice</a></li>
+        <li class="col-3 text-center active"><a href="{% url 'manage_invoices' %}">Manage Invoices</a></li>
+        <li class="col-3 text-center">
+            <a href="{% url 'enquiries' %}">Enquiries</a>
+            {% if enquiries|filter_unread|length > 0 %}
+                <span class="badge badge-danger badge-notification">{{ enquiries|filter_unread|length }}</span>
+            {% endif %}
+        </li>
+    </ul>
+</div>
+
 <h2>Manage Invoices</h2>
 
+<form method="GET" action="{% url 'filter_invoices' %}" class="filter-form mb-2">
+    {% csrf_token %}
+    <select name="status" class="filter-select">
+        <option value="" selected>All Invoices</option>
+        <option value="due" {% if request.GET.status == "due" %}selected{% endif %}>Due</option>
+        <option value="paid" {% if request.GET.status == "paid" %}selected{% endif %}>Paid</option>
+        <option value="unpaid" {% if request.GET.status == "unpaid" %}selected{% endif %}>Unpaid</option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
+{% if request.GET.status == "due" and not invoices %}
+<p class="main-txt text-center">No unpaid invoices currently due...</p>
+{% elif request.GET.status == "paid" and not invoices %}
+<p class="main-txt text-center">No paid invoices to show...</p>
+{% elif not invoices %}
+<p class="main-txt text-center">No invoices to show...</p>
+{% endif %}
+
+{% if invoices %}
 <table class="text-center">
     <thead>
         <tr>
@@ -30,15 +66,66 @@
                 {% if invoice.invoice_paid %}
                 <i class="fas fa-check-circle"></i>
                 {% else %}
-                <i class="fas fa-times-circle"></i>
+                <a href="{% url 'mark_invoice_paid' invoice.invoice_reference %}" class="mark-paid-link"><i class="fas fa-times-circle"></i></a>
                 {% endif %}
                 </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+{% else %}
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to mark this invoice as paid?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="#" id="confirmPaymentBtn" class="btn btn-primary">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
 {% block javascript %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var confirmPaymentBtn = document.getElementById("confirmPaymentBtn");
+        var invoiceRef;
+
+        $('.mark-paid-link').on('click', function(event) {
+            event.preventDefault();
+
+            invoiceRef = $(this).attr('href');
+            $('#confirmationModal').modal('show');
+        });
+
+        confirmPaymentBtn.addEventListener("click", function() {
+            if (invoiceRef) {
+                window.location.href = invoiceRef;
+            }
+        });
+
+        $('#confirmationModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            invoiceRef = button.attr('href');
+        });
+
+        $('#confirmationModal').on('hidden.bs.modal', function () {
+            invoiceRef = null;
+        });
+    });
+    </script>
 {% endblock %}

@@ -20,10 +20,10 @@
         </li>
     </ul>
 </div>
+{% if enquiries %}
 <div class="row no-gutters enquiries-container">
     <div class="col-12 col-md-6 mb-5">
         <section>
-            {% if enquiries %}
             <h4 class="text-center title-txt">Unread</h4>
             {% for enquiry in enquiries %}
                 {% if enquiry|unread %}
@@ -57,12 +57,12 @@
                     <p class="text-center main-txt">No enquiries to display....</p>
                 {% endif %}
             {% endfor %}
-        {% else %}
-        <p class="text-center main-txt">No enquiries to display....</p>
-        {% endif %}
         </section>
     </div>
 </div>
+{% else %}
+    <p class="text-center mt-5 main-txt no-enquiries">No enquiries to display....</p>
+{% endif %}
 {% endblock %}
 
 {% block javascript %}
