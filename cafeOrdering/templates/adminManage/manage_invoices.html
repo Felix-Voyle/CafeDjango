@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/manage_invoices.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h2>Manage Invoices</h2>
+
+<table class="text-center">
+    <thead>
+        <tr>
+            <th>Ref</th>
+            <th>Date</th>
+            <th>Sent Date</th>
+            <th>Total</th>
+            <th>Paid</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for invoice in invoices %}
+        <tr>
+            <td data-label="Reference">{{ invoice.invoice_reference }}</td>
+            <td data-label="Date">{{ invoice.invoice_date }}</td>
+            <td data-label="Sent Date">{{ invoice.invoice_sent_date }}</td>
+            <td data-label="Total">{{ invoice.invoice_total }}</td>
+            <td data-label="Paid">
+                {% if invoice.invoice_paid %}
+                <i class="fas fa-check-circle"></i>
+                {% else %}
+                <i class="fas fa-times-circle"></i>
+                {% endif %}
+                </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

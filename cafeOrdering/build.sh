@@ -6,12 +6,9 @@ pip install -r requirements.txt
 # Collect static files
 echo "yes" | python manage.py collectstatic
 
-python manage.py migrate adminManage zero
-python manage.py migrate
-
 # Make migrations and migrate database
 python manage.py makemigrations
-python manage.py migrate --run-syncdb
+python manage.py migrate
 
 
 #echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'felix.voyle@icloud.com', 'run12345')" | python manage.py shell
