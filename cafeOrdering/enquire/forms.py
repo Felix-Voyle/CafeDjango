@@ -2,14 +2,13 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from .models import Enquiry
 
-def input_attrs(type, class_name, placeholder, autocomplete):
-    return({
-        'type': type,
+def input_attrs(class_name, placeholder, autocomplete):
+    return {
         'class': class_name,
         'placeholder': placeholder,
         'required': 'required',
         'autocomplete': autocomplete,
-    })
+    }
 
 class EnquiryForm(forms.ModelForm):
     class Meta:
@@ -21,15 +20,22 @@ class EnquiryForm(forms.ModelForm):
         
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        name = self.fields['name'].widget
-        phone_number = self.fields['phone_number'].widget
-        email = self.fields['email'].widget
-        subject = self.fields['subject'].widget
-        message = self.fields['message'].widget
-        
-        name.attrs.update(input_attrs('text', 'name-input main-txt', 'Name', 'off'))
-        phone_number.attrs.update(input_attrs('tel', 'number-input main-txt', 'Phone Number', 'on'))
-        email.attrs.update(input_attrs('email', 'email-input main-txt', 'Email', 'on'))
-        subject.attrs.update(input_attrs('text', 'subject-input main-txt', 'Subject', 'off'))
-        message.attrs.update(input_attrs('text', 'msg-input main-txt', 'Message', 'off'))
 
+        for field_name, field in self.fields.items():
+            
+            if field_name == 'phone_number':
+                field.widget.input_type = 'tel'
+            elif field_name == 'email':
+                field.widget.input_type = 'email'
+            else:
+                field.widget.input_type = 'text'
+            
+            autocomplete = None
+            if field_name == 'phone_number':
+                autocomplete = 'tel'
+            elif field_name == 'email':
+                autocomplete = 'email'
+            else:
+                autocomplete = 'off'
+            
+            field.widget.attrs.update(input_attrs(f'{field_name}-input main-txt', field.label, autocomplete))
