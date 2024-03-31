@@ -350,3 +350,14 @@ def send_invoice(request, order_id):
         os.remove(pdf_filename)
         messages.error(request, f"Failed to invoice order {order_id}")
         return redirect('manage')
+
+
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
+def manage_invoices(request):
+    invoices = ManageInvoice.objects.all()
+
+    ctx = {
+        'invoices': invoices 
+    }
+
+    return render(request, 'adminManage/manage_invoices.html', ctx)

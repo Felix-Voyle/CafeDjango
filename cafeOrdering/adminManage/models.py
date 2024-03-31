@@ -1,5 +1,7 @@
 import random
 
+from django.utils import timezone
+
 from django.db import models
 
 class ManageInvoice(models.Model):
@@ -20,3 +22,14 @@ class ManageInvoice(models.Model):
     
     def __str__(self):
         return f"Invoice Reference: {self.invoice_reference}, Invoice Date: {self.invoice_date}, Total: {self.invoice_total}, Paid: {self.invoice_paid}"
+    
+
+    def is_due(self):
+        due_date = self.invoice_date + timezone.timedelta(days=30)
+        
+        return timezone.now() > due_date
+    
+
+    @property
+    def due(self):
+        return self.is_due()
