@@ -10,10 +10,12 @@ import base64
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.template.loader import render_to_string
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.shortcuts import redirect
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.http import FileResponse
@@ -355,9 +357,68 @@ def send_invoice(request, order_id):
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def manage_invoices(request):
     invoices = ManageInvoice.objects.all()
+    enquiries = Enquiry.objects.all()
 
     ctx = {
-        'invoices': invoices 
+        'invoices': invoices,
+        'enquiries': enquiries,
     }
 
     return render(request, 'adminManage/manage_invoices.html', ctx)
+
+
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
+def filter_invoices(request):
+    status = request.GET.get('status')
+    enquiries = Enquiry.objects.all()
+
+    try:
+        invoices = ManageInvoice.objects.all()
+    except Exception as e:
+        messages.error(request, "Failed to fetch Invoices")
+        return redirect('manage')
+
+    try:
+        if status == "due":
+            invoices = [invoice for invoice in invoices if invoice.is_due() and not invoice.invoice_paid]
+        elif status == "paid":
+            invoices = invoices.filter(invoice_paid=True).order_by('-invoice_date')
+        elif status == "unpaid":
+            invoices = invoices.filter(invoice_paid=False).order_by('invoice_date')
+        else:
+            invoices = invoices.order_by('invoice_date')
+    except ObjectDoesNotExist:
+        messages.error(request, 'Failed to retrieve invoices: Object does not exist.')
+        return redirect('manage_invoices')
+    except ValidationError as e:
+        messages.error(request, f'Failed to filter invoices: {e.message}.')
+        return redirect('manage_invoices')
+
+    ctx = {
+        'invoices': invoices,
+        'enquiries': enquiries,
+    }
+
+    return render(request, 'adminManage/manage_invoices.html', ctx)
+
+
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
+def mark_invoice_paid(request, invoice_reference):
+    try:
+        if invoice_reference:
+            invoice = ManageInvoice.objects.get(invoice_reference=invoice_reference)
+            invoice.invoice_paid = True
+            invoice.save()
+            messages.success(request, "Marked invoice as paid")
+    except ObjectDoesNotExist:
+        messages.error(request, f'Failed to find invoice {invoice_reference}.')
+        return redirect('manage_invoices')
+    except ValidationError as e:
+        messages.error(request, f'Failed to mark invoice {invoice_reference} as paid: {e.message}.')
+        return redirect('manage_invoices')
+    
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return redirect(referer)
+    else:
+        return redirect('manage_invoices')

@@ -257,3 +257,8 @@ label {
     width: 95%;
     margin: auto;
 }
+
+.no-enquiries {
+    position: relative;
+    top: 30px;
+}

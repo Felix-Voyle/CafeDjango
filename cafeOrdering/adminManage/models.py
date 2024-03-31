@@ -1,4 +1,5 @@
 import random
+import datetime
 
 from django.utils import timezone
 
@@ -25,7 +26,7 @@ class ManageInvoice(models.Model):
     
 
     def is_due(self):
-        due_date = self.invoice_date + timezone.timedelta(days=30)
+        due_date = timezone.make_aware(datetime.datetime.combine(self.invoice_date, datetime.time.min)) + timezone.timedelta(days=30)
         
         return timezone.now() > due_date
     
