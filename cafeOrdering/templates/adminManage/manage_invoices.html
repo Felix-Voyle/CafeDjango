@@ -80,7 +80,7 @@
 {% else %}
 {% endif %}
 
-
+{% if invoices.paginator.num_pages > 1 %}
 <div class="pagination mt-1">
     <span class="step-links">
         {% if invoices.has_previous %}
@@ -96,6 +96,7 @@
         {% endif %}
     </span>
 </div>
+{% endif %}
 
 
 <!-- Modal -->
