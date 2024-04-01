@@ -9,8 +9,8 @@
 
 {% block content %}
 
-<div class="row col-12 no-gutters manage-menu-bar mb-2">
-    <ul class="manage-menu">
+<div class="row no-gutters manage-menu-bar mb-2">
+    <ul class="col-12 manage-menu main-txt">
         <li class="col-3 text-center"><a href="{% url 'manage' %}">Orders</a></li>
         <li class="col-3 text-center"><a href="{% url 'create_invoice' %}">Create Invoice</a></li>
         <li class="col-3 text-center active"><a href="{% url 'manage_invoices' %}">Invoices</a>
@@ -26,13 +26,15 @@
         </li>
     </ul>
 </div>
-{% if enquiries %}
+{% if unread_enquiries or viewed_enquiries %}
 <div class="row no-gutters enquiries-container">
     <div class="col-12 col-md-6 mb-5">
         <section>
             <h4 class="text-center title-txt">Unread</h4>
-            {% for enquiry in enquiries %}
-                {% if enquiry|unread %}
+            {% if not unread_enquiries %}
+            <p class="text-center main-txt mt-2">No unread enquiries...</p>
+            {% endif %}
+            {% for enquiry in unread_enquiries %}
                     <div class="enquiry-card text-center mb-3">
                         <div class="card">
                             <div class="card-header">
@@ -45,42 +47,45 @@
                             </div>
                         </div>
                     </div>
-                {% endif %}
             {% endfor %}
         </section>
     </div>
     <div class="col-12 col-md-6 mb-5">
         <section>
             <h4 class="text-center title-txt">Viewed</h4>
-            {% for enquiry in enquiries %}
-                {% if enquiry|viewed %}
-                    <div class="enquiry-card text-center mb-3">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="mb-0 enquiry-user main-txt"><strong>{{ enquiry.name }}</strong></h5>
+            {% if not viewed_enquiries %}
+            <p class="text-center main-txt mt-2">No viewed enquiries...</p>
+            {% endif %}
+            {% for enquiry in viewed_enquiries %}
+                <div class="enquiry-card text-center mb-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0 enquiry-user main-txt"><strong>{{ enquiry.name }}</strong></h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <a href="{% url 'enquiry' enquiry.id %}" class="btn btn-success">
+                                View <i class="fas fa-envelope"></i>
+                                </a>
                             </div>
-                            <div class="row">
-                                <div class="col-6 text-center">
-                                    <a href="{% url 'enquiry' enquiry.id %}" class="btn btn-success">
-                                    View <i class="fas fa-envelope"></i>
-                                    </a>
-                                </div>
-                                <div class="col-6 text-center">
-                                    <a href="{% url 'delete_enquiry' enquiry.id %}" class="btn btn-danger">
-                                        Delete <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
+                            <div class="col-6 text-center">
+                                <a href="{% url 'delete_enquiry' enquiry.id %}" class="btn btn-danger">
+                                    Delete <i class="fas fa-trash"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
-                {% endif %}
+                </div>
             {% endfor %}
         </section>
     </div>
 </div>
-{% else %}
+{% endif %}
+{% if not unread_enquiries and not viewed_enquiries %}
     <p class="text-center mt-5 main-txt no-enquiries">No enquiries to display....</p>
 {% endif %}
+
+
 {% endblock %}
 
 {% block javascript %}

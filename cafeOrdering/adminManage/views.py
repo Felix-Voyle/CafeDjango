@@ -30,9 +30,12 @@ from products.models import InvoiceProduct
 from .models import ManageInvoice
 
 
-def get_enquiries(request):
+def get_enquiries(request, viewed=None):
     try:
-        return Enquiry.objects.all()
+        enquiries = Enquiry.objects.all()
+        if viewed is not None:
+            enquiries = enquiries.filter(viewed=viewed)
+        return enquiries
     except Exception as e:
         messages.error(request, "Failed to fetch Enquiries")
         return None
@@ -109,11 +112,13 @@ def filter_orders(request):
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def enquiries(request):
-    enquiries = get_enquiries(request)
+    unread_enquiries = get_enquiries(request, viewed=False)
+    viewed_enquiries = get_enquiries(request, viewed=True)
     invoices = get_invoices(request)
     
     ctx = {
-        'enquiries': enquiries,
+        'unread_enquiries': unread_enquiries,
+        'viewed_enquiries': viewed_enquiries,
         'invoices': invoices,
     }
 
@@ -392,21 +397,33 @@ def due_invoices_count_value(request):
         return due_invoices_count
 
 
-@user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def manage_invoices(request):
     try:
-        invoices = ManageInvoice.objects.all()
+        invoices = ManageInvoice.objects.all().order_by('invoice_date')
         invoices = [invoice for invoice in invoices if invoice.is_due() and not invoice.invoice_paid]
+
+        items_per_page = 20
+
+        paginator = Paginator(invoices, items_per_page) 
+        page = request.GET.get('page')
+        try:
+            invoices = paginator.page(page)
+        except PageNotAnInteger:
+            invoices = paginator.page(1)
+        except EmptyPage:
+            invoices = paginator.page(paginator.num_pages)
     except Exception as e:
         messages.error(request, "Failed to fetch Invoices")
         return redirect('manage')
     
     due_invoices_count = due_invoices_count_value(request)
+    enquiries = get_enquiries(request)
 
     ctx = {
         'invoices': invoices,
         'due_invoices_count': due_invoices_count,
         'enquiries': enquiries,
+        'paginator': paginator,
     }
 
     return render(request, 'adminManage/manage_invoices.html', ctx)
@@ -417,7 +434,7 @@ def filter_invoices(request):
     status = request.GET.get('status')
 
     try:
-        invoices = ManageInvoice.objects.all()
+        invoices = ManageInvoice.objects.all().order_by('invoice_date')
         invoices = [invoice for invoice in invoices if invoice.is_due() and not invoice.invoice_paid]
     except Exception as e:
         messages.error(request, "Failed to fetch Invoices")
@@ -425,24 +442,38 @@ def filter_invoices(request):
 
     try:
         if status == "all":
-            invoices = ManageInvoice.objects.all()
+            invoices = ManageInvoice.objects.all().order_by('-invoice_date')
         elif status == "paid":
-            invoices = ManageInvoice.objects.filter(invoice_paid=True).order_by('-invoice_date')
+            invoices = ManageInvoice.objects.all().filter(invoice_paid=True).order_by('-invoice_date')
         elif status == "unpaid":
-            invoices = ManageInvoice.objects.filter(invoice_paid=False).order_by('invoice_date')
+            invoices = ManageInvoice.objects.all().filter(invoice_paid=False).order_by('invoice_date')
     except ObjectDoesNotExist:
         messages.error(request, 'Failed to retrieve invoices: Object does not exist.')
         return redirect('manage_invoices')
     except ValidationError as e:
         messages.error(request, f'Failed to filter invoices: {e.message}.')
         return redirect('manage_invoices')
+    
+    items_per_page = 20
+
+    paginator = Paginator(invoices, items_per_page) 
+    page = request.GET.get('page')
+
+    try:
+        invoices = paginator.page(page)
+    except PageNotAnInteger:
+        invoices = paginator.page(1)
+    except EmptyPage:
+        invoices = paginator.page(paginator.num_pages)
 
     due_invoices_count = due_invoices_count_value(request)
+    enquiries = get_enquiries(request)
 
     ctx = {
         'invoices': invoices,
         'due_invoices_count': due_invoices_count,
         'enquiries': enquiries,
+        'paginator': paginator,
     }
 
     return render(request, 'adminManage/manage_invoices.html', ctx)
