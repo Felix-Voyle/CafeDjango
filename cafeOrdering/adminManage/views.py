@@ -30,9 +30,26 @@ from products.models import InvoiceProduct
 from .models import ManageInvoice
 
 
+def get_enquiries(request):
+    try:
+        return Enquiry.objects.all()
+    except Exception as e:
+        messages.error(request, "Failed to fetch Enquiries")
+        return None
+
+
+def get_invoices(request):
+    try:
+        return ManageInvoice.objects.all()
+    except Exception as e:
+        messages.error(request, "Failed to fetch Invoices")
+        return None
+
+
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def manage(request):
-    enquiries = Enquiry.objects.all()
+    enquiries = get_enquiries(request)
+    invoices = get_invoices(request)
     orders = Order.objects.filter(delivery_date__gte=timezone.now()).order_by('delivery_date')
 
     items_per_page = 15
@@ -51,6 +68,7 @@ def manage(request):
     ctx = {
         'enquiries': enquiries,
         'orders': orders,
+        'invoices': invoices,
     }
 
     return render(request, 'adminManage/manage.html', ctx)
@@ -59,7 +77,8 @@ def manage(request):
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def filter_orders(request):
     status = request.GET.get('status')
-    enquiries = Enquiry.objects.all()
+    enquiries = get_enquiries(request)
+    invoices = get_invoices(request)
     if status in dict(Order.ORDER_STATUS):
         orders = Order.objects.filter(status=status).order_by('delivery_date')
     elif status == "all":
@@ -82,6 +101,7 @@ def filter_orders(request):
     ctx = {
         'orders': orders,
         'enquiries': enquiries,
+        'invoices': invoices,
     }
 
     return render(request, 'adminManage/manage.html', ctx)
@@ -89,10 +109,12 @@ def filter_orders(request):
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def enquiries(request):
-    enquiries = Enquiry.objects.all()
+    enquiries = get_enquiries(request)
+    invoices = get_invoices(request)
     
     ctx = {
         'enquiries': enquiries,
+        'invoices': invoices,
     }
 
     return render(request, 'adminManage/enquiries.html', ctx)
@@ -100,13 +122,16 @@ def enquiries(request):
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def enquiry(request, enquiry_id):
-    enquiries = Enquiry.objects.all()
+    enquiries = get_enquiries(request)
+    invoices = get_invoices(request)
+
     enquiry = get_object_or_404(Enquiry, pk=enquiry_id)
     enquiry.viewed = True
     enquiry.save()
     ctx = {
         'enquiry': enquiry,
         'enquiries': enquiries,
+        'invoices': invoices,
     }
 
     return render(request, 'adminManage/enquiry.html', ctx)
@@ -128,13 +153,16 @@ def delete_enquiry(request, enquiry_id):
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def create_invoice(request):
     products = InvoiceProduct.objects.all()
-    enquiries = Enquiry.objects.all()
+    enquiries = get_enquiries(request)
+    invoices = get_invoices(request)
+
     order_reference = ''.join(random.choices('0123456789', k=5))
     invoice_items = []
 
     ctx = {
         'products': products,
         'enquiries': enquiries,
+        'invoices': invoices,
     }
 
     if request.method == 'POST':
@@ -354,13 +382,30 @@ def send_invoice(request, order_id):
         return redirect('manage')
 
 
+def due_invoices_count_value(request):
+    try:
+        due_invoices_count = ManageInvoice.objects.filter(invoice_paid=False, invoice_date__lte=timezone.now() - timezone.timedelta(days=30)).count()
+        return due_invoices_count
+    except Exception as e:
+        messages.error(request, "Failed to fetch due invoices count")
+        due_invoices_count = 0
+        return due_invoices_count
+
+
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def manage_invoices(request):
-    invoices = ManageInvoice.objects.all()
-    enquiries = Enquiry.objects.all()
+    try:
+        invoices = ManageInvoice.objects.all()
+        invoices = [invoice for invoice in invoices if invoice.is_due() and not invoice.invoice_paid]
+    except Exception as e:
+        messages.error(request, "Failed to fetch Invoices")
+        return redirect('manage')
+    
+    due_invoices_count = due_invoices_count_value(request)
 
     ctx = {
         'invoices': invoices,
+        'due_invoices_count': due_invoices_count,
         'enquiries': enquiries,
     }
 
@@ -370,23 +415,21 @@ def manage_invoices(request):
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def filter_invoices(request):
     status = request.GET.get('status')
-    enquiries = Enquiry.objects.all()
 
     try:
         invoices = ManageInvoice.objects.all()
+        invoices = [invoice for invoice in invoices if invoice.is_due() and not invoice.invoice_paid]
     except Exception as e:
         messages.error(request, "Failed to fetch Invoices")
         return redirect('manage')
 
     try:
-        if status == "due":
-            invoices = [invoice for invoice in invoices if invoice.is_due() and not invoice.invoice_paid]
+        if status == "all":
+            invoices = ManageInvoice.objects.all()
         elif status == "paid":
-            invoices = invoices.filter(invoice_paid=True).order_by('-invoice_date')
+            invoices = ManageInvoice.objects.filter(invoice_paid=True).order_by('-invoice_date')
         elif status == "unpaid":
-            invoices = invoices.filter(invoice_paid=False).order_by('invoice_date')
-        else:
-            invoices = invoices.order_by('invoice_date')
+            invoices = ManageInvoice.objects.filter(invoice_paid=False).order_by('invoice_date')
     except ObjectDoesNotExist:
         messages.error(request, 'Failed to retrieve invoices: Object does not exist.')
         return redirect('manage_invoices')
@@ -394,8 +437,11 @@ def filter_invoices(request):
         messages.error(request, f'Failed to filter invoices: {e.message}.')
         return redirect('manage_invoices')
 
+    due_invoices_count = due_invoices_count_value(request)
+
     ctx = {
         'invoices': invoices,
+        'due_invoices_count': due_invoices_count,
         'enquiries': enquiries,
     }
 

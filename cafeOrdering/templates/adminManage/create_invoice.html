@@ -12,11 +12,15 @@
     <ul class="manage-menu">
         <li class="col-3 text-center"><a href="{% url 'manage' %}">Orders</a></li>
         <li class="col-3 text-center active"><a href="{% url 'create_invoice' %}">Create Invoice</a></li>
-        <li class="col-3 text-center"><a href="{% url 'manage_invoices' %}">Manage Invoices</a></li>
+        <li class="col-3 text-center"><a href="{% url 'manage_invoices' %}">Invoices</a>
+            {% if invoices|filter_due > 0 %}
+            <span class="badge badge-danger badge-notification">{{ invoices|filter_due }}</span>
+            {% endif %}
+        </li>
         <li class="col-3 text-center">
             <a href="{% url 'enquiries' %}">Enquiries</a>
-            {% if enquiries|filter_unread|length > 0 %}
-                <span class="badge badge-danger badge-notification">{{ enquiries|filter_unread|length }}</span>
+            {% if enquiries|filter_unread > 0 %}
+                <span class="badge badge-danger badge-notification">{{ enquiries|filter_unread }}</span>
             {% endif %}
         </li>
     </ul>

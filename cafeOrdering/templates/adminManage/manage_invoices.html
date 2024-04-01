@@ -13,11 +13,15 @@
     <ul class="manage-menu">
         <li class="col-3 text-center"><a href="{% url 'manage' %}">Orders</a></li>
         <li class="col-3 text-center"><a href="{% url 'create_invoice' %}">Create Invoice</a></li>
-        <li class="col-3 text-center active"><a href="{% url 'manage_invoices' %}">Manage Invoices</a></li>
+        <li class="col-3 text-center active"><a href="{% url 'manage_invoices' %}">Invoices</a>
+            {% if due_invoices_count > 0 %}
+                <span class="badge badge-danger badge-notification">{{ due_invoices_count }}</span>
+            {% endif %}
+        </li>
         <li class="col-3 text-center">
             <a href="{% url 'enquiries' %}">Enquiries</a>
-            {% if enquiries|filter_unread|length > 0 %}
-                <span class="badge badge-danger badge-notification">{{ enquiries|filter_unread|length }}</span>
+            {% if enquiries|filter_unread > 0 %}
+                <span class="badge badge-danger badge-notification">{{ enquiries|filter_unread }}</span>
             {% endif %}
         </li>
     </ul>
@@ -28,8 +32,8 @@
 <form method="GET" action="{% url 'filter_invoices' %}" class="filter-form mb-2">
     {% csrf_token %}
     <select name="status" class="filter-select">
-        <option value="" selected>All Invoices</option>
-        <option value="due" {% if request.GET.status == "due" %}selected{% endif %}>Due</option>
+        <option value="" selected>Due</option>
+        <option value="all" {% if request.GET.status == "all" %}selected{% endif %}>All Invoices</option>
         <option value="paid" {% if request.GET.status == "paid" %}selected{% endif %}>Paid</option>
         <option value="unpaid" {% if request.GET.status == "unpaid" %}selected{% endif %}>Unpaid</option>
     </select>
@@ -101,31 +105,23 @@
 
 {% block javascript %}
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var confirmPaymentBtn = document.getElementById("confirmPaymentBtn");
-        var invoiceRef;
+document.addEventListener("DOMContentLoaded", function() {
+    var confirmPaymentBtn = document.getElementById("confirmPaymentBtn");
+    var invoiceRef;
 
-        $('.mark-paid-link').on('click', function(event) {
-            event.preventDefault();
+    $('.mark-paid-link').on('click', function(event) {
+        event.preventDefault();
 
-            invoiceRef = $(this).attr('href');
-            $('#confirmationModal').modal('show');
-        });
+        invoiceRef = $(this).attr('href');
 
-        confirmPaymentBtn.addEventListener("click", function() {
-            if (invoiceRef) {
-                window.location.href = invoiceRef;
-            }
-        });
+        $('#confirmPaymentBtn').attr('href', invoiceRef);
 
-        $('#confirmationModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            invoiceRef = button.attr('href');
-        });
-
-        $('#confirmationModal').on('hidden.bs.modal', function () {
-            invoiceRef = null;
-        });
+        $('#confirmationModal').modal('show');
     });
+
+    $('#confirmationModal').on('hidden.bs.modal', function () {
+        invoiceRef = null;
+    });
+});
     </script>
 {% endblock %}
