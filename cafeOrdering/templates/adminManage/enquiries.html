@@ -4,6 +4,7 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/manage.css' %}">
+<link rel="stylesheet" href="{% static 'css/enquiries.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -32,15 +33,18 @@
             <h4 class="text-center title-txt">Unread</h4>
             {% for enquiry in enquiries %}
                 {% if enquiry|unread %}
-                    <div class="enquiry-card text-center">
+                    <div class="enquiry-card text-center mb-3">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{% url 'enquiry' enquiry.id %}"><h5 class="mb-0">{{ enquiry.name }} - {{ enquiry.email }}</h5></a>
+                                <h5 class="mb-0 enquiry-user main-txt"><strong>{{ enquiry.name }}</strong></h5>
+                            </div>
+                            <div class="col-12 text-center main-txt">
+                                <a href="{% url 'enquiry' enquiry.id %}" class="btn btn-success">
+                                    View <i class="fas fa-envelope"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
-                    {% else %}
-                    <p class="text-center main-txt">No enquiries to display....</p>
                 {% endif %}
             {% endfor %}
         </section>
@@ -50,16 +54,25 @@
             <h4 class="text-center title-txt">Viewed</h4>
             {% for enquiry in enquiries %}
                 {% if enquiry|viewed %}
-                    <div class="enquiry-card text-center">
+                    <div class="enquiry-card text-center mb-3">
                         <div class="card">
                             <div class="card-header">
-                                <a href="{% url 'enquiry' enquiry.id %}"><h5 class="mb-0">{{ enquiry.name }} - {{ enquiry.email }}</h5></a>
-                                <a href="{% url 'delete_enquiry' enquiry.id %}"><p>Delete</p></a>
+                                <h5 class="mb-0 enquiry-user main-txt"><strong>{{ enquiry.name }}</strong></h5>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 text-center">
+                                    <a href="{% url 'enquiry' enquiry.id %}" class="btn btn-success">
+                                    View <i class="fas fa-envelope"></i>
+                                    </a>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <a href="{% url 'delete_enquiry' enquiry.id %}" class="btn btn-danger">
+                                        Delete <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    {% else %}
-                    <p class="text-center main-txt">No enquiries to display....</p>
                 {% endif %}
             {% endfor %}
         </section>
