@@ -10,6 +10,19 @@ main {
     padding-top: 10px;
 }
 
+.filter-select {
+    height: 30px;
+    border-radius: 2px;
+}
+
+.filter-btn {
+    border: 1px solid var(--off-black);
+    border-radius: 2px;
+    height: 30px;
+    color: var(--off-white);
+    background-color: var(--main-green);
+}
+
 table {
     width: 95%;
     margin: auto;

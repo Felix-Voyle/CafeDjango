@@ -115,6 +115,16 @@ function sendInvoice(orderId) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    $('#confirmEditBtn').on('click', function(event) {
+        event.preventDefault();
+        var editLink = $('#editLinkTrigger').attr('href');
+        window.location.href = editLink;
+    });
+
+    $('#editConfirmationModal').on('hidden.bs.modal', function (event) {
+        event.preventDefault();
+    });
+
     $('#editConfirmationModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var hasProblem = button.data('has-problem');
