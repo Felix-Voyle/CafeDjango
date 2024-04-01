@@ -31,13 +31,13 @@
 
 <form method="GET" action="{% url 'filter_invoices' %}" class="filter-form mb-2">
     {% csrf_token %}
-    <select name="status" class="filter-select">
+    <select name="status" class="filter-select main-txt">
         <option value="" selected>Due</option>
         <option value="all" {% if request.GET.status == "all" %}selected{% endif %}>All Invoices</option>
         <option value="paid" {% if request.GET.status == "paid" %}selected{% endif %}>Paid</option>
         <option value="unpaid" {% if request.GET.status == "unpaid" %}selected{% endif %}>Unpaid</option>
     </select>
-    <button type="submit">Filter</button>
+    <button type="submit" class="filter-btn main-txt">Filter</button>
 </form>
 
 {% if request.GET.status == "due" and not invoices %}

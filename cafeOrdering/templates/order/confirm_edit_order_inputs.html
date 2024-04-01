@@ -1,6 +1,6 @@
 <!-- Second div -->
 <div class="col-lg-6 col-sm-12 text-center form-card mb-5 address-inputs">
-    <h3 class="mb-2 mt-2 white-title">Address</h3>
+    <h3 class="mb-2 mt-2 title-txt">Address</h3>
     <!-- Address Line 1 -->
     {% if request.user == order.user %}
         <input type="text" name="address_line1" value="{{ initial_data.address_line1 }}" placeholder="Address Line 1">
@@ -55,10 +55,12 @@
         {% endif %}
     </div>
         {% if request.user.is_superuser or request.user.is_staff %}
-            {% if order.reported_problem %}
+            {% if order.problem_order and not order.problem_resolved %}
             <label for="resolution_message"></label>
             <textarea class="resolution-message" id="resolution_message" name="resolution_message" placeholder="Resolution Massage.."></textarea required>
             <span id="resolution_message_error"></span>
             {% endif %}
         {% endif %}
+        <br>
+    <button type="submit" class="submit-btn">Edit Order</button>
 </div>

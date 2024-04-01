@@ -65,7 +65,7 @@
             <div class="row no-gutters">
                 <!-- First div -->
                 <div class="col-lg-6 col-sm-12 text-center mb-5">
-                    <h3 class="mb-2 mt-2 white-title">Order Summary</h3>
+                    <h3 class="mb-2 mt-2 title-txt">Order Summary</h3>
                     <table id="orderTable" class="order-table">
                         <thead>
                             <tr>
@@ -83,10 +83,7 @@
         
                 <!-- Second div -->
                 {% include 'order/confirm_edit_order_inputs.html' %}
-                
             </div>
-
-            <button type="submit" class="submit-btn">Edit Order</button>
         </div>
     </form>
     <button id="prevBtn" type="button" onclick="prevStep()" class="prev-btn"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
