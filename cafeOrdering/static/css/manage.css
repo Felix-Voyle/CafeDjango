@@ -241,24 +241,3 @@ label {
         justify-content: center;
     }
 }
-
-
-/* Enquiries section */
-
-.enquiries-container, .enquiry-container {
-    position: relative;
-    top: 50px;
-    min-height: 100vh;
-}
-
-.enquiry-card {
-    border: 1px solid black;
-    box-shadow: 1px 2px 2px black;
-    width: 95%;
-    margin: auto;
-}
-
-.no-enquiries {
-    position: relative;
-    top: 30px;
-}

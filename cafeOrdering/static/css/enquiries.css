@@ -1,0 +1,38 @@
+.enquiries-container, .enquiry-container {
+    position: relative;
+    top: 50px;
+    min-height: 100vh;
+}
+
+.enquiry-card {
+    border: 1px solid black;
+    box-shadow: 1px 2px 2px black;
+    width: 95%;
+    margin: auto;
+    max-width: 550px;
+}
+
+.enquiry-user {
+    color: var(--off-black);
+    font-size: 16px;
+    letter-spacing: 1px;
+    padding: 5px;
+}
+
+.no-enquiries {
+    position: relative;
+    top: 30px;
+}
+
+.btn-success, .btn-danger {
+    padding: 4px;
+    margin: 4px;
+}
+
+.btn-danger {
+    box-shadow: -2px 2px #8b2e2e;
+}
+
+.btn-success {
+    box-shadow: -2px 2px #265c21;
+}

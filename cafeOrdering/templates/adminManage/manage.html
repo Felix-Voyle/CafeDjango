@@ -41,15 +41,20 @@
             <button type="submit">Filter</button>
         </form>
         <section>
+            {% if orders %}
                 {% for order in orders %}
                     {% include 'adminManage/order_card.html' %}
                 {% endfor %}
+            {% else %}
+            <p class="text-center">No orders to display..</p>
+            {% endif %}
         </section>
         <div class="pagination">
             <span class="step-links">
+                {% if orders.paginator.num_pages > 1 %}
                 {% if orders.has_previous %}
-                    <a href="?page=1">&laquo; First</a>
-                    <a href="?page={{ orders.previous_page_number }}">Previous</a>
+                <a href="?page=1">&laquo; First</a>
+                <a href="?page={{ orders.previous_page_number }}">Previous</a>
                 {% endif %}
         
                 <span class="current">
@@ -57,8 +62,9 @@
                 </span>
         
                 {% if orders.has_next %}
-                    <a href="?page={{ orders.next_page_number }}">Next</a>
-                    <a href="?page={{ orders.paginator.num_pages }}">Last &raquo;</a>
+                <a href="?page={{ orders.next_page_number }}">Next</a>
+                <a href="?page={{ orders.paginator.num_pages }}">Last &raquo;</a>
+                {% endif %}
                 {% endif %}
             </span>
         </div>
