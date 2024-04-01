@@ -9,8 +9,8 @@
 
 {% block content %}
 
-<div class="row col-12 no-gutters manage-menu-bar mb-2">
-    <ul class="manage-menu">
+<div class="row no-gutters manage-menu-bar mb-2">
+    <ul class="col-12 manage-menu main-txt">
         <li class="col-3 text-center"><a href="{% url 'manage' %}">Orders</a></li>
         <li class="col-3 text-center"><a href="{% url 'create_invoice' %}">Create Invoice</a></li>
         <li class="col-3 text-center active"><a href="{% url 'manage_invoices' %}">Invoices</a>
@@ -79,6 +79,24 @@
 </table>
 {% else %}
 {% endif %}
+
+
+<div class="pagination mt-1">
+    <span class="step-links">
+        {% if invoices.has_previous %}
+            <a href="?page={{ invoices.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">Previous</a>
+        {% endif %}
+    
+        <span class="current">
+            Page {{ invoices.number }} of {{ invoices.paginator.num_pages }}.
+        </span>
+    
+        {% if invoices.has_next %}
+            <a href="?page={{ invoices.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">Next</a>
+        {% endif %}
+    </span>
+</div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">

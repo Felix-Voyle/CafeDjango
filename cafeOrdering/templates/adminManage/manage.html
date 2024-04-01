@@ -4,14 +4,15 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/manage.css' %}">
+<link rel="stylesheet" href="{% static 'css/manage_orders.css' %}">
 {% endblock %}
 
 {% block content %}
 
 <html data-csrf="{{ csrf_token }}" class="csrf-html">
 
-<div class="row col-12 no-gutters manage-menu-bar mb-2">
-    <ul class="manage-menu">
+<div class="row no-gutters manage-menu-bar mb-2">
+    <ul class="col-12 manage-menu main-txt">
         <li class="col-3 text-center active"><a href="{% url 'manage' %}">Orders</a></li>
         <li class="col-3 text-center"><a href="{% url 'create_invoice' %}">Create Invoice</a></li>
         <li class="col-3 text-center"><a href="{% url 'manage_invoices' %}">Invoices</a>
@@ -49,9 +50,9 @@
             <p class="text-center">No orders to display..</p>
             {% endif %}
         </section>
+        {% if orders.paginator.num_pages > 1 %}
         <div class="pagination">
             <span class="step-links">
-                {% if orders.paginator.num_pages > 1 %}
                 {% if orders.has_previous %}
                 <a href="?page=1">&laquo; First</a>
                 <a href="?page={{ orders.previous_page_number }}">Previous</a>
@@ -65,9 +66,10 @@
                 <a href="?page={{ orders.next_page_number }}">Next</a>
                 <a href="?page={{ orders.paginator.num_pages }}">Last &raquo;</a>
                 {% endif %}
-                {% endif %}
+                
             </span>
         </div>
+        {% endif %}
     </div>
 </div>
 
