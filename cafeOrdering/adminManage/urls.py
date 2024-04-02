@@ -12,5 +12,6 @@ urlpatterns = [
     path('enquiry/delete/<int:enquiry_id>/', views.delete_enquiry, name='delete_enquiry'),
     path('create_invoice/', views.create_invoice, name='create_invoice'),
     path('update_order_status/', views.update_order_status, name='update_order_status'),
+    path('<str:order_id>/add_delivery/', views.add_delivery, name='add_delivery'),
     path('<str:order_id>/send_invoice/', views.send_invoice, name='send_invoice'),
 ]
