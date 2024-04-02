@@ -265,7 +265,19 @@ def update_order_status(request):
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+def add_delivery(request, order_id):
+    order = get_object_or_404(Order, order_id=order_id)
+    if request.method == 'POST':
+        invoice_details = request.POST.get('invoiceDetails')
+        delivery_details = request.POST.get('deliveryDetails')
+        delivery_charge_qty = request.POST.get('deliveryChargeQty')
+        delivery_charge_price = request.POST.get('deliveryChargePrice')
+        print(invoice_details, delivery_details, delivery_charge_qty, delivery_charge_price)
     
+    return redirect('manage')
+
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def send_invoice(request, order_id):

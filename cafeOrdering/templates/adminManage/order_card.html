@@ -27,9 +27,14 @@
                 {% endif %}
                 {% if order.invoiceable and not order.status == 'invoiced' %}
                 <div class="row mt-1">
+                    <div class="col ml-2 text-left">
+                        <a id="deliveryFormTrigger" href="{% url 'add_delivery' order.order_id %}" data-toggle="modal" data-target="#deliveryModal" data-order-id="{{ order.order_id }}">
+                            <span>Delivery</span>
+                        </a>
+                    </div>
                     <div class="col mr-2 text-right">
                         <a id="editLinkTrigger" href="{% url 'edit_order' order.order_id %}" data-toggle="modal" data-target="#editConfirmationModal" data-has-problem="{% if order.problem_resolved %}false{% else %}true{% endif %}">
-                            <span>edit</span></a>
+                            <span>Edit</span></a>
                     </div>
                 </div>
                 {% endif %}
