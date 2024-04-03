@@ -169,4 +169,3 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.order} - {self.product.name} x {self.quantity}"
-

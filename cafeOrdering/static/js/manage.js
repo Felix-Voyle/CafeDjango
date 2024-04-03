@@ -43,10 +43,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // Check if user wants to edit order as no reported problem
-$('#editLink').click(function() {
-    
-    var editUrl = $('#editLinkTrigger').attr('href');
-    
-    window.location.href = editUrl;
+document.addEventListener('DOMContentLoaded', function() {
+    $('#confirmEditBtn').on('click', function(event) {
+        event.preventDefault();
+        var editLink = $('#editLinkTrigger').attr('href');
+        window.location.href = editLink;
+    });
+
+    $('#editConfirmationModal').on('hidden.bs.modal', function (event) {
+        event.preventDefault();
+    });
+
+    $('#editConfirmationModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var hasProblem = button.data('has-problem');
+        var modal = $(this);
+        if (hasProblem === 'true') {
+            modal.find('.modal-body').text("No reported problems with this order. Are you sure you want to edit it?");
+        } else {
+            modal.find('.modal-body').text("You've already resolved the reported problem. Are you sure you want to edit it?");
+        }
+    });
 });
 
