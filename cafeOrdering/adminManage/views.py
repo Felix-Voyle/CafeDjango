@@ -267,14 +267,15 @@ def update_order_status(request):
         return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
-def add_delivery(request, order_id):
+def add_services(request, order_id):
     order = get_object_or_404(Order, order_id=order_id)
     if request.method == 'POST':
         invoice_details = request.POST.get('invoiceDetails')
-        delivery_details = request.POST.get('deliveryDetails')
-        delivery_charge_qty = request.POST.get('deliveryChargeQty')
-        delivery_charge_price = request.POST.get('deliveryChargePrice')
-        print(invoice_details, delivery_details, delivery_charge_qty, delivery_charge_price)
+        service_description = request.POST.getlist('serviceDescription')
+        service_price = request.POST.getlist('servicePrice')
+        print(invoice_details)
+        for description, price in zip(service_description, service_price):
+            print(description, price)
     
     return redirect('manage')
 
