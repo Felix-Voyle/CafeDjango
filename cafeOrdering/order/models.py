@@ -31,6 +31,7 @@ class Order(models.Model):
     problem_order = models.BooleanField(default=False)
     problem_resolved = models.BooleanField(default=False)
     resolution_message = models.TextField(max_length=200, blank=True, null=True)
+    order_detail = models.TextField(max_length=100, blank=True, null=True)
     
     @staticmethod
     def generate_order_id():
@@ -169,3 +170,12 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.order} - {self.product.name} x {self.quantity}"
+
+
+class ServiceItem(models.Model):
+    order = models.ForeignKey(Order, related_name='service_items', on_delete=models.CASCADE)
+    service = models.TextField(max_length=50)
+    price = price = models.DecimalField(max_digits=7, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.order} - {self.service} - {self.price}"

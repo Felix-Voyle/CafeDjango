@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.db import transaction
 from django.template.loader import render_to_string
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -25,7 +26,7 @@ from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileT
 # Local application imports
 from .pdf_generator import generate_invoice
 from enquire.models import Enquiry
-from order.models import Order
+from order.models import Order, ServiceItem
 from products.models import InvoiceProduct
 from .models import ManageInvoice
 
@@ -47,6 +48,13 @@ def get_invoices(request):
     except Exception as e:
         messages.error(request, "Failed to fetch Invoices")
         return None
+
+def return_referer(request, redirect_url):
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return HttpResponseRedirect(referer)
+    else:
+        return HttpResponseRedirect(redirect_url)
 
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
@@ -267,17 +275,44 @@ def update_order_status(request):
         return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
+@transaction.atomic
 def add_services(request, order_id):
     order = get_object_or_404(Order, order_id=order_id)
-    if request.method == 'POST':
-        invoice_details = request.POST.get('invoiceDetails')
-        service_description = request.POST.getlist('serviceDescription')
-        service_price = request.POST.getlist('servicePrice')
-        print(invoice_details)
-        for description, price in zip(service_description, service_price):
-            print(description, price)
     
-    return redirect('manage')
+    if request.method == 'POST':
+        order_detail = request.POST.get('invoiceDetails')
+        service_descriptions = request.POST.getlist('serviceDescription')
+        service_prices = request.POST.getlist('servicePrice')
+        
+        try:
+            if len(order_detail) < 6 or len(order_detail) > 100:
+                raise ValueError("Order detail should be between 5 and 100 characters long")
+            
+            order.order_detail = order_detail
+            order.save()
+            
+            for service_description, service_price in zip(service_descriptions, service_prices):
+                if not service_description or not service_price:
+                    raise ValueError("Service description and price are required for all services")
+                
+                if len(service_description) < 3 or len(service_description) > 50:
+                    raise ValueError("Service description should be between 3 and 50 characters long")
+                
+                service_price = float(service_price)
+                if not 0 <= service_price < 10000:
+                    raise ValueError("Invalid price format. Price should be up to 7 digits including 2 decimal places")
+                
+                ServiceItem.objects.create(order=order, service=service_description, price=service_price)
+            
+            messages.success(request, "Successfully added final order detail")
+            return return_referer(request, 'manage')
+        
+        except ValueError as e:
+            messages.error(request, str(e))
+            return return_referer(request, 'manage')
+    
+    messages.error(request, "This URL only accepts POST requests")
+    return return_referer(request, 'manage')
 
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
@@ -451,7 +486,7 @@ def filter_invoices(request):
         invoices = [invoice for invoice in invoices if invoice.is_due() and not invoice.invoice_paid]
     except Exception as e:
         messages.error(request, "Failed to fetch Invoices")
-        return redirect('manage')
+        return_referer(request, 'manage')
 
     try:
         if status == "all":
@@ -462,10 +497,10 @@ def filter_invoices(request):
             invoices = ManageInvoice.objects.all().filter(invoice_paid=False).order_by('invoice_date')
     except ObjectDoesNotExist:
         messages.error(request, 'Failed to retrieve invoices: Object does not exist.')
-        return redirect('manage_invoices')
+        return_referer(request, 'manage_invoices')
     except ValidationError as e:
         messages.error(request, f'Failed to filter invoices: {e.message}.')
-        return redirect('manage_invoices')
+        return_referer(request, 'manage_invoices')
     
     items_per_page = 20
 
@@ -507,8 +542,4 @@ def mark_invoice_paid(request, invoice_reference):
         messages.error(request, f'Failed to mark invoice {invoice_reference} as paid: {e.message}.')
         return redirect('manage_invoices')
     
-    referer = request.META.get('HTTP_REFERER')
-    if referer:
-        return redirect(referer)
-    else:
-        return redirect('manage_invoices')
+    return_referer(request, 'manage_invoices')
