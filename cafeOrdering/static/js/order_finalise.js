@@ -132,4 +132,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     addInputEventListeners();
 
+
+    $('#deliveryFormTrigger').on('click', function (event) {
+        event.preventDefault();
+
+        var href = $(this).attr('href');
+        document.getElementById('deliveryForm').action = href;
+    });
+
 });
