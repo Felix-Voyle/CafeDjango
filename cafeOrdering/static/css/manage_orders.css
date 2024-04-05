@@ -156,6 +156,10 @@ label {
     margin: auto;
 }
 
+.input-error-msg {
+    color: red;
+}
+
 @media screen and (min-width: 768px) {
     .checkboxes div {
         display: flex;
