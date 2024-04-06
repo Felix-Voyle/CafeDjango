@@ -319,9 +319,12 @@ def add_services(request, order_id):
 def send_invoice(request, order_id):
     order = get_object_or_404(Order, order_id=order_id)
     cart = order.order_items.all()
+    services = order.service_items.all()
+    print(services)
     invoice_items = []
 
     user_profile = order.user.userprofile
+    order_detail = order.order_detail
 
     recipient_info = [
     user_profile.invoice_business,
@@ -337,32 +340,44 @@ def send_invoice(request, order_id):
     "Payment Terms: 30 days"
     ]
 
+    total_service_price = 0
+
     for item in cart:
         product = item.product.name
         quantity = item.quantity  
         price = '{:.2f}'.format(item.product.price)
         subtotal = '{:.2f}'.format(item.get_total())
         invoice_items.append({"description": product, "quantity": quantity, "price": price, "subtotal": subtotal},)
+    for service_item in services:
+        service = service_item.service
+        price = service_item.price 
+        total_service_price += price 
+        invoice_items.append({"description": service, "quantity": "", "price": price, "subtotal": price},)
+
+    total_incl_vat = order.order_total + total_service_price
+
+    total_incl_vat_formatted = '{:.2f}'.format(total_incl_vat)
 
     totals = {
-    "Subtotal incl. VAT": '{:.2f}'.format(order.order_total)
+    "Subtotal incl. VAT": total_incl_vat_formatted
     }
 
     # Calculate the discount
     discount_rate = Decimal('0.20')
-    discount = (order.order_total * discount_rate).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+    discount = (total_incl_vat * discount_rate).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+    total_excl_vat_formatted = '{:.2f}'.format(total_incl_vat - discount)
 
     # Check if the user's profile is workspace
     if user_profile == "workspace":
         totals["Discount 20%"] = '{:.2f}'.format(discount)
-        totals["Total excl. VAT"] = '{:.2f}'.format(order.order_total - discount)
-        totals["Total amount due"] = '{:.2f}'.format(order.order_total - discount)
+        totals["Total excl. VAT"] = total_excl_vat_formatted
+        totals["Total amount due"] = total_excl_vat_formatted
     else:
-        totals["Total excl. VAT"] = '{:.2f}'.format(order.order_total - discount)
-        totals["Total amount due"] = '{:.2f}'.format(order.order_total)
+        totals["Total excl. VAT"] = total_excl_vat_formatted
+        totals["Total amount due"] = total_incl_vat_formatted
 
     try:
-        invoice_buffer = generate_invoice(recipient_info, order_info, invoice_items, totals)
+        invoice_buffer = generate_invoice(recipient_info, order_info, invoice_items, totals, order_detail)
         pdf_filename = f"Invoice_{order_id}.pdf"
         with open(pdf_filename, 'wb') as tmp_file:
             tmp_file.write(invoice_buffer.getbuffer())
