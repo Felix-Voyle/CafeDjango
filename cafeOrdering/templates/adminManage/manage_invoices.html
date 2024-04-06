@@ -62,7 +62,7 @@
     <tbody>
         {% for invoice in invoices %}
         <tr>
-            <td data-label="Reference">{{ invoice.invoice_reference }}</td>
+            <td data-label="Reference"><a href="{% url 'download_invoice' invoice.invoice_reference %}"><i class="fas fa-download"></i>{{ invoice.invoice_reference }}</a></td>
             <td data-label="Date">{{ invoice.invoice_date }}</td>
             <td data-label="Sent Date">{{ invoice.invoice_sent_date }}</td>
             <td data-label="Total">{{ invoice.invoice_total }}</td>

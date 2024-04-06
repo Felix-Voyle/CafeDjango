@@ -1,7 +1,10 @@
 import random
 import datetime
+import io
+
 
 from django.utils import timezone
+from django.core.files.base import ContentFile
 
 from django.db import models
 
@@ -11,6 +14,7 @@ class ManageInvoice(models.Model):
     invoice_sent_date = models.DateField(auto_now_add=True)
     invoice_total = models.DecimalField(max_digits=10, decimal_places=2)
     invoice_paid = models.BooleanField(default=False)
+    invoice_pdf = models.BinaryField(blank=True, null=True)
 
     @staticmethod
     def generate_invoice_id():
