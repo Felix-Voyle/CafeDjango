@@ -383,7 +383,7 @@ def send_invoice(request, order_id):
             tmp_file.write(invoice_buffer.getbuffer())
     except Exception as e:
         messages.error(request, "Failed to generate Invoice")
-        return redirect('manage')
+        return return_referer(request, 'manage')
 
     email_content = render_to_string('email/email_body.html', {
     'order_id': order_id,
@@ -434,20 +434,20 @@ def send_invoice(request, order_id):
                 invoice_total=order.order_total
             )   
                 messages.success(request, f"Invoice sent for order {order_id}")
-                return redirect('manage')
+                return return_referer(request, 'manage')
             except Exception as e:
                 print(f"error, {e}")
                 messages.error(request, "Invoice sent but failed to create manage invoice instance")
-                return redirect('manage')
+                return return_referer(request, 'manage')
         else:
             os.remove(pdf_filename)
             messages.error(request, f"Failed to send email invoice for order {order_id}")
-            return redirect('manage')
+            return return_referer(request, 'manage')
 
     except Exception as e:
         os.remove(pdf_filename)
         messages.error(request, f"Failed to invoice order {order_id}")
-        return redirect('manage')
+        return return_referer(request, 'manage')
 
 
 def due_invoices_count_value(request):
@@ -501,7 +501,7 @@ def filter_invoices(request):
         invoices = [invoice for invoice in invoices if invoice.is_due() and not invoice.invoice_paid]
     except Exception as e:
         messages.error(request, "Failed to fetch Invoices")
-        return_referer(request, 'manage')
+        return return_referer(request, 'manage')
 
     try:
         if status == "all":
@@ -512,10 +512,10 @@ def filter_invoices(request):
             invoices = ManageInvoice.objects.all().filter(invoice_paid=False).order_by('invoice_date')
     except ObjectDoesNotExist:
         messages.error(request, 'Failed to retrieve invoices: Object does not exist.')
-        return_referer(request, 'manage_invoices')
+        return return_referer(request, 'manage_invoices')
     except ValidationError as e:
         messages.error(request, f'Failed to filter invoices: {e.message}.')
-        return_referer(request, 'manage_invoices')
+        return return_referer(request, 'manage_invoices')
     
     items_per_page = 20
 
@@ -557,4 +557,4 @@ def mark_invoice_paid(request, invoice_reference):
         messages.error(request, f'Failed to mark invoice {invoice_reference} as paid: {e.message}.')
         return redirect('manage_invoices')
     
-    return_referer(request, 'manage_invoices')
+    return return_referer(request, 'manage_invoices')
