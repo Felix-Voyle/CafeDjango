@@ -320,7 +320,6 @@ def send_invoice(request, order_id):
     order = get_object_or_404(Order, order_id=order_id)
     cart = order.order_items.all()
     services = order.service_items.all()
-    print(services)
     invoice_items = []
 
     user_profile = order.user.userprofile
@@ -425,18 +424,20 @@ def send_invoice(request, order_id):
         if response.status_code == 202:
             order.status = 'invoiced'
             order.save()
-            os.remove(pdf_filename)
             try:
-                ManageInvoice.objects.create(
+                manage_invoice = ManageInvoice.objects.create(
                 invoice_reference=order.order_id,
                 invoice_date=order.delivery_date,
                 invoice_sent_date=timezone.now().date(),
-                invoice_total=order.order_total
+                invoice_total=order.order_total,
+                invoice_pdf=attachment_data
             )   
+                os.remove(pdf_filename)
                 messages.success(request, f"Invoice sent for order {order_id}")
                 return return_referer(request, 'manage')
             except Exception as e:
-                print(f"error, {e}")
+                os.remove(pdf_filename)
+                print(f"{e}")
                 messages.error(request, "Invoice sent but failed to create manage invoice instance")
                 return return_referer(request, 'manage')
         else:
@@ -558,3 +559,15 @@ def mark_invoice_paid(request, invoice_reference):
         return redirect('manage_invoices')
     
     return return_referer(request, 'manage_invoices')
+
+
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
+def download_invoice(request, invoice_reference):
+    invoice = get_object_or_404(ManageInvoice, invoice_reference=invoice_reference)
+    if invoice.invoice_pdf:
+        response = HttpResponse(invoice.invoice_pdf, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename={invoice.invoice_reference}.pdf'
+        return response
+    else:
+        messages.error(request, "PDF file couldn't be downloaded")
+        return return_referer(request, 'manage_invoices')
