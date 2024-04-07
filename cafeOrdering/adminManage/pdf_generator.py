@@ -3,21 +3,16 @@ import os
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
-IBAN = os.environ.get('IBAN')
-BANK = os.environ.get('BANK')
-SORT_CODE = os.environ.get('SORT_CODE')
-ACCOUNT_HOLDER = os.environ.get('ACCOUNT_HOLDER')
-BANK_ACCOUNT = os.environ.get('BANK_ACCOUNT')
 
 
-def invoice_header(can):
-    can.drawString(45, 760, "JAVA JAVA COFFEE")
+def invoice_header(can, cafe_info):
+    can.drawString(45, 760, cafe_info["name"])
     can.drawString(510, 760, "INVOICE")
     can.setFont("Helvetica", 8)
-    can.drawString(45, 745, "160 Fleet Street, London, EC4A 2DQ")
+    can.drawString(45, 745, cafe_info["address"])
 
 
-def invoice_footer(can):
+def invoice_footer(can, cafe_info):
     # Draw thin black horizontal line just above the footer text
     can.setStrokeColorRGB(0, 0, 0)
     can.setLineWidth(1)
@@ -25,27 +20,27 @@ def invoice_footer(can):
 
     can.setFont("Helvetica-Bold", 9)
     # Draw footer headers
-    can.drawString(45, 120, "Java Java Coffee")  # Position of the footer text
+    can.drawString(45, 120, cafe_info["name"])  # Position of the footer text
     can.drawString(240, 120, "Contact Information")
     can.drawString(410, 120, "Payment Details")
 
     can.setFont("Helvetica", 8)
     # Draw company details
-    can.drawString(45, 100, "160 Fleet Street, London EC4A 2DQ")
-    can.drawString(45, 85, "Company Number: 09372930")
-    can.drawString(45, 70, "VAT Number: 275783947")
+    can.drawString(45, 100, cafe_info["address"])
+    can.drawString(45, 85, "Company Number: " + cafe_info["company_number"])
+    can.drawString(45, 70, "VAT Number: " + cafe_info["vat_number"])
 
     # Draw contact information
-    can.drawString(240, 100, "Jonathan Hynes")
-    can.drawString(240, 85, "+447585942273")
-    can.drawString(240, 70, "Javajavacoffee@hotmail.com")
+    can.drawString(240, 100, cafe_info["contact"])
+    can.drawString(240, 85, cafe_info["phone"])
+    can.drawString(240, 70, cafe_info["email"])
 
     # Draw payment details
-    can.drawString(410, 100, f"IBAN: {IBAN}")
-    can.drawString(410, 85, f"Bank: {BANK}")
-    can.drawString(410, 70, f"Sort code: {SORT_CODE}")
-    can.drawString(410, 55, f"Account holder: {ACCOUNT_HOLDER}")
-    can.drawString(410, 40, f"Bank account: {BANK_ACCOUNT}")
+    can.drawString(410, 100, "IBAN: " + cafe_info["iban"])
+    can.drawString(410, 85, "Bank: " + cafe_info["bank"])
+    can.drawString(410, 70, "Sort code: " + cafe_info["sort_code"])
+    can.drawString(410, 55, "Account holder: " + cafe_info["account_holder"])
+    can.drawString(410, 40, "Bank account: " + cafe_info["account_number"])
 
 
 def recipient_information(can, recipient_info):
@@ -122,7 +117,7 @@ def invoice_totals(can, y_coordinate, totals):
         y_coordinate -= 10  # Adjust for spacing between lines
 
 
-def generate_invoice(recipient_info, order_info, cart, totals, order_detail=None):
+def generate_invoice(recipient_info, order_info, cart, totals, order_detail=None, cafe_info=None):
     # Create a BytesIO object to store the PDF content
     pdf_buffer = io.BytesIO()
     
@@ -136,8 +131,8 @@ def generate_invoice(recipient_info, order_info, cart, totals, order_detail=None
         end_index = min((page_num + 1) * items_per_page, num_items)
         
         # Add content to the canvas for each page
-        invoice_header(can)
-        invoice_footer(can)
+        invoice_header(can, cafe_info)
+        invoice_footer(can, cafe_info)
         recipient_information(can, recipient_info)
         invoice_information(can, order_info)
         if order_detail is not None:

@@ -325,6 +325,9 @@ def send_invoice(request, order_id):
     user_profile = order.user.userprofile
     order_detail = order.order_detail
 
+    ara_json_str = os.environ.get("ARA")
+    cafe_info = json.loads(ara_json_str)
+
     recipient_info = [
     user_profile.invoice_business,
     user_profile.invoice_address_line1,
@@ -376,7 +379,7 @@ def send_invoice(request, order_id):
         totals["Total amount due"] = total_incl_vat_formatted
 
     try:
-        invoice_buffer = generate_invoice(recipient_info, order_info, invoice_items, totals, order_detail)
+        invoice_buffer = generate_invoice(recipient_info, order_info, invoice_items, totals, order_detail, cafe_info)
         pdf_filename = f"Invoice_{order_id}.pdf"
         with open(pdf_filename, 'wb') as tmp_file:
             tmp_file.write(invoice_buffer.getbuffer())
