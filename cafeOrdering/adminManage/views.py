@@ -188,6 +188,10 @@ def create_invoice(request):
         postcode = request.POST.get('postcode')
         invoice_date = request.POST.get('invoice_date')
         order_detail = request.POST.get('order_detail')
+        cafe = request.POST.get('invoice_from')
+
+        cafe_str = os.environ.get(cafe)
+        cafe_info = json.loads(cafe_str)
 
         recipient_info = [
             business_name,
@@ -233,7 +237,7 @@ def create_invoice(request):
 
 
         try:
-            pdf_buffer = generate_invoice(recipient_info, order_info, invoice_items, totals, order_detail)
+            pdf_buffer = generate_invoice(recipient_info, order_info, invoice_items, totals, order_detail, cafe_info)
             response = FileResponse(pdf_buffer, as_attachment=True, filename=f'Invoice #{order_reference}')
             messages.success(request, "Invoice Downloaded Successfully")
             return response
