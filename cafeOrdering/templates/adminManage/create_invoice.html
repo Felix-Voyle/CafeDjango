@@ -48,7 +48,7 @@
         </div>
     </form>
 
-    <form method="post" action="{% url 'create_invoice' %}" id="invoice-products">
+    <form method="post" action="{% url 'send_created_invoice' %}" id="invoice-products">
         {% csrf_token %}
         <table id="added-products-table" class="invoice-table">
             <tbody id="added-products"></tbody>
@@ -60,14 +60,22 @@
                 <option value="JAVA">Java</option>
                 <option value="ARCHIVE">Archive</option>
             <input type="text" name="business_name" placeholder="Business Name" required><br>
-            <input type="text" name="address_line1" placeholder="Address Line 1" required><br>
-            <input type="text" name="address_line2" placeholder="Address Line 2"><br>
-            <input type="text" name="address_line3" placeholder="Address Line 3"><br>
+            <input type="text" name="address_line1" placeholder="Address Line 1" autocomplete="address-line1" required><br>
+            <input type="text" name="address_line2" placeholder="Address Line 2" autocomplete="address-line2"><br>
+            <input type="text" name="address_line3" placeholder="Address Line 3" autocomplete="address-line3"><br>
             <input type="text" name="postcode" placeholder="Postcode" required><br>
             <input type="date" name="invoice_date" placeholder="Invoice Date" required><br>
-            <textarea name="order_detail" placeholder="Order Detail" required></textarea><br>
+            <textarea name="order_detail" placeholder="eg. Catering @ Record Hall" required></textarea><br>
+            <input type="checkbox" name="workspace" id="workspaceCheck" value="workspace">
+            <label for="workspaceCheck">Apply Workspace Discount</label>
+            <input type="email" name="invoice_email" placeholder="Email to send invoice to..." required><br>
         </div>
-        <button type="submit" class="btn btn-success invoice-btn mt-3">Download Invoice</button>
+        <div class="row text-center">
+            <div class="col-12">
+                <button type="submit" class="btn btn-success invoice-btn mt-3">Send Invoice</button>
+            </div>
+        </div>
+        
     </form>
 </div>
 {% endblock %}
