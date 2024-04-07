@@ -57,6 +57,94 @@ def return_referer(request, redirect_url):
         return HttpResponseRedirect(redirect_url)
 
 
+def calculate_order_totals(total_incl_vat, user):
+    total_incl_vat_formatted = '{:.2f}'.format(total_incl_vat)
+
+    totals = {
+    "Subtotal incl. VAT": total_incl_vat_formatted
+    }
+
+    # Calculate the discount
+    discount_rate = Decimal('0.20')
+    discount = (total_incl_vat * discount_rate).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+    total_excl_vat_formatted = '{:.2f}'.format(total_incl_vat - discount)
+
+    # Check if the user's profile is workspace
+    if user == "workspace":
+        totals["Discount 20%"] = '{:.2f}'.format(discount)
+        totals["Total excl. VAT"] = total_excl_vat_formatted
+        totals["Total amount due"] = total_excl_vat_formatted
+        final_total = total_excl_vat_formatted
+    else:
+        totals["Total excl. VAT"] = total_excl_vat_formatted
+        totals["Total amount due"] = total_incl_vat_formatted
+        final_total = total_incl_vat_formatted
+    
+    return totals, final_total
+
+
+def generate_email_pdf(request, order_id,  recipient_info, order_info, invoice_items, totals, order_detail, cafe_info):
+    try:
+        invoice_buffer = generate_invoice(recipient_info, order_info, invoice_items, totals, order_detail, cafe_info)
+        pdf_filename = f"Invoice_{order_id}.pdf"
+        with open(pdf_filename, 'wb') as tmp_file:
+            tmp_file.write(invoice_buffer.getbuffer())
+            return pdf_filename
+    except Exception as e:
+        messages.error(request, "Failed to generate Invoice")
+        return return_referer(request, 'manage')
+    
+
+def send_email(pdf_filename, from_email, to_email, subject, email_content):
+        # Initialize SendGrid message
+        message = Mail(
+            from_email=from_email,
+            to_emails=to_email,
+            subject=subject,
+            html_content=email_content
+            )
+
+        # Load PDF file
+        with open(pdf_filename, 'rb') as f:
+            attachment_data = f.read()
+        encoded_attachment_data = base64.b64encode(attachment_data).decode()
+        # Create attachment object
+        attachment = Attachment(
+            FileContent(encoded_attachment_data),
+            FileName(pdf_filename),
+            FileType('application/pdf'),
+            Disposition('attachment')
+        )
+
+        # Add attachment to email message
+        message.attachment = attachment
+
+        # Initialize SendGrid client with API key
+        sg = SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+
+        return response, attachment_data
+
+
+def create_Invoice_object(request, order_id, delivery_date, total, attachment_data, pdf_filename):
+    try:
+        ManageInvoice.objects.create(
+        invoice_reference=order_id,
+        invoice_date=delivery_date,
+        invoice_sent_date=timezone.now().date(),
+        invoice_total=Decimal(total),
+        invoice_pdf=attachment_data
+        )   
+        os.remove(pdf_filename)
+        messages.success(request, f"Invoice sent for order {order_id}")
+        return return_referer(request, 'manage')
+    except Exception as e:
+        os.remove(pdf_filename)
+        print(f"{e}")
+        messages.error(request, "Invoice sent but failed to create manage invoice instance")
+        return return_referer(request, 'manage')
+
+
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
 def manage(request):
     enquiries = get_enquiries(request)
@@ -169,14 +257,24 @@ def create_invoice(request):
     enquiries = get_enquiries(request)
     invoices = get_invoices(request)
 
-    order_reference = ''.join(random.choices('0123456789', k=5))
-    invoice_items = []
-
     ctx = {
         'products': products,
         'enquiries': enquiries,
         'invoices': invoices,
     }
+
+    return render(request, 'adminManage/create_invoice.html', ctx)
+
+
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
+def send_created_invoice(request):
+
+    try:
+        order_id = ManageInvoice.generate_invoice_id()
+    except Exception as e:
+        messages.error(request, "Failed to generate order ID")
+        return return_referer(request, 'manage')
+    invoice_items = []
 
     if request.method == 'POST':
         product_ids = request.POST.getlist('products')
@@ -189,6 +287,8 @@ def create_invoice(request):
         invoice_date = request.POST.get('invoice_date')
         order_detail = request.POST.get('order_detail')
         cafe = request.POST.get('invoice_from')
+        to_email = request.POST.get('invoice_email')
+        user = request.POST.get('workspace')
 
         cafe_str = os.environ.get(cafe)
         cafe_info = json.loads(cafe_str)
@@ -202,7 +302,7 @@ def create_invoice(request):
         ]
 
         order_info = [
-            "Order Reference: " + order_reference,
+            "Order Reference: " + order_id,
             "Invoice Date: " + invoice_date,
             "Payment Terms: 30 days",
             ]
@@ -224,30 +324,25 @@ def create_invoice(request):
                 messages.error(request, f"Product {product.name} does not exist")
                 return redirect('create_invoice')
         
-        order_total = sum(item['subtotal'] for item in invoice_items)
-        discount_rate = Decimal('0.20')
-        discount = (order_total * discount_rate).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+        total_incl_vat = sum(item['subtotal'] for item in invoice_items)
+        
+        totals, final_total = calculate_order_totals(total_incl_vat, user)
 
-        totals = {
-        "Subtotal incl. VAT": '{:.2f}'.format(order_total)
-        }
-
-        totals["Total excl. VAT"] = '{:.2f}'.format(order_total - discount)
-        totals["Total amount due"] = '{:.2f}'.format(order_total)
-
-
-        try:
-            pdf_buffer = generate_invoice(recipient_info, order_info, invoice_items, totals, order_detail, cafe_info)
-            response = FileResponse(pdf_buffer, as_attachment=True, filename=f'Invoice #{order_reference}')
-            messages.success(request, "Invoice Downloaded Successfully")
-            return response
-
-        except Exception as e:
-            messages.error(request, f"An error occurred: {str(e)}")
-            return redirect('manage')
-    
-    return render(request, 'adminManage/create_invoice.html', ctx)
-
+        pdf_filename = generate_email_pdf(request, order_id,  recipient_info, order_info, invoice_items, totals, order_detail, cafe_info)
+        
+        email_content = render_to_string('email/email_body.html', {
+            'order_id': order_id,
+            'customer_name': business_name,
+            })
+        
+        from_email = os.environ.get('SENDGRID_FROM_EMAIL')
+        subject = f"Invoice for Order #{order_id}"
+        
+        
+        response, attachment_data = send_email(pdf_filename, from_email, to_email, subject, email_content)
+        
+        if response.status_code == 202:
+            return create_Invoice_object(request, order_id, invoice_date, final_total, attachment_data, pdf_filename)
 
 
 @user_passes_test(lambda user: user.is_superuser or user.is_staff)
@@ -362,34 +457,9 @@ def send_invoice(request, order_id):
 
     total_incl_vat = order.order_total + total_service_price
 
-    total_incl_vat_formatted = '{:.2f}'.format(total_incl_vat)
+    totals, final_total = calculate_order_totals(total_incl_vat, user_profile)
 
-    totals = {
-    "Subtotal incl. VAT": total_incl_vat_formatted
-    }
-
-    # Calculate the discount
-    discount_rate = Decimal('0.20')
-    discount = (total_incl_vat * discount_rate).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
-    total_excl_vat_formatted = '{:.2f}'.format(total_incl_vat - discount)
-
-    # Check if the user's profile is workspace
-    if user_profile == "workspace":
-        totals["Discount 20%"] = '{:.2f}'.format(discount)
-        totals["Total excl. VAT"] = total_excl_vat_formatted
-        totals["Total amount due"] = total_excl_vat_formatted
-    else:
-        totals["Total excl. VAT"] = total_excl_vat_formatted
-        totals["Total amount due"] = total_incl_vat_formatted
-
-    try:
-        invoice_buffer = generate_invoice(recipient_info, order_info, invoice_items, totals, order_detail, cafe_info)
-        pdf_filename = f"Invoice_{order_id}.pdf"
-        with open(pdf_filename, 'wb') as tmp_file:
-            tmp_file.write(invoice_buffer.getbuffer())
-    except Exception as e:
-        messages.error(request, "Failed to generate Invoice")
-        return return_referer(request, 'manage')
+    pdf_filename = generate_email_pdf(request, order_id,  recipient_info, order_info, invoice_items, totals, order_detail, cafe_info)
 
     email_content = render_to_string('email/email_body.html', {
     'order_id': order_id,
@@ -401,52 +471,12 @@ def send_invoice(request, order_id):
     to_email = [user_profile.invoice_email]
 
     try:
-        # Initialize SendGrid message
-        message = Mail(
-            from_email=from_email,
-            to_emails=to_email,
-            subject=subject,
-            html_content=email_content
-            )
-
-        # Load PDF file
-        with open(pdf_filename, 'rb') as f:
-            attachment_data = f.read()
-        encoded_attachment_data = base64.b64encode(attachment_data).decode()
-        # Create attachment object
-        attachment = Attachment(
-            FileContent(encoded_attachment_data),
-            FileName(pdf_filename),
-            FileType('application/pdf'),
-            Disposition('attachment')
-        )
-
-        # Add attachment to email message
-        message.attachment = attachment
-
-        # Initialize SendGrid client with API key
-        sg = SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY'))
-        response = sg.send(message)
+        response, attachment_data = send_email(pdf_filename, from_email, to_email, subject, email_content)
 
         if response.status_code == 202:
             order.status = 'invoiced'
             order.save()
-            try:
-                manage_invoice = ManageInvoice.objects.create(
-                invoice_reference=order.order_id,
-                invoice_date=order.delivery_date,
-                invoice_sent_date=timezone.now().date(),
-                invoice_total=order.order_total,
-                invoice_pdf=attachment_data
-            )   
-                os.remove(pdf_filename)
-                messages.success(request, f"Invoice sent for order {order_id}")
-                return return_referer(request, 'manage')
-            except Exception as e:
-                os.remove(pdf_filename)
-                print(f"{e}")
-                messages.error(request, "Invoice sent but failed to create manage invoice instance")
-                return return_referer(request, 'manage')
+            return create_Invoice_object(request, order_id, order.delivery_date, final_total, attachment_data, pdf_filename)
         else:
             os.remove(pdf_filename)
             messages.error(request, f"Failed to send email invoice for order {order_id}")
