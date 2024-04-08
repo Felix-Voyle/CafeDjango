@@ -42,13 +42,13 @@
                 <label for="quantity">Quantity:</label>
                 <input type="number" name="quantity" id="quantity" class="form-control" min="1" value="1">
             </div>
-            <div class="col-2 no-pad align-self-end">
+            <div class="col-2 no-pad text-center add-btn-container">
                 <button type="button" class="btn btn-primary add-btn" id="add-product">+</button>
             </div>
         </div>
     </form>
 
-    <form method="post" action="{% url 'send_created_invoice' %}" id="invoice-products">
+    <form method="post" action="{% url 'send_created_invoice' %}" id="invoice-products" class="invoice-form">
         {% csrf_token %}
         <table id="added-products-table" class="invoice-table">
             <tbody id="added-products"></tbody>
@@ -59,17 +59,20 @@
                 <option value="ARA">Ara</option>
                 <option value="JAVA">Java</option>
                 <option value="ARCHIVE">Archive</option>
-            <input type="text" name="business_name" placeholder="Business Name" required><br>
-            <input type="text" name="address_line1" placeholder="Address Line 1" autocomplete="address-line1" required><br>
-            <input type="text" name="address_line2" placeholder="Address Line 2" autocomplete="address-line2"><br>
-            <input type="text" name="address_line3" placeholder="Address Line 3" autocomplete="address-line3"><br>
-            <input type="text" name="postcode" placeholder="Postcode" required><br>
-            <input type="date" name="invoice_date" placeholder="Invoice Date" required><br>
-            <textarea name="order_detail" placeholder="eg. Catering @ Record Hall" required></textarea><br>
-            <input type="checkbox" name="workspace" id="workspaceCheck" value="workspace">
-            <label for="workspaceCheck">Apply Workspace Discount</label>
-            <input type="email" name="invoice_email" placeholder="Email to send invoice to..." required><br>
-        </div>
+            </select>
+            <input type="text" name="business_name" placeholder="Business Name" required>
+            <input type="text" name="address_line1" placeholder="Address Line 1" autocomplete="address-line1" required>
+            <input type="text" name="address_line2" placeholder="Address Line 2" autocomplete="address-line2">
+            <input type="text" name="address_line3" placeholder="Address Line 3" autocomplete="address-line3">
+            <input type="text" name="postcode" placeholder="Postcode" required>
+            <input type="date" name="invoice_date" placeholder="Invoice Date" required>
+            <textarea name="order_detail" placeholder="eg. Catering @ Record Hall" required></textarea>
+            <div class="row checkbox-row text-center">
+                    <input type="checkbox" name="workspace" id="workspaceCheck" value="workspace" class="mr-2">
+                    <label for="workspaceCheck"> Apply Workspace Discount</label>
+            </div>
+            <input type="email" name="invoice_email" placeholder="Email to send invoice to..." required>
+        </div>   
         <div class="row text-center">
             <div class="col-12">
                 <button type="submit" class="btn btn-success invoice-btn mt-3">Send Invoice</button>
