@@ -333,6 +333,7 @@ def send_created_invoice(request):
         email_content = render_to_string('email/email_body.html', {
             'order_id': order_id,
             'customer_name': business_name,
+            'cafe': cafe_info["name"],
             })
         
         from_email = os.environ.get('SENDGRID_FROM_EMAIL')
@@ -464,6 +465,7 @@ def send_invoice(request, order_id):
     email_content = render_to_string('email/email_body.html', {
     'order_id': order_id,
     'customer_name': user_profile.invoice_business,
+    'cafe': cafe_info["name"],
     })
 
     subject = f"Invoice for Order #{order_id}"
