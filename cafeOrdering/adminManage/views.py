@@ -3,6 +3,7 @@ import json
 from decimal import Decimal, ROUND_HALF_UP
 import random
 import tempfile
+import re
 import os
 import base64
 
@@ -610,3 +611,24 @@ def download_invoice(request, invoice_reference):
     else:
         messages.error(request, "PDF file couldn't be downloaded")
         return return_referer(request, 'manage_invoices')
+
+
+@user_passes_test(lambda user: user.is_superuser or user.is_staff)
+def delete_invoice_order(request, invoice_reference):
+    try:
+        if invoice_reference.isdigit():
+            invoice = ManageInvoice.objects.get(invoice_reference=invoice_reference)
+            invoice.delete()
+            messages.success(request, f"Deleted invoice {invoice_reference}")
+        else:
+            invoice = ManageInvoice.objects.get(invoice_reference=invoice_reference)
+            order = Order.objects.get(order_id=invoice_reference)
+            order.delete()
+            invoice.delete()
+            messages.success(request, f"Deleted invoice {invoice_reference} and related order")
+    except (Order.DoesNotExist, ManageInvoice.DoesNotExist):
+        messages.error(request, f"Couldn't find invoice or order with reference {invoice_reference}")
+    except Exception as e:
+        messages.error(request, f"An error occurred: {str(e)}")
+
+    return return_referer(request, 'manage_invoices')
