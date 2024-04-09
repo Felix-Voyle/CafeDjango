@@ -16,4 +16,5 @@ urlpatterns = [
     path('<str:order_id>/add_services/', views.add_services, name='add_services'),
     path('<str:order_id>/send_invoice/', views.send_invoice, name='send_invoice'),
     path('<str:invoice_reference>/download_invoice', views.download_invoice, name='download_invoice'),
+    path('<str:invoice_reference>/delete_invoice', views.delete_invoice_order, name='delete_invoice_order'),
 ]

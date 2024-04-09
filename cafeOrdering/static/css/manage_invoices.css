@@ -30,7 +30,7 @@ table {
 
 th {
     background-color: var(--off-white);
-    border: 1px solid #ddd;
+    border: 1px solid var(--off-black);
 }
 
 tr:nth-child(even) {
@@ -42,6 +42,7 @@ tr:nth-child(odd) {
 
 tr:hover {
     background-color: var(--light-grey);
+    border: 2px solid var(--off-black);
 }
 
 .pagination {
@@ -49,8 +50,38 @@ tr:hover {
     margin: auto;
 }
 
+.delete-btn, .mark-paid-btn {
+    cursor: pointer;
+}
 
-@media screen and (max-width: 475px) {
+.delete-btn, .btn-success, .mark-paid-btn {
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-success {
+    opacity: 0.6;
+    margin: auto;
+}
+
+.td-delete {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.delete-btn:disabled {
+    background-color: #5e5d5d;
+    border-color: #5e5d5d;
+    opacity: 0.6;
+    cursor: unset;
+}
+
+
+@media screen and (max-width: 479px) {
     table {
         border: 0;
     }
@@ -71,16 +102,19 @@ tr:hover {
     }
     
     table tr {
-        border-bottom: 3px solid #ddd;
         display: block;
         margin-bottom: .625em;
     }
+
+    tr:hover td {
+        border: 1px solid var(--off-black);
+    }
     
     table td {
-        border-bottom: 1px solid #ddd;
         display: block;
         font-size: .8em;
         text-align: right;
+        border-bottom: 1px solid var(--off-black);
     }
     
     table td::before {
@@ -93,10 +127,59 @@ tr:hover {
     table td:last-child {
         border-bottom: 0;
     }
+
+    .invoice-ref {
+        margin-right: 20px;
+    }
+
+    .download-icon {
+        margin-right: 5px;
+    }
+
+    .td-paid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    }
 }
 
-@media screen and (min-width: 476px){
+@media screen and (min-width: 480px){
     tr {
         height: 40px;
+        border: 1px solid #7e7e7e;
+    }
+    td {
+        border: 1px solid #7e7e7e; 
+    }
+    .td-delete {
+        border: none;
+    }
+    .invoice-reference {
+        display: flex;
+        align-items: center;
+    } 
+    .invoice-ref {
+        margin-left: 5px;
+    } 
+    .download-icon {
+        margin-left: auto;
+        margin-right: 5px;
+    }
+    .td-delete {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .mark-paid-btn {
+        margin: auto;
+    }
+}
+
+@media screen and (min-width: 550px){
+    .invoice-ref {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-left: 0;
     }
 }
