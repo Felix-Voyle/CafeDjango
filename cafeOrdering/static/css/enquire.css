@@ -117,7 +117,7 @@ section {
 }
 
 .coffee-img, .event-img, .food-img {
-    max-width: 100%;
+    max-width: 105%;
     width: auto;
     height: auto;
     display: block;
@@ -126,6 +126,16 @@ section {
     top: 50%;
     left: 50%;
     transform: translate(-50%, 0); 
+}
+
+.food-img {
+    min-height: 240px;
+}
+
+.coffee-img, .event-img {
+    min-height: 220px;
+    min-width: 105%;
+    max-width: 150%;
 }
 
 .coffee.d-block, .food.d-block, .event.d-block {
