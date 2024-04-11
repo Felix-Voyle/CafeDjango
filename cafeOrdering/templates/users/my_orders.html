@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<h2 class="text-center orders-title">Orders</h2>
+<h2 class="text-center orders-title title-txt">Orders</h2>
 <form method="GET" action="{% url 'filter_my_orders' %}" class="filter-form mb-2">
     {% csrf_token %}
     <select name="status" class="filter-select">
