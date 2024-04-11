@@ -65,7 +65,7 @@
             <div class="row no-gutters">
                 <!-- First div -->
                 <div class="col-lg-6 col-sm-12 text-center mb-5">
-                    <h3 class="mb-2 mt-2 title-txt">Order Summary</h3>
+                    <h3 class="mb-3 mt-3 title-txt">Order Summary</h3>
                         <table id="orderTable" class="order-table main-txt">
                             <thead>
                                 <tr>
@@ -85,13 +85,30 @@
         
                 <!-- Second div -->
                 <div class="col-lg-6 col-sm-12 text-center form-card mb-5 address-inputs">
-                    <h3 class="mb-2 mt-2 title-txt">Address</h3>
-                
+                    <h3 class="mb-3 mt-3 title-txt">Address</h3>
+
+                    {% if request.user.userprofile.is_workspace %}
+                    <div class="row">
+                        <div class="col-12 mb-2">
+                            <select name="select_workspace" id="selectWorkspace" onchange="setAddress()">
+                                <option value="">Select Workspace</option>
+                                <option value="Cargo Works">Cargo Works</option>
+                                <option value="Print Rooms">Print Rooms</option>
+                                <option value="Edinburgh House">Edinburgh House</option>
+                                <option value="ScreenWorks">ScreenWorks</option>
+                                <option value="Light Bulb">Light Bulb</option>
+                                <option value="Frames">Frames</option>
+                                <option value="Barley Mow">Barley Mow</option>
+                                <option value="Vox Studios">Vox Studios</option>
+                            </select>
+                        </div>
+                    </div>
+                    {% endif %}
                     <input type="text" name="address_line1" id="address_line1" autocomplete="on" {% if initial_data.address_line1 %}value="{{ initial_data.address_line1 }}"{% else %}placeholder="Address Line 1"{% endif %}>
                     <br>
                     <span id="address_line1_error" class="error"></span>
-                    <input type="text" name="address_line2" autocomplete="on" {% if initial_data.address_line2 %}value="{{ initial_data.address_line2 }}"{% else %}placeholder="Address Line 2"{% endif %}>
-                    <input type="text" name="address_line3" autocomplete="on" {% if initial_data.address_line3 %}value="{{ initial_data.address_line3 }}"{% else %}placeholder="Address Line 3"{% endif %}>
+                    <input type="text" name="address_line2" id="address_line2" autocomplete="on" {% if initial_data.address_line2 %}value="{{ initial_data.address_line2 }}"{% else %}placeholder="Address Line 2"{% endif %}>
+                    <input type="text" name="address_line3" id="address_line3" autocomplete="on" {% if initial_data.address_line3 %}value="{{ initial_data.address_line3 }}"{% else %}placeholder="Address Line 3"{% endif %}>
                     <input type="text" name="postcode" id="postcode" autocomplete="on"{% if initial_data.postcode %}value="{{ initial_data.postcode }}"{% else %}placeholder="Post Code"{% endif %}>
                     <br>
                     <span id="postcode_error" class="error"></span>
@@ -113,6 +130,7 @@
 {% block javascript %}
 <script src="{% static 'js/orderForm.js' %}"></script>
 <script src="{% static 'js/orderValidateInputs.js' %}"></script>
+<script src="{% static 'js/orderWorkspace.js' %}"></script>
 <script>
     function reloadPage(selectedCategory) {
     window.location.href = "{% url 'product_search' %}?category=" + selectedCategory;

@@ -5,6 +5,7 @@ main {
     height: fit-content;
     background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 70%, #e2d1c3 100%);
     padding-bottom: 30px;
+    padding-top: 55px;
 }
 
 hr {
