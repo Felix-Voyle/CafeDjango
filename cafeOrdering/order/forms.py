@@ -24,8 +24,8 @@ def validate_order_form_data(data):
         errors['address_line3'] = "Address line 3 can't be longer than 100 characters."
 
     delivery_instructions = data.get('delivery_instructions')
-    if len(delivery_instructions) > 150:
-        errors['delivery_instructions'] = "Delivery instuctions can't be longer than 150 characters"    
+    if delivery_instructions and len(delivery_instructions) > 150:
+        errors['delivery_instructions'] = 'Delivery instructions cannot exceed 150 characters.'   
 
     # Validate postcode
     postcode = data.get('postcode')
