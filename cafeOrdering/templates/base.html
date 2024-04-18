@@ -55,6 +55,10 @@
                 </button>
             </div>
 
+            <div class="brand-container">
+                <img id="logo" class="brand-logo" src="{% static 'images/Ara_logo.png' %}">
+            </div>
+
             <div class="user-container">
                 <div class="user-icon-container">
                     {% if user.is_authenticated %}
@@ -90,8 +94,6 @@
                 {% endfor %}
             </div>
             {% endif %}
-
-
 
             <div id="navLinks" class="dropdwn-mnu title-txt">
                 <ul>
