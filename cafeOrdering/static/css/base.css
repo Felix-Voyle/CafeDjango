@@ -14,6 +14,33 @@ html {
     font-weight: 400;
 }
 
+.brand-logo {
+    height: 70px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -10px;
+}
+
+.menu-logo {
+    z-index: 12;
+    opacity: 0;
+    animation: fadeInLogo 2s forwards;
+}
+
+@keyframes fadeInLogo {
+    from {
+        opacity: 0;
+        height: 70px;
+        top: -10px;
+    }
+    to {
+        opacity: 1;
+        height: 75px;
+        top: 0;
+    }
+}
+
 .navbar {
     background-color: var(--main-green);
     width: 100%;
@@ -29,6 +56,7 @@ html {
 .burger-container {
     position: relative;
 }
+
 
 .burger-btn {
     background-color: transparent;

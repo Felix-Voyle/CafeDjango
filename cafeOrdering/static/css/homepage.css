@@ -33,16 +33,18 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     animation: zoomAnimation 4.5s forwards;
+    object-fit: cover;
+    transform-origin: center bottom;
 }
 
 @keyframes zoomAnimation {
     from {
-        max-height: 120%;
+        max-height: 100%;
         min-width: 100%;
     }
     to {
-        max-height: 150%;
-        min-width: 125%;
+        max-height: 115%;
+        min-width: 115%;
     }
 }
 
