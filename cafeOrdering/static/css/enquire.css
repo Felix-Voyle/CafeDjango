@@ -117,7 +117,6 @@ section {
 }
 
 .coffee-img, .event-img, .food-img {
-    max-width: 105%;
     width: auto;
     height: auto;
     display: block;
@@ -130,12 +129,19 @@ section {
 
 .food-img {
     min-height: 240px;
+    max-width: 102%;
 }
 
-.coffee-img, .event-img {
+.coffee-img {
     min-height: 220px;
-    min-width: 105%;
-    max-width: 150%;
+    min-width: 104%;
+    max-width: 120%;
+}
+
+.event-img {
+    min-height: 180px;
+    min-width: 104%;
+    max-width: 104%;
 }
 
 .coffee.d-block, .food.d-block, .event.d-block {
@@ -186,6 +192,12 @@ section {
     box-shadow: -2px 2px #56a37d;
 }
 
+@media screen and (min-width: 355px) {
+    main {
+        padding-bottom: 20px;
+    }
+}
+
 @media (min-width: 449px) {
     .slides1, .slides2, .slides3 {
         flex-basis: calc((100% - 20px) / 3);
@@ -195,24 +207,28 @@ section {
     }
 }
 
-@media (max-width: 450px) {
-    .slides1, .slides2, .slides3 {
-        flex-basis: calc(100% - 20px); 
-    }
-}
-
-@media screen and (min-width: 355px) {
-    main {
-        padding-bottom: 20px;
+@media (min-width: 450px) {
+    .coffee-img {
+        max-width: 150%;
     }
 }
 
 @media screen and (max-width: 450px) {
     .slides3 {
         max-width: 330px;
+        height: 220px;
     }
     .what-we-do-container {
         min-height: 674px;
+    }
+    .slides1, .slides2, .slides3 {
+        flex-basis: calc(100% - 20px); 
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .coffee-img {
+        max-width: 125%;
     }
 }
 
