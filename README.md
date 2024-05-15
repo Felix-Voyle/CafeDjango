@@ -33,19 +33,15 @@ Order Management system for a small collection of cafe's trying to grow their wh
 
 3. **Generate Invoices:** As a cafe admin, I want to generate invoices for wholesale orders, including itemized details and total amounts.
 
-4. **Send Confirmations:** As a cafe admin, I want to send order confirmation emails to wholesale customers after receiving their orders.
+4. **Update Order Status:** As a cafe admin, I want to update the status of orders and provide estimated delivery dates to customers.
 
-5. **Update Order Status:** As a cafe admin, I want to update the status of orders and provide estimated delivery dates to customers.
+5. **Order Overview:** As a cafe admin, I want to have an overview of pending, in-progress, and completed orders for better management.
 
-6. **Order Overview:** As a cafe admin, I want to have an overview of pending, in-progress, and completed orders for better management.
+6. **Generate Reports:** As a cafe admin, I want to generate reports or summaries of orders, sales, and revenue for accounting purposes.
 
-7. **Generate Reports:** As a cafe admin, I want to generate reports or summaries of orders, sales, and revenue for accounting purposes.
+7. **Communicate with Customers:** As a cafe admin, I want to communicate with wholesale customers regarding any order-related updates or issues.
 
-8. **Communicate with Customers:** As a cafe admin, I want to communicate with wholesale customers regarding any order-related updates or issues.
-
-9. **Inventory Management:** As a cafe admin, I want to track and manage the inventory of products, adjusting quantities as orders are fulfilled.
-
-10. **Security:** As a cafe admin, I want to ensure that order and customer information is securely stored and accessible only to authorized personnel.
+8. **Security:** As a cafe admin, I want to ensure that order and customer information is securely stored and accessible only to authorized personnel.
 
 ### First Time Visitor Goals
 
@@ -59,9 +55,9 @@ Order Management system for a small collection of cafe's trying to grow their wh
 
 1. **View Order History:** As a returning visitor, I want to log in to my account and access my order history to review past purchases.
 
-2. **re-order:** As a returning visitor, I want to quickly be able to place the same order again.
+2. **Receive Updates:** As a returning visitor, I want to be informed about new product releases and cafe updates through notifications or emails.
 
-3. **Receive Updates:** As a returning visitor, I want to be informed about new product releases and cafe updates through notifications or emails.
+3. **Report Issues:** As a returning visitor, I want to be able to report any issues that have arisen with my order.
 
 ### Frequent Visitor Goals
 
@@ -73,27 +69,48 @@ Order Management system for a small collection of cafe's trying to grow their wh
 
 ### Typography
 
+The main text of the website is Roboto. Title text uses AbrilFatface. 
+
 ### Imagery
 
-## Database Schema 
+The imagery used are all pictures taken of or from the cafes including food, buildings, cafe spaces. All images were taken by either myself or the cafe and therefore require no permissions or acknowledgements.
+
+## Database Schema
+
+
 
 ## Wireframes
+[Mobile](https://imgur.com/7W9BR0I)
 
 ### Any updates made to the Wireframes?
 
 ## Features
+1. Ordering system
+2. Order management system for both admin users and customers
+2. Enquiry functionality
+3. Invoice generation and email sending capabilites
+
 
 ### Features to implement in the future
+1. Standing orders for wholesale orders
+2. Order with immediate payment functionality for meeting rooms
 
 ## Technologies used
+The technologies used in this project are as follows:
+1. Python with Django for the backend
+2. Javascript with JQUERY for the frontend
+3. CSS for styling and some animations
+
 
 ### Languages used
 
 ### Frameworks, Libraries & Programs Used
 
 ## Testing
+I have written test units for each of the apps to test their functionality is working. I have also tested the website on multiple devices from mobiles to desktop screens and across different browsers. 
 
 ### Testing User Stories from User Experience (UX) Section
+
 
 ### Further Testing
 
@@ -106,10 +123,6 @@ Order Management system for a small collection of cafe's trying to grow their wh
 ### Forking the GitHub Repository
 
 ### Making a Local Clone
-
-### Heroku
-
-### AWS
 
 ## Credits
 
