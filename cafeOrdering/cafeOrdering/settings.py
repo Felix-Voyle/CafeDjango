@@ -23,7 +23,7 @@ else:
 
 SITE_ID = 1
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['aracoffee.co.uk', 'www.aracoffee.co.uk', 'cafedjango.onrender.com']
 
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
